@@ -1,1 +1,52 @@
-/* You can add global styles to this file, and also import other style files */
+@use 'colors';
+@use 'measurements';
+@use "sass:map";
+
+@font-face {
+    font-family: "Open Sans";
+    src: local("Open Sans"), url(./assets/fonts/OpenSans-Light.ttf) format("truetype");
+    font-weight: 300;
+}
+
+body {
+    font-family: 'Open Sans';
+    background: colors.$background;
+    color: colors.$font;
+
+    .main-container {
+        margin: 0 200px;
+    }
+}
+
+.platform-card {
+    height: 160px;
+    width: 160px;
+    padding: measurements.$container-padding;
+
+    border: colors.$border;
+    box-shadow: colors.$container-shadow;
+    border-radius: measurements.$container-border-radius;
+    cursor: pointer;
+
+    @each $platform, $color in colors.$platforms {
+        &.#{$platform} {
+            background: linear-gradient(map.get(colors.$platforms, $platform), #1D1C1C);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+
+            &:hover {
+                filter: saturate(1.75);
+            }
+        }
+    }
+}
+
+button {
+    background: colors.$background;
+    height: measurements.$input-height;
+    border: colors.$border;
+    padding: measurements.$input-padding;
+    box-shadow: colors.$button-shadow;
+    border-radius: 24px;
+}
