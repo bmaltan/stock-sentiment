@@ -1,15 +1,16 @@
-@use 'colors';
-@use 'measurements';
+@use './styling/fonts.scss';
+@use './styling/colors.scss';
+@use './styling/measurements.scss';
 @use "sass:map";
 
-@font-face {
-    font-family: "Open Sans";
-    src: local("Open Sans"), url(./assets/fonts/OpenSans-Light.ttf) format("truetype");
+@include fonts.fonts;
+
+* {
+    font-family: 'Open Sans';
     font-weight: 300;
 }
 
 body {
-    font-family: 'Open Sans';
     background: colors.$background;
     color: colors.$font;
 
@@ -18,28 +19,76 @@ body {
     }
 }
 
-.platform-card {
-    height: 160px;
-    width: 160px;
-    padding: measurements.$container-padding;
+.platform-container {
+    width: fit-content; 
+    margin: auto;
 
-    border: colors.$border;
-    box-shadow: colors.$container-shadow;
-    border-radius: measurements.$container-border-radius;
-    cursor: pointer;
+    .platform-card {
+        height: 90px;
+        width: 90px;
+        padding: measurements.$container-padding;
+    
+        border: colors.$border;
+        box-shadow: colors.$container-shadow;
+        border-radius: measurements.$container-border-radius;
+        cursor: pointer;
+        justify-items: right;
+        transition: all measurements.$anim-duration measurements.$anim-type;
 
-    @each $platform, $color in colors.$platforms {
-        &.#{$platform} {
-            background: linear-gradient(map.get(colors.$platforms, $platform), #1D1C1C);
-            background-clip: text;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+        mat-icon.platform-icon {
+            &.small {
+                height: measurements.$icon-small;
+                width: measurements.$icon-small;
+            }
 
-            &:hover {
-                filter: saturate(1.75);
+            &.medium {
+                height: measurements.$icon-medium;
+                width: measurements.$icon-medium;
+            }
+
+            &.large {
+                height: measurements.$icon-large;
+                width: measurements.$icon-large;
+            }
+        }
+
+        &:hover {
+            box-shadow: colors.$container-shadow-highlight;
+
+            mat-icon {
+                transition: transform measurements.$anim-duration measurements.$anim-type;
+                transform: scale(1.05)
+            }
+        }
+    
+        @each $platform, $color in colors.$platforms {
+            &.#{$platform} {
+                mat-icon {
+                    align-self: flex-end;
+                    color: map.get(colors.$platforms, $platform);
+                }
+
+                .platform-title {
+                    background: -webkit-linear-gradient(map.get(colors.$platforms, $platform), darken(map.get(colors.$platforms, $platform), 20));
+                    background-clip: text;
+                    -webkit-background-clip: text;
+                    -webkit-text-fill-color: transparent;
+                    font-weight: 500;
+                }
+
+                &:hover {
+                    filter: saturate(1.75);
+                }
             }
         }
     }
+}
+
+.content-container {
+    border: colors.$border;
+    box-shadow: colors.$container-shadow;
+    border-radius: measurements.$container-border-radius;
+    overflow: hidden;
 }
 
 button {
@@ -49,4 +98,28 @@ button {
     padding: measurements.$input-padding;
     box-shadow: colors.$button-shadow;
     border-radius: 24px;
+    cursor: pointer;
+
+    &:active, &:focus {
+        outline: none;
+    }
+}
+
+table {
+    width: 100%;
+    border: none;
+
+    thead {
+        border: none;
+        
+        tr.mat-header-row {
+            font-weight: 500;
+            height: 44px;
+        }
+    }
+
+    tr.mat-row {
+        border: none;
+        height: 42px;
+    }
 }
