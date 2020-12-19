@@ -16,11 +16,12 @@
     }
 }
 
-body {
+html, body {
     background: colors.$background;
     color: colors.$font;
     height: 100%;
-
+    margin: 0;
+    
     .main-container {
         margin: 0 200px;
     }

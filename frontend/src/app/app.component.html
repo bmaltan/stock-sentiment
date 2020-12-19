@@ -1,5 +1,9 @@
-<app-header></app-header>
-<div class="main-container">
-    <router-outlet></router-outlet>
+<div class="root">
+    <app-header></app-header>
+    <div class="main-container">
+        <div class="router-container">
+            <router-outlet></router-outlet>
+        </div>
+        <app-footer></app-footer>
+    </div>
 </div>
-<app-footer></app-footer>

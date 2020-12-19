@@ -22,7 +22,7 @@ import { FooterComponent } from './views/navigation/footer/footer.component';
         ViewsModule,
         SharedModule,
         MaterialModule,
-        HttpClientModule,
+        HttpClientModule
     ],
     providers: [],
     bootstrap: [AppComponent]

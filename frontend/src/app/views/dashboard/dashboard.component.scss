@@ -1,17 +1,9 @@
-:host {
-    margin-top: 20px;
-}
-
 .intro-text {
     margin: 0 0 40px 0;
     padding: 0 20px;
 }
 
 @media only screen and (max-width: 600px) {
-    :host {
-        margin-top: 10px;
-    }
-
     .intro-text {
         margin: 10px 0;
     }

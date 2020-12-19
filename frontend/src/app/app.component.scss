@@ -1,22 +1,35 @@
-app-header {
-    position: fixed;
-    top: 0;
-    width: 100%;
-    background: white;
-}
+.root {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
 
-.main-container {
-    overflow: auto;
-    margin-top: 75px;
-}
-
-@media only screen and (max-width: 600px) {
-    .main-container {
-        margin-top: 50px;
+    app-header {
+        position: fixed;
+        top: 0;
+        width: 100%;
+        background: white;
     }
-}
-
-app-footer {
-    position: relative;
-    bottom: 0;
+    
+    .main-container {
+        overflow: auto;
+        padding-top: 100px;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        
+        .router-container {
+            flex: 1;
+        }
+    }
+    
+    @media only screen and (max-width: 600px) {
+        .main-container {
+            padding-top: 50px;
+        }
+    }
+    
+    app-footer {
+        position: relative;
+        bottom: 0;
+    }
 }
