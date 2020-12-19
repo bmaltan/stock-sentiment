@@ -1,0 +1,19 @@
+.header-container {
+    padding: 0 100px;
+
+    .site-title {
+        cursor: pointer;
+    }
+}
+
+@media only screen and (max-width: 600px) {
+    .header-container {
+        padding: 0 20px;
+    }
+
+    .site-title {
+        margin: 10px 0;
+        font-size: 24px;
+    }
+
+}

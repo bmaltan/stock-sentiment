@@ -27,6 +27,7 @@ export class MaterialModule {
         'like',
         'logo-reddit',
         'logo-twitter',
+        'logo-yahoo',
         'up'
     ]
 

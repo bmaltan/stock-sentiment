@@ -2,9 +2,7 @@ export interface PlatformData {
     platform: 'reddit' | 'twitter' | 'yahoo';
     name: string;
     date: Date;
-    marketData: {
-        topStocks: Stock[];
-    }
+    topStocks: Stock[];
 }
 
 export interface Stock {
@@ -18,6 +16,6 @@ export interface Stock {
 }
 
 export interface DiscussionLink {
-    name: string;
+    title: string;
     url: string;
 }

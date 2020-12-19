@@ -7,10 +7,14 @@ import { ViewsModule } from './views/views.module';
 import { SharedModule } from './shared/shared.module';
 import { MaterialModule } from './shared/material.module';
 import { HttpClientModule } from '@angular/common/http';
+import { HeaderComponent } from './views/navigation/header/header.component';
+import { FooterComponent } from './views/navigation/footer/footer.component';
 
 @NgModule({
     declarations: [
-        AppComponent
+        AppComponent,
+        HeaderComponent,
+        FooterComponent
     ],
     imports: [
         BrowserModule,
@@ -18,7 +22,7 @@ import { HttpClientModule } from '@angular/common/http';
         ViewsModule,
         SharedModule,
         MaterialModule,
-        HttpClientModule
+        HttpClientModule,
     ],
     providers: [],
     bootstrap: [AppComponent]

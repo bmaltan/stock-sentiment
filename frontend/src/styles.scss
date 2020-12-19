@@ -1,21 +1,36 @@
 @use './styling/fonts.scss';
 @use './styling/colors.scss';
 @use './styling/measurements.scss';
+@use './styling/animations.scss';
 @use "sass:map";
 
 @include fonts.fonts;
+@include animations.routerAnimations;
 
 * {
     font-family: 'Open Sans';
     font-weight: 300;
+
+    &:focus {
+        outline: none;
+    }
 }
 
 body {
     background: colors.$background;
     color: colors.$font;
+    height: 100%;
 
     .main-container {
         margin: 0 200px;
+    }
+}
+
+@media only screen and (max-width: 600px) {
+    body {
+        .main-container {
+            margin: 0;
+        }
     }
 }
 
