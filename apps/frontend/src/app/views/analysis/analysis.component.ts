@@ -1,17 +1,13 @@
-import { Component, OnInit } from '@angular/core';
-import { DiscussionLink } from '@invest-track/models';
+import { Component } from '@angular/core';
+
 @Component({
   selector: 'app-analysis',
   templateUrl: './analysis.component.html',
   styleUrls: ['./analysis.component.scss'],
 })
-export class AnalysisComponent implements OnInit {
+export class AnalysisComponent {
   displayedColumns: string[] = ['position', 'name', 'weight', 'symbol'];
   dataSource = ELEMENT_DATA;
-
-  constructor() {}
-
-  ngOnInit(): void {}
 }
 
 interface PeriodicElement {
