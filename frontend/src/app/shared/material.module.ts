@@ -3,17 +3,20 @@ import { CommonModule } from '@angular/common';
 import { MatTableModule } from '@angular/material/table';
 import { MatIconModule, MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
+import { MatMenuModule } from '@angular/material/menu';
 
 @NgModule({
     declarations: [],
     imports: [
         CommonModule,
         MatTableModule,
-        MatIconModule
+        MatIconModule,
+        MatMenuModule
     ],
     exports: [
         MatTableModule,
-        MatIconModule
+        MatIconModule,
+        MatMenuModule
     ]
 })
 
@@ -23,11 +26,13 @@ export class MaterialModule {
         'account',
         'dislike',
         'down',
+        'exit',
         'info',
         'like',
         'logo-reddit',
         'logo-twitter',
         'logo-yahoo',
+        'settings',
         'up'
     ]
 

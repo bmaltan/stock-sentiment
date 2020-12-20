@@ -1,0 +1,45 @@
+@use './measurements.scss';
+
+@mixin styles {
+    mat-icon {
+        color: #4d4d4d;
+
+        &.small {
+            height: measurements.$icon-small;
+            width: measurements.$icon-small;
+        }
+
+        &.medium {
+            height: measurements.$icon-medium;
+            width: measurements.$icon-medium;
+        }
+
+        &.large {
+            height: measurements.$icon-large;
+            width: measurements.$icon-large;
+        }
+    }
+
+    .cdk-overlay-pane {
+        .mat-menu-panel {
+            border-radius: measurements.$container-border-radius;
+        
+            .mat-menu-content {
+                padding: 20px;
+                padding-top: 20px;
+                padding-bottom: 20px;
+                
+                button {
+                    box-shadow: none;
+                }
+            }
+            
+        }
+    }
+
+    .cdk-overlay-transparent-backdrop, 
+    .cdk-overlay-transparent-backdrop.cdk-overlay-backdrop-showing {
+        opacity: 0.3;
+        background: black;
+    }
+}

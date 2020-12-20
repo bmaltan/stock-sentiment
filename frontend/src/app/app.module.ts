@@ -9,6 +9,11 @@ import { MaterialModule } from './shared/material.module';
 import { HttpClientModule } from '@angular/common/http';
 import { HeaderComponent } from './views/navigation/header/header.component';
 import { FooterComponent } from './views/navigation/footer/footer.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { AngularFireModule } from '@angular/fire';
+import { AngularFireAuthModule } from '@angular/fire/auth';
+import { AngularFireDatabaseModule } from '@angular/fire/database';
+import { environment } from '../environments/environment';
 
 @NgModule({
     declarations: [
@@ -22,7 +27,11 @@ import { FooterComponent } from './views/navigation/footer/footer.component';
         ViewsModule,
         SharedModule,
         MaterialModule,
-        HttpClientModule
+        HttpClientModule,
+        BrowserAnimationsModule,
+        AngularFireModule.initializeApp(environment.firebase),
+        AngularFireDatabaseModule,
+        AngularFireAuthModule
     ],
     providers: [],
     bootstrap: [AppComponent]

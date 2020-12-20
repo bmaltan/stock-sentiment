@@ -2,14 +2,16 @@
 @use './styling/colors.scss';
 @use './styling/measurements.scss';
 @use './styling/animations.scss';
+@use './styling/material.scss';
 @use "sass:map";
 
 @include fonts.fonts;
-@include animations.routerAnimations;
+@include material.styles;
 
 * {
     font-family: 'Open Sans';
     font-weight: 300;
+    transition: background measurements.$anim-duration;
 
     &:focus {
         outline: none;
@@ -24,6 +26,14 @@ html, body {
     
     .main-container {
         margin: 0 200px;
+    }
+}
+
+@media only screen and (max-width: 800px) {
+    body {
+        .main-container {
+            margin: 0 100px;
+        }
     }
 }
 
@@ -51,44 +61,28 @@ html, body {
         justify-items: right;
         transition: all measurements.$anim-duration measurements.$anim-type;
 
-        mat-icon.platform-icon {
-            &.small {
-                height: measurements.$icon-small;
-                width: measurements.$icon-small;
-            }
-
-            &.medium {
-                height: measurements.$icon-medium;
-                width: measurements.$icon-medium;
-            }
-
-            &.large {
-                height: measurements.$icon-large;
-                width: measurements.$icon-large;
-            }
-        }
-
         &:hover {
             box-shadow: colors.$container-shadow-highlight;
 
             mat-icon {
                 transition: transform measurements.$anim-duration measurements.$anim-type;
-                transform: scale(1.05)
+                transform: scale(1.05);
             }
+        }
+
+        &:active{
+            box-shadow: colors.$container-shadow-pressed, colors.$container-shadow-highlight;
         }
     
         @each $platform, $color in colors.$platforms {
             &.#{$platform} {
                 mat-icon {
-                    align-self: flex-end;
                     color: map.get(colors.$platforms, $platform);
+                    align-self: flex-end;
                 }
 
                 .platform-title {
-                    background: -webkit-linear-gradient(map.get(colors.$platforms, $platform), darken(map.get(colors.$platforms, $platform), 20));
-                    background-clip: text;
-                    -webkit-background-clip: text;
-                    -webkit-text-fill-color: transparent;
+                    color: map.get(colors.$platforms, $platform);
                     font-weight: 500;
                 }
 

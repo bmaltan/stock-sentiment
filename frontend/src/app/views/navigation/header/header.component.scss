@@ -1,10 +1,29 @@
+@use '../../../../styling/measurements.scss';
+
 .header-container {
     padding: 0 100px;
+    display: flex;
 
     .site-title {
         cursor: pointer;
+        flex: 1;
     }
+
+    .account-button {
+        margin: auto;
+        cursor: pointer;
+    }
+
 }
+
+    .mat-menu-item {
+        &:hover {
+            mat-icon {
+                transform: scale(1.2);
+                transition: transform measurements.$anim-duration;
+            }
+        }
+    }
 
 @media only screen and (max-width: 600px) {
     .header-container {

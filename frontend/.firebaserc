@@ -1,0 +1,11 @@
+{
+  "targets": {
+    "bs-invest-track": {
+      "hosting": {
+        "invest-track": [
+          "bs-invest-track"
+        ]
+      }
+    }
+  }
+}

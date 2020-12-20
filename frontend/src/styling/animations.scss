@@ -11,6 +11,6 @@
     
     router-outlet + * {
         display: block;  /* Change display inline to block */
-        animation: fade 300ms ease-in;
+        animation: fade 500ms ease-in;
     }
 }
