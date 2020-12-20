@@ -10,5 +10,5 @@ export class AppComponent {
         databaseService.getAllPlatformData();
     }
 
-  title = 'invest-track';
+    title = 'invest-track';
 }
