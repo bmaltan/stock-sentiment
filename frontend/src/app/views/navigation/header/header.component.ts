@@ -1,15 +1,31 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { DialogFavoritesComponent } from 'src/app/shared/dialog-favorites/dialog-favorites.component';
+import { DialogSettingsComponent } from 'src/app/shared/dialog-settings/dialog-settings.component';
 
 @Component({
-  selector: 'app-header',
-  templateUrl: './header.component.html',
-  styleUrls: ['./header.component.scss']
+    selector: 'app-header',
+    templateUrl: './header.component.html',
+    styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent implements OnInit {
 
-  constructor() { }
+    constructor(
+        private dialog: MatDialog
+    ) { }
 
-  ngOnInit(): void {
-  }
+    ngOnInit(): void {
+    }
 
+    openFavorites() {
+        this.dialog.open(DialogFavoritesComponent, {
+
+        })
+    }
+
+    openSettings() {
+        this.dialog.open(DialogSettingsComponent, {
+
+        })
+    }
 }

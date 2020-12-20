@@ -7,15 +7,20 @@ import { map, take } from 'rxjs/operators';
 })
 export class DatabaseService {
 
+    allPlatformData: any[] = [];
+
     constructor(
         private db: AngularFireDatabase
     ) { }
 
     getAllPlatformData() {
-        return this.db.object('platforms').snapshotChanges()
+        this.db.object('platforms').snapshotChanges()
             .pipe(
                 take(1),
-                map(data => data.payload.val())
+                map(data => {
+                    this.allPlatformData = data.payload.val() as any[];
+                    console.log(this.allPlatformData)
+                })
             )
             .toPromise();
     }

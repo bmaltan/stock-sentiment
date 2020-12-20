@@ -1,13 +1,13 @@
 export interface PlatformData {
-    platform: 'reddit' | 'twitter' | 'yahoo';
-    name: string;
-    date: Date;
-    topStocks: Stock[];
+    [platformName: string]: {
+        [date: string]: {
+            topStocks: Stock[];
+        }
+    }
 }
 
 export interface Stock {
     ticker: string;
-    name: string;
     openingPrice: number;
     closingPrice: number;
     dailyChange?: number; // will be calculated in the frontend, don't store

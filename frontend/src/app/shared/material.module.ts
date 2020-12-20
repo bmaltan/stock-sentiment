@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatTableModule } from '@angular/material/table';
 import { MatIconModule, MatIconRegistry } from '@angular/material/icon';
+import { MatDialogModule } from '@angular/material/dialog';
 import { DomSanitizer } from '@angular/platform-browser';
 import { MatMenuModule } from '@angular/material/menu';
 
@@ -11,12 +12,14 @@ import { MatMenuModule } from '@angular/material/menu';
         CommonModule,
         MatTableModule,
         MatIconModule,
-        MatMenuModule
+        MatMenuModule,
+        MatDialogModule,
     ],
     exports: [
         MatTableModule,
         MatIconModule,
-        MatMenuModule
+        MatMenuModule,
+        MatDialogModule,
     ]
 })
 
