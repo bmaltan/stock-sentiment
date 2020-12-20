@@ -4,18 +4,18 @@ import { DialogFavoritesComponent } from '../../../shared/dialog-favorites/dialo
 import { DialogSettingsComponent } from '../../../shared/dialog-settings/dialog-settings.component';
 
 @Component({
-  selector: 'app-header',
-  templateUrl: './header.component.html',
-  styleUrls: ['./header.component.scss'],
+    selector: 'app-header',
+    templateUrl: './header.component.html',
+    styleUrls: ['./header.component.scss'],
 })
 export class HeaderComponent {
-  constructor(private dialog: MatDialog) {}
+    constructor(private dialog: MatDialog) {}
 
-  openFavorites() {
-    this.dialog.open(DialogFavoritesComponent, {});
-  }
+    openFavorites() {
+        this.dialog.open(DialogFavoritesComponent, {});
+    }
 
-  openSettings() {
-    this.dialog.open(DialogSettingsComponent, {});
-  }
+    openSettings() {
+        this.dialog.open(DialogSettingsComponent, {});
+    }
 }
