@@ -57,6 +57,10 @@ export class AnalysisComponent {
         };
     }
 
+    toggleFavorite() {
+
+    }
+
     goBack() {
         this.location.back();
     }

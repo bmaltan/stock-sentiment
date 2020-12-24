@@ -30,6 +30,7 @@ import { environment } from '../environments/environment';
         HttpClientModule,
         BrowserAnimationsModule,
         AngularFireModule.initializeApp(environment.firebase),
+        AngularFireAuthModule,
         AngularFireDatabaseModule,
         AngularFireAuthModule
     ],

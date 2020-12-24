@@ -1,6 +1,9 @@
-<div class="route-header">
-    <mat-icon svgIcon="arrow-left" (click)="goBack()"></mat-icon>
+<div class="route-header" gdColumns="auto 1fr auto" gdGap="1rem">
+    <mat-icon class="button" svgIcon="arrow-left" (click)="goBack()"></mat-icon>
     <h2 class="route-title"> {{ currentPlatformTitle }} </h2>
+    <div>
+        <mat-icon class="button" svgIcon="like" (click)="toggleFavorite()"></mat-icon>
+    </div>
 </div>
 <div class="content-container">
     <table mat-table *ngIf="dataSource" [dataSource]="dataSource" matSort>
