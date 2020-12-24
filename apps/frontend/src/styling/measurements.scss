@@ -1,8 +1,9 @@
 $container-padding: 20px;
 $container-border-radius: 36px;
 
-$input-height: 48px;
-$input-padding: 14px 20px 14px 20px;
+$input-height: 40px;
+$input-padding: 10px 20px 10px 20px;
+$input-border-radius: 25px;
 
 $icon-large: 60px;
 $icon-medium: 40px;
@@ -10,3 +11,5 @@ $icon-small: 20px;
 
 $anim-duration: 400ms;
 $anim-type: ease-out;
+
+$icon-hover-scale: 1.2;
