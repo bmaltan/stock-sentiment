@@ -5,18 +5,21 @@ import { MatIconModule, MatIconRegistry } from '@angular/material/icon';
 import { MatDialogModule } from '@angular/material/dialog';
 import { DomSanitizer } from '@angular/platform-browser';
 import { MatMenuModule } from '@angular/material/menu';
+import { MatSortModule } from '@angular/material/sort';
 
 @NgModule({
     declarations: [],
     imports: [
         CommonModule,
         MatTableModule,
+        MatSortModule,
         MatIconModule,
         MatMenuModule,
         MatDialogModule,
     ],
     exports: [
         MatTableModule,
+        MatSortModule,
         MatIconModule,
         MatMenuModule,
         MatDialogModule,

@@ -1,4 +1,14 @@
+@use '../../../styling/colors.scss';
+
 .content-container {
     margin: auto;
-    width: 20%
+}
+
+.positive-change {
+    font-weight: bold;
+    color: colors.$positive;
+}
+
+.negative-change {
+    color: colors.$negative;
 }

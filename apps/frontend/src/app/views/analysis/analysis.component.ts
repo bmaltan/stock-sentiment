@@ -1,4 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
+import { ActivatedRoute } from '@angular/router';
+import { PlatformData, Stock } from '@invest-track/models';
+import { DatabaseService } from '../../shared/services/database.service';
 
 @Component({
     selector: 'app-analysis',
@@ -6,26 +11,33 @@ import { Component } from '@angular/core';
     styleUrls: ['./analysis.component.scss'],
 })
 export class AnalysisComponent {
-  displayedColumns: string[] = ['position', 'name', 'weight', 'symbol'];
-  dataSource = ELEMENT_DATA;
+
+    platformData?: PlatformData;
+    currentPlatform = '';
+
+    loading = true;
+
+    displayedColumns: string[] = ['ticker', 'openingPrice', 'closingPrice', 'dailyChange', 'numOfMentions'];
+    dataSource?: MatTableDataSource<Stock[]>;
+
+    @ViewChild(MatSort) sort!: MatSort;
+
+    constructor(
+        private databaseService: DatabaseService,
+        private route: ActivatedRoute
+    ) {
+        this.currentPlatform = this.route.snapshot.url[this.route.snapshot.url.length - 1].path;
+    }
+
+    ngOnInit() {
+        this.getPlatformData();
+    }
+
+    async getPlatformData() {
+        this.platformData = await this.databaseService.getPlatformData(this.currentPlatform);
+        this.dataSource = new MatTableDataSource(Object.values(this.platformData['2020-02-10'].topStocks))
+        this.dataSource.sort = this.sort;
+        this.loading = false;
+    }
 }
 
-interface PeriodicElement {
-  name: string;
-  position: number;
-  weight: number;
-  symbol: string;
-}
-
-const ELEMENT_DATA: PeriodicElement[] = [
-    { position: 1, name: 'Hydrogen', weight: 1.0079, symbol: 'H' },
-    { position: 2, name: 'Helium', weight: 4.0026, symbol: 'He' },
-    { position: 3, name: 'Lithium', weight: 6.941, symbol: 'Li' },
-    { position: 4, name: 'Beryllium', weight: 9.0122, symbol: 'Be' },
-    { position: 5, name: 'Boron', weight: 10.811, symbol: 'B' },
-    { position: 6, name: 'Carbon', weight: 12.0107, symbol: 'C' },
-    { position: 7, name: 'Nitrogen', weight: 14.0067, symbol: 'N' },
-    { position: 8, name: 'Oxygen', weight: 15.9994, symbol: 'O' },
-    { position: 9, name: 'Fluorine', weight: 18.9984, symbol: 'F' },
-    { position: 10, name: 'Neon', weight: 20.1797, symbol: 'Ne' },
-];

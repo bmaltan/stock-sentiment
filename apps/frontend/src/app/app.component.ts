@@ -7,7 +7,7 @@ import { DatabaseService } from './shared/services/database.service';
 })
 export class AppComponent {
     constructor(databaseService: DatabaseService) {
-        databaseService.getAllPlatformData();
+        // databaseService.fetchAllPlatformData();
     }
 
     title = 'invest-track';
