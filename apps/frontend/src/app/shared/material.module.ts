@@ -30,6 +30,7 @@ export class MaterialModule {
 
     icons = [
         'account',
+        'arrow-left',
         'dislike',
         'down',
         'exit',

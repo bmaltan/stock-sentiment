@@ -1,11 +1,11 @@
-@use './styling/fonts.scss';
+@use './styling/typography.scss';
 @use './styling/colors.scss';
 @use './styling/measurements.scss';
 @use './styling/animations.scss';
 @use './styling/material.scss';
 @use "sass:map";
 
-@include fonts.fonts;
+@include typography.typography;
 @include material.styles;
 
 * {
@@ -42,6 +42,14 @@ html, body {
         .main-container {
             margin: 0;
         }
+    }
+}
+
+.route-header {
+    mat-icon {
+        vertical-align: sub;
+        margin-right: 16px;
+        cursor: pointer;
     }
 }
 

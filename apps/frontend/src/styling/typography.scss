@@ -1,4 +1,4 @@
-@mixin fonts {
+@mixin typography {
     @font-face {
         font-family: "Open Sans";
         src: local("Open Sans"), url(../assets/fonts/OpenSans-Light.ttf) format("truetype");
@@ -15,5 +15,9 @@
         font-family: "Open Sans";
         src: local("Open Sans"), url(../assets/fonts/OpenSans-Bold.ttf) format("truetype");
         font-weight: 700;
+    }
+
+    h2.route-title {
+        display: inline-block;
     }
 }
