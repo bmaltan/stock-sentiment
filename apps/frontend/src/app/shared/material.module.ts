@@ -6,6 +6,8 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { DomSanitizer } from '@angular/platform-browser';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatSortModule } from '@angular/material/sort';
+import { MatInputModule } from '@angular/material/input';
+import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
 
 @NgModule({
     declarations: [],
@@ -16,6 +18,7 @@ import { MatSortModule } from '@angular/material/sort';
         MatIconModule,
         MatMenuModule,
         MatDialogModule,
+        MatInputModule
     ],
     exports: [
         MatTableModule,
@@ -23,6 +26,10 @@ import { MatSortModule } from '@angular/material/sort';
         MatIconModule,
         MatMenuModule,
         MatDialogModule,
+        MatInputModule
+    ],
+    providers: [
+        { provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: { appearance: 'outline' } }
     ]
 })
 
