@@ -20,7 +20,7 @@
         
         .router-container {
             flex: 1;
-            padding: 20px;
+            padding: 20px 220px;
         }
     }
     
@@ -29,6 +29,19 @@
             padding-top: 50px;
         }
     }
+
+    @media only screen and (max-width: 850px) {
+        .router-container {
+            padding: 0 100px !important;
+    }
+    
+    @media only screen and (max-width: 700px) {
+        .router-container {
+            padding: 0 !important;
+        }
+    }
+}
+
     
     app-footer {
         position: relative;
