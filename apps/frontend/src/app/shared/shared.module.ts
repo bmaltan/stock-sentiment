@@ -6,12 +6,16 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { DialogSettingsComponent } from './dialog-settings/dialog-settings.component';
 import { DialogFavoritesComponent } from './dialog-favorites/dialog-favorites.component';
 import { DialogLoginComponent } from './dialog-login/dialog-login.component';
-import { ReactiveFormsModule } from '@angular/forms'
+import { ReactiveFormsModule } from '@angular/forms';
+import { DisplayIfLoggedInDirective } from './directives/display-if-logged-in.directive';
+import { DisplayIfNotLoggedInDirective } from './directives/display-if-not-logged-in.directive'
 @NgModule({
     declarations: [
         DialogSettingsComponent,
         DialogFavoritesComponent,
-        DialogLoginComponent
+        DialogLoginComponent,
+        DisplayIfLoggedInDirective,
+        DisplayIfNotLoggedInDirective
     ],
     imports: [
         CommonModule,
@@ -21,7 +25,8 @@ import { ReactiveFormsModule } from '@angular/forms'
         ReactiveFormsModule
     ],
     exports: [
-        MaterialModule
+        MaterialModule,
+        DisplayIfLoggedInDirective
     ]
 })
 export class SharedModule { }

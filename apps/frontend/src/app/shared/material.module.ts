@@ -8,6 +8,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatSortModule } from '@angular/material/sort';
 import { MatInputModule } from '@angular/material/input';
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 @NgModule({
     declarations: [],
@@ -18,7 +19,8 @@ import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
         MatIconModule,
         MatMenuModule,
         MatDialogModule,
-        MatInputModule
+        MatInputModule,
+        MatSnackBarModule
     ],
     exports: [
         MatTableModule,
@@ -26,7 +28,8 @@ import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
         MatIconModule,
         MatMenuModule,
         MatDialogModule,
-        MatInputModule
+        MatInputModule,
+        MatSnackBarModule
     ],
     providers: [
         { provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: { appearance: 'outline' } }
@@ -40,6 +43,7 @@ export class MaterialModule {
         'arrow-left',
         'dislike',
         'down',
+        'enter',
         'exit',
         'info',
         'like',

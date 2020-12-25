@@ -1,26 +1,52 @@
 <h2 mat-dialog-title>
-    Register
+    Login
 </h2>
 
 <div mat-dialog-content style="padding: 30px 60px;">
-    <div *ngIf="registerForm" [formGroup]="registerForm" gdRows="repeat(3, 1fr)">
-        <mat-form-field class="example-full-width">
-            <mat-label>Email</mat-label>
-            <input matInput formControlName="username">
-        </mat-form-field>
-        <mat-form-field class="example-full-width">
-            <mat-label>Password</mat-label>
-            <input matInput type="password" formControlName="password">
-        </mat-form-field>
-        <mat-form-field class="example-full-width">
-            <mat-label>Password, again</mat-label>
-            <input matInput type="password" formControlName="passwordAgain">
-        </mat-form-field>
+    <div *ngIf="mode === 'login' && loginForm" [formGroup]="loginForm">
+        <div class="prompt-container" gdRows="1fr 1fr">
+            <span>Don't have an account?</span>
+            <button class="primary" (click)="toggleLoginRegister()">Register</button>
+        </div>
+
+        <div gdRows="repeat(2, 1fr)">
+            <mat-form-field class="example-full-width">
+                <mat-label>Email</mat-label>
+                <input matInput formControlName="email">
+            </mat-form-field>
+            <mat-form-field class="example-full-width">
+                <mat-label>Password</mat-label>
+                <input matInput type="password" formControlName="password">
+            </mat-form-field>
+        </div>
     </div>
+
+    <div *ngIf="mode === 'register' && registerForm">
+        <div class="prompt-container" gdRows="1fr 1fr">
+            <span>Already have an account?</span>
+            <button class="primary" (click)="toggleLoginRegister()">Login</button>
+        </div>
+
+        <div [formGroup]="registerForm" gdRows="repeat(3, 1fr)">
+            <mat-form-field class="example-full-width">
+                <mat-label>Email</mat-label>
+                <input matInput formControlName="email">
+            </mat-form-field>
+            <mat-form-field class="example-full-width">
+                <mat-label>Password</mat-label>
+                <input matInput type="password" formControlName="password">
+            </mat-form-field>
+            <mat-form-field class="example-full-width">
+                <mat-label>Repeat password</mat-label>
+                <input matInput type="password" formControlName="passwordAgain">
+            </mat-form-field>
+        </div>
+    </div>
+
 </div>
 
 <div mat-dialog-actions gdColumns="auto 1fr auto">
     <button mat-dialog-close>Close</button>
     <div></div>
-    <button class="primary">Register</button>
+    <button class="primary" (click)="signup()">Log in</button>
 </div>
