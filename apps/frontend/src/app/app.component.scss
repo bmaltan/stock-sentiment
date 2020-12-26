@@ -23,12 +23,6 @@
             padding: 20px 220px;
         }
     }
-    
-    @media only screen and (max-width: 600px) {
-        .main-container {
-            padding-top: 50px;
-        }
-    }
 
     @media only screen and (max-width: 850px) {
         .router-container {
@@ -37,7 +31,7 @@
     
     @media only screen and (max-width: 700px) {
         .router-container {
-            padding: 0 !important;
+            padding: 0 20px !important;
         }
     }
 }

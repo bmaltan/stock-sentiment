@@ -22,7 +22,7 @@ export class DialogLoginComponent implements OnInit {
 
     ngOnInit(): void {
         this.loginForm = this.fb.group({
-            email: ['', Validators.required],
+            email: ['', Validators.compose([Validators.required, Validators.email])],
             password: ['', Validators.required],
         })
 
@@ -35,6 +35,11 @@ export class DialogLoginComponent implements OnInit {
 
     toggleLoginRegister() {
         this.mode = this.mode === 'login' ? 'register' : 'login';
+    }
+
+    async login() {
+        const user = this.loginForm?.value;
+        await this.authService.login(user.email, user.password)
     }
 
     async signup() {

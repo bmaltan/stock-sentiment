@@ -48,5 +48,7 @@
 <div mat-dialog-actions gdColumns="auto 1fr auto">
     <button mat-dialog-close>Close</button>
     <div></div>
-    <button class="primary" (click)="signup()">Log in</button>
+    <button class="primary"
+        [disabled]="(mode === 'login' && loginForm?.invalid) || (mode === 'register' && registerForm?.invalid)"
+        (click)="mode === 'login' ? login() : signup()">Log in</button>
 </div>

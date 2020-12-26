@@ -137,6 +137,14 @@ button {
         }
     }
 
+    &[disabled] {
+        background: colors.$disabled;
+        cursor: initial;
+        
+        &:hover {
+            background: colors.$disabled;
+        }
+    }
 }
 
 table {
