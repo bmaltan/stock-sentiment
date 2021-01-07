@@ -5,7 +5,7 @@
     "private": true,
     "main": "dist/apps/functions/main.js",
     "engines": {
-        "node": "8"
+        "node": "10"
     },
     "scripts": {
         "ng": "nx",
@@ -32,8 +32,7 @@
         "dep-graph": "nx dep-graph",
         "help": "nx help",
         "serve:function": "npm run build functions --prod && firebase emulators:start --only functions",
-        "shell:function": "npm run build functions --prod && firebase functions:shell",
-        "start:function": "npm run shell",
+        "start:function": "npm run build functions --prod && firebase functions:shell",
         "deploy:function": "firebase deploy --only functions",
         "logs:function": "firebase functions:log"
     },
