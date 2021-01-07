@@ -1,9 +1,13 @@
 import * as functions from 'firebase-functions';
+import { ingestRedditPosts } from './reddit/ingest-reddit-posts';
 
-// // Start writing Firebase Functions
-// // https://firebase.google.com/docs/functions/typescript
-//
-// export const helloWorld = functions.https.onRequest((request, response) => {
-//   functions.logger.info("Hello logs!", {structuredData: true});
-//   response.send("Hello from Firebase!");
-// });
+// export const scheduledFunction = functions.pubsub
+//     .schedule('0 0 * * *')
+//     .onRun((context) => {
+//         return null;
+//     });
+
+exports.test = functions.https.onRequest((req, res) => {
+    ingestRedditPosts();
+    res.send('Hello');
+});
