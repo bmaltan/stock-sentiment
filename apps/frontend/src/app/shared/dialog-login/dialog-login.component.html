@@ -50,5 +50,7 @@
     <div></div>
     <button class="primary"
         [disabled]="(mode === 'login' && loginForm?.invalid) || (mode === 'register' && registerForm?.invalid)"
-        (click)="mode === 'login' ? login() : signup()">Log in</button>
+        (click)="mode === 'login' ? login() : signup()">
+        {{ mode === 'login' ? 'Log in' : 'Register' }}
+    </button>
 </div>

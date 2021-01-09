@@ -1,3 +1,4 @@
+@use './colors.scss';
 @use './measurements.scss';
 
 @mixin styles {
@@ -94,5 +95,18 @@
         grid-template-rows: auto 1fr auto;
         display: grid;
         height: 100%;
+    }
+
+    .mat-snack-bar-container {
+        background: colors.$background;
+        color: colors.$font;
+        border-radius: measurements.$container-border-radius !important;
+        padding: 14px measurements.$container-padding !important;
+    }
+
+    @media only screen and (max-width: 600px) {
+        .mat-snack-bar-container {
+            margin: 0 20px 20% 20px !important;
+        }
     }
 }
