@@ -63,7 +63,7 @@ export class UserService {
     }
 
     private getFavorites(userId: string): void {
-        this.db.object(`userPreferences/${userId}/favorites/`).snapshotChanges().pipe(
+        this.db.object(`userPreferences/${userId}/favoritePlatforms/`).snapshotChanges().pipe(
             take(1),
             map((data) => {
                 if (data?.payload?.val()) {
@@ -95,7 +95,7 @@ export class UserService {
         });
 
         this.user.subscribe(user => {
-            this.db.object(`userPreferences/${user.uid}/favorites/`).set(updatedFavorites);
+            this.db.object(`userPreferences/${user.uid}/favoritePlatforms/`).set(updatedFavorites);
         });
 
         this.favorites.next(updatedFavorites)
