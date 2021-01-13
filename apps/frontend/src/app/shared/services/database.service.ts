@@ -6,25 +6,11 @@ import type { PlatformData } from '@invest-track/models';
 @Injectable({
     providedIn: 'root',
 })
-export class DatabaseService {
-    _allPlatformData: PlatformData[] = [];
+export class PlatformService {
 
     constructor(
         private db: AngularFireDatabase
     ) { }
-
-    // fetchAllPlatformData() {
-    //     this.db.object('platforms').snapshotChanges().pipe(
-    //         take(1),
-    //         map((data) => {
-    //             this._allPlatformData = data.payload.val() as PlatformData[];
-    //         }))
-    //         .toPromise();
-    // }
-
-    get allPlatformData() {
-        return this._allPlatformData;
-    }
 
     getPlatformData(platform: string, latest = true, date?: string): Promise<PlatformData> {
         if (latest) {

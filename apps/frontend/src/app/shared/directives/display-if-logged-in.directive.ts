@@ -1,5 +1,5 @@
-import { Directive, ElementRef, ViewContainerRef } from '@angular/core';
-import { AuthService } from '../services/auth.service';
+import { Directive, ElementRef } from '@angular/core';
+import { UserService } from '../services/user.service';
 
 @Directive({
     selector: '[bsDisplayIfLoggedIn]'
@@ -8,7 +8,7 @@ export class DisplayIfLoggedInDirective {
 
     constructor(
         private el: ElementRef,
-        private authService: AuthService
+        private authService: UserService
     ) { }
 
     ngOnInit() {

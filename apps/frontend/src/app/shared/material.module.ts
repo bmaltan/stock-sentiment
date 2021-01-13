@@ -47,6 +47,7 @@ export class MaterialModule {
         'exit',
         'info',
         'like',
+        'liked',
         'logo-reddit',
         'logo-twitter',
         'logo-yahoo',

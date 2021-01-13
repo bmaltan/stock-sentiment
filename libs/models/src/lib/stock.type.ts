@@ -6,5 +6,6 @@ export interface Stock {
     closingPrice: number;
     dailyChange?: number; // will be calculated in the frontend, don't store
     numOfMentions: number;
+    numOfPosts: number;
     links?: DiscussionLink[];
 }

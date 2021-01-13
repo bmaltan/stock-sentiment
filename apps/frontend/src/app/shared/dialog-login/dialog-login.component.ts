@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { AuthService } from '../services/auth.service';
+import { UserService } from '../services/user.service';
 
 @Component({
     selector: 'invest-track-dialog-login',
@@ -17,7 +17,7 @@ export class DialogLoginComponent implements OnInit {
 
     constructor(
         private fb: FormBuilder,
-        private authService: AuthService
+        private userService: UserService
     ) { }
 
     ngOnInit(): void {
@@ -39,12 +39,12 @@ export class DialogLoginComponent implements OnInit {
 
     async login() {
         const user = this.loginForm?.value;
-        await this.authService.login(user.email, user.password)
+        await this.userService.login(user.email, user.password)
     }
 
     async signup() {
         const user = this.registerForm?.value;
-        await this.authService.signup(user.email, user.password);
+        await this.userService.signup(user.email, user.password);
     }
 
 }

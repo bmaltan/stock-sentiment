@@ -3,7 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { DialogFavoritesComponent } from '../../../shared/dialog-favorites/dialog-favorites.component';
 import { DialogLoginComponent } from '../../../shared/dialog-login/dialog-login.component';
 import { DialogSettingsComponent } from '../../../shared/dialog-settings/dialog-settings.component';
-import { AuthService } from '../../../shared/services/auth.service';
+import { UserService } from '../../../shared/services/user.service';
 
 @Component({
     selector: 'app-header',
@@ -13,7 +13,7 @@ import { AuthService } from '../../../shared/services/auth.service';
 export class HeaderComponent {
     constructor(
         private dialog: MatDialog,
-        private authService: AuthService
+        private authService: UserService
     ) { }
 
     openLogin() {
