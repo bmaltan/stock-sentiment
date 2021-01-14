@@ -95,7 +95,7 @@ export class UserService {
         });
 
         this.user.subscribe(user => {
-            this.db.object(`userPreferences/${user.uid}/favoritePlatforms/`).set(updatedFavorites);
+            if (user) this.db.object(`userPreferences/${user.uid}/favoritePlatforms/`).set(updatedFavorites);
         });
 
         this.favorites.next(updatedFavorites)
