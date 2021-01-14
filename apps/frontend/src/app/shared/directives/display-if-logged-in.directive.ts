@@ -13,7 +13,6 @@ export class DisplayIfLoggedInDirective {
 
     ngOnInit() {
         this.userService.getCurrentUser().subscribe(user => {
-            console.log(user)
             if (user?.uid) {
                 this.el.nativeElement.style.display = 'inherit'
             } else {
