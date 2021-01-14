@@ -23,7 +23,7 @@ export class AnalysisComponent {
     isFavorite = false;
 
     displayedColumns: string[] = ['ticker', 'openingPrice', 'closingPrice', 'dailyChange', 'numOfPosts', 'numOfMentions'];
-    dataSource?: MatTableDataSource<Stock> = new MatTableDataSource();
+    dataSource: MatTableDataSource<Stock> = new MatTableDataSource();
 
     @ViewChild(MatSort) sort!: MatSort;
 
@@ -49,15 +49,15 @@ export class AnalysisComponent {
         this.platformData = await this.databaseService.getPlatformData(this.currentPlatform);
         if (!this.platformData) return;
 
-        this.dataSource!.data = Object.values(this.platformData['2020-02-10'].topStocks) as unknown as Stock[];
+        this.dataSource.data = Object.values(this.platformData['2020-02-10'].topStocks) as unknown as Stock[];
         this.initSort();
 
         this.loading = false;
     }
 
     initSort() {
-        this.dataSource!.sort = this.sort;
-        this.dataSource!.sortingDataAccessor = (data: Stock, sortHeaderId: string) => {
+        this.dataSource.sort = this.sort;
+        this.dataSource.sortingDataAccessor = (data: Stock, sortHeaderId: string) => {
             switch (sortHeaderId) {
                 case 'dailyChange':
                     return data.openingPrice - data.closingPrice;

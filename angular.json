@@ -84,7 +84,9 @@
                 },
                 "test": {
                     "builder": "@nrwl/jest:jest",
-                    "outputs": ["coverage/apps/frontend"],
+                    "outputs": [
+                        "coverage/apps/frontend"
+                    ],
                     "options": {
                         "jestConfig": "apps/frontend/jest.config.js",
                         "passWithNoTests": true
@@ -113,7 +115,9 @@
                 "lint": {
                     "builder": "@nrwl/linter:eslint",
                     "options": {
-                        "lintFilePatterns": ["apps/frontend-e2e/**/*.{js,ts}"]
+                        "lintFilePatterns": [
+                            "apps/frontend-e2e/**/*.{js,ts}"
+                        ]
                     }
                 }
             }
@@ -126,12 +130,16 @@
                 "lint": {
                     "builder": "@nrwl/linter:eslint",
                     "options": {
-                        "lintFilePatterns": ["libs/models/**/*.ts"]
+                        "lintFilePatterns": [
+                            "libs/models/**/*.ts"
+                        ]
                     }
                 },
                 "test": {
                     "builder": "@nrwl/jest:jest",
-                    "outputs": ["coverage/libs/models"],
+                    "outputs": [
+                        "coverage/libs/models"
+                    ],
                     "options": {
                         "jestConfig": "libs/models/jest.config.js",
                         "passWithNoTests": true
@@ -139,56 +147,11 @@
                 }
             }
         },
-        "functions": {
-            "root": "apps/functions",
-            "sourceRoot": "apps/functions/src",
+        "azure": {
+            "root": "apps/azure",
+            "sourceRoot": "apps/azure/src",
             "projectType": "application",
-            "prefix": "functions",
-            "architect": {
-                "build": {
-                    "builder": "@nrwl/node:build",
-                    "outputs": ["{options.outputPath}"],
-                    "options": {
-                        "outputPath": "dist/apps/functions",
-                        "main": "apps/functions/src/main.ts",
-                        "tsConfig": "apps/functions/tsconfig.app.json",
-                        "assets": ["apps/functions/src/assets"]
-                    },
-                    "configurations": {
-                        "production": {
-                            "optimization": true,
-                            "extractLicenses": true,
-                            "inspect": false,
-                            "fileReplacements": [
-                                {
-                                    "replace": "apps/functions/src/environments/environment.ts",
-                                    "with": "apps/functions/src/environments/environment.prod.ts"
-                                }
-                            ]
-                        }
-                    }
-                },
-                "serve": {
-                    "builder": "@nrwl/node:execute",
-                    "options": {
-                        "buildTarget": "functions:build"
-                    }
-                },
-                "lint": {
-                    "builder": "@nrwl/linter:eslint",
-                    "options": {
-                        "lintFilePatterns": ["apps/functions/**/*.ts"]
-                    }
-                },
-                "test": {
-                    "builder": "@nrwl/jest:jest",
-                    "outputs": ["coverage/apps/functions"],
-                    "options": {
-                        "jestConfig": "apps/functions/jest.config.js",
-                        "passWithNoTests": true
-                    }
-                }
-            }
+            "prefix": "azure"
         }
     },
     "cli": {

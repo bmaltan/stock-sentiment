@@ -1,17 +1,17 @@
-import { AngularFireAuth } from "@angular/fire/auth";
-import { Injectable } from "@angular/core";
-import firebase from "firebase";
-import { ReplaySubject } from "rxjs";
-import { MatSnackBar } from "@angular/material/snack-bar";
-import { AngularFireDatabase } from "@angular/fire/database";
-import { last, map, take } from "rxjs/operators";
+import { AngularFireAuth } from '@angular/fire/auth';
+import { Injectable } from '@angular/core';
+import firebase from 'firebase';
+import { BehaviorSubject, ReplaySubject } from 'rxjs';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { AngularFireDatabase } from '@angular/fire/database';
+import { last, map, take } from 'rxjs/operators';
 
 @Injectable({
     providedIn: 'root'
 })
 export class UserService {
 
-    private user: ReplaySubject<firebase.User> = new ReplaySubject(1);
+    private user = new BehaviorSubject<firebase.User | undefined>(undefined);
     private favorites: ReplaySubject<string[]> = new ReplaySubject(1);
 
     constructor(

@@ -6,8 +6,6 @@ import { Platform } from '@invest-track/models';
 })
 export class PlatformService {
 
-    constructor() { }
-
     getPlatforms() {
         return platforms;
     }

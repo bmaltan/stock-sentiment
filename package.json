@@ -3,7 +3,7 @@
     "version": "0.0.0",
     "license": "MIT",
     "private": true,
-    "main": "dist/apps/functions/main.js",
+    "main": "dist/apps/frontend/main.js",
     "engines": {
         "node": "10"
     },

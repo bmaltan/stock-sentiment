@@ -1,9 +1,14 @@
 {
-    "functions": {
+    "hosting": {
+        "public": "dist/apps/frontend",
         "predeploy": [
-            "npm run lint functions",
-            "npm run build functions --prod"
+            "npm run lint frontend",
+            "npm run build frontend --prod"
         ],
-        "source": "/"
+        "ignore": [
+            "firebase.json",
+            "**/.*",
+            "**/node_modules/**"
+        ]
     }
 }

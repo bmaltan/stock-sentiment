@@ -16,7 +16,7 @@ export class HeaderComponent {
 
     constructor(
         private dialog: MatDialog,
-        private authService: UserService
+        private userService: UserService
     ) { }
 
     openLogin() {
@@ -32,7 +32,7 @@ export class HeaderComponent {
     }
 
     logout() {
-        this.authService.logout();
+        this.userService.logout();
 
     }
 }

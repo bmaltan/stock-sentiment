@@ -12,7 +12,7 @@ export class DialogFavoritesComponent {
 
     favorites: string[] = []
 
-    dataSource?: MatTableDataSource<any> = new MatTableDataSource();
+    dataSource: MatTableDataSource<any> = new MatTableDataSource();
     displayedColumns = ['name', 'actions']
 
     constructor(
@@ -21,7 +21,7 @@ export class DialogFavoritesComponent {
 
     ngOnInit() {
         this.userService.getUserFavorites().subscribe(favorites => {
-            this.dataSource!.data = favorites;
+            this.dataSource.data = favorites;
         });
     }
 }
