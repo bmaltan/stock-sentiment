@@ -6,7 +6,7 @@ import type { PlatformData } from '@invest-track/models';
 @Injectable({
     providedIn: 'root',
 })
-export class PlatformService {
+export class DatabaseService {
 
     constructor(
         private db: AngularFireDatabase

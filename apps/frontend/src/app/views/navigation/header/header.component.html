@@ -6,14 +6,14 @@
 </div>
 
 <mat-menu #menu="matMenu" class="account-menu">
-    <button mat-menu-item bsDisplayIfLoggedIn>
+    <button mat-menu-item bsDisplayIfLoggedIn (click)="openFavorites()">
         <mat-icon svgIcon="like"></mat-icon>
         <span>Favorites</span>
     </button>
-    <button mat-menu-item bsDisplayIfLoggedIn>
+    <!-- <button mat-menu-item bsDisplayIfLoggedIn (click)="openSettings()">
         <mat-icon svgIcon="settings"></mat-icon>
         <span>Settings</span>
-    </button>
+    </button> -->
     <button mat-menu-item bsDisplayIfNotLoggedIn (click)="openLogin()">
         <mat-icon svgIcon="enter" style="transform: rotate(180deg);"></mat-icon>
         <span>Log in</span>

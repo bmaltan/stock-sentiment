@@ -3,7 +3,7 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute } from '@angular/router';
 import { PlatformData, Stock } from '@invest-track/models';
-import { PlatformService } from '../../shared/services/database.service';
+import { DatabaseService } from '../../shared/services/database.service';
 import { Location } from '@angular/common';
 import { UserService } from '../../shared/services/user.service';
 
@@ -28,7 +28,7 @@ export class AnalysisComponent {
     @ViewChild(MatSort) sort!: MatSort;
 
     constructor(
-        private databaseService: PlatformService,
+        private databaseService: DatabaseService,
         private route: ActivatedRoute,
         private userService: UserService,
         private location: Location
@@ -42,7 +42,7 @@ export class AnalysisComponent {
 
         this.userService.getUserFavorites().subscribe(favorites => {
             this.isFavorite = favorites.includes(this.currentPlatform);
-        })
+        });
     }
 
     async getPlatformData() {

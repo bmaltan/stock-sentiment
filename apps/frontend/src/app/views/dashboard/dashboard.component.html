@@ -4,14 +4,9 @@
 </div>
 
 <div gdColumns.gt-xs="repeat(3, auto)" gdColumns.lt-sm="repeat(2, auto)" gdGap="2rem" class="platform-container">
-    <div *ngFor="let option of options" [class]="'platform-card ' + option.platform" gdRows="1fr auto" gdGap="0.5rem"
-        [routerLink]="['/analysis', option.route]">
-        <mat-icon class="platform-icon large" [svgIcon]="option.icon"></mat-icon>
-        <div class="platform-title"> {{ option.name }} </div>
-    </div>
-    <div *ngFor="let option of options" [class]="'platform-card ' + option.platform" gdRows="1fr auto" gdGap="0.5rem"
-        [routerLink]="['/analysis', option.route]">
-        <mat-icon class="platform-icon large" [svgIcon]="option.icon"></mat-icon>
-        <div class="platform-title"> {{ option.name }} </div>
+    <div *ngFor="let platform of platforms" [class]="'platform-card ' + platform.platform" gdRows="1fr auto"
+        gdGap="0.5rem" [routerLink]="['/analysis', platform.route]">
+        <mat-icon class="platform-icon large" [svgIcon]="platform.icon"></mat-icon>
+        <div class="platform-title"> {{ platform.name }} </div>
     </div>
 </div>
