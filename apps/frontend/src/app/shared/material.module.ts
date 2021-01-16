@@ -48,6 +48,7 @@ export class MaterialModule {
         'info',
         'like',
         'liked',
+        'logo-ss',
         'logo-reddit',
         'logo-twitter',
         'logo-yahoo',

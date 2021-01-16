@@ -4,6 +4,14 @@
     padding: 0 100px;
     display: flex;
 
+    .logo-ss {
+        height: 54px;
+        width: 54px;
+        align-self: center;
+        margin-top: 4px;
+        margin-right: 8px;
+    }
+
     .site-title {
         cursor: pointer;
         flex: 1;
