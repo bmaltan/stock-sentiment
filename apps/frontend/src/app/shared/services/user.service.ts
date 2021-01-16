@@ -38,6 +38,7 @@ export class UserService {
             .createUserWithEmailAndPassword(email, password)
             .then(value => {
                 this.user.next(value.user as firebase.User);
+                this.snackbar.open('Welcome to Stock Sentiment!', undefined, { duration: 4000 })
                 return value;
             })
             .catch(err => {
@@ -50,6 +51,7 @@ export class UserService {
         return this.firebaseAuth.signInWithEmailAndPassword(email, password)
             .then(value => {
                 this.user.next(value.user as firebase.User);
+                this.snackbar.open('Welcome back!', undefined, { duration: 400000 })
                 return value;
             })
             .catch(err => {
@@ -60,6 +62,9 @@ export class UserService {
 
     logout() {
         this.firebaseAuth.signOut();
+        setTimeout(() => {
+            this.user.next(undefined);
+        }, 200); // to offset the mat fade-out duration for the menu
     }
 
     private getFavorites(userId: string): void {
