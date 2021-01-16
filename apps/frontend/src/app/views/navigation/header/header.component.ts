@@ -20,7 +20,7 @@ export class HeaderComponent {
     ) { }
 
     openLogin() {
-        this.dialog.open(DialogLoginComponent, {});
+        this.dialog.open(DialogLoginComponent, { autoFocus: false });
     }
 
     openFavorites() {

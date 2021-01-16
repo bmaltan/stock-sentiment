@@ -1,8 +1,11 @@
 <div class="header-container">
-    <mat-icon class="logo-ss" svgIcon="logo-ss"></mat-icon>
-    <h1 class="site-title" [routerLink]="'/'">
-        Stock Sentiment
-    </h1>
+    <div class="title-container" [routerLink]="'/'">
+        <!-- <mat-icon class="logo-ss" svgIcon="logo-ss"></mat-icon> -->
+        <h1 class="site-title">
+            Stock Sentiment
+        </h1>
+    </div>
+    <div class="flex-spacer"></div>
     <mat-icon mat-icon-button [matMenuTriggerFor]="menu" class="account-button" svgIcon="account"></mat-icon>
 </div>
 

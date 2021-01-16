@@ -4,34 +4,36 @@
     padding: 0 100px;
     display: flex;
 
-    .logo-ss {
-        height: 54px;
-        width: 54px;
-        align-self: center;
-        margin-top: 4px;
-        margin-right: 8px;
-    }
-
-    .site-title {
-        cursor: pointer;
-        flex: 1;
+    .title-container {
+        display: flex;
+        
+        .logo-ss {
+            height: 54px;
+            width: 54px;
+            align-self: center;
+            margin-top: 4px;
+            margin-right: 8px;
+        }
+    
+        .site-title {
+            cursor: pointer;
+        }
     }
 
     .account-button {
         margin: auto;
         cursor: pointer;
     }
-
 }
 
-    .mat-menu-item {
-        &:hover {
-            mat-icon {
-                transform: scale(measurements.$icon-hover-scale);
-                transition: transform measurements.$anim-duration;
-            }
+.mat-menu-item {
+    &:hover {
+        mat-icon {
+            transform: scale(measurements.$icon-hover-scale);
+            transition: transform measurements.$anim-duration;
         }
     }
+}
 
 @media only screen and (max-width: 700px) {
     .header-container {
