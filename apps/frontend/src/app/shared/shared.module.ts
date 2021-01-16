@@ -26,7 +26,8 @@ import { DisplayIfNotLoggedInDirective } from './directives/display-if-not-logge
     ],
     exports: [
         MaterialModule,
-        DisplayIfLoggedInDirective
+        DisplayIfLoggedInDirective,
+        DisplayIfNotLoggedInDirective,
     ]
 })
 export class SharedModule { }
