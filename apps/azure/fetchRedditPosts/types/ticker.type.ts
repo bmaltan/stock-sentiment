@@ -18,8 +18,8 @@ export class TickerData {
     links: Link[];
 
     constructor(ticker: string) {
-        this.closingPrice = -1;
-        this.openingPrice = -1;
+        this.closingPrice = undefined;
+        this.openingPrice = undefined;
         this.links = [];
         this.numOfPosts = 0;
         this.numOfMentions = 0;
