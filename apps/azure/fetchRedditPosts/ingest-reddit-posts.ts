@@ -1,12 +1,9 @@
 import { getHotPosts } from './reddit-posts';
-import { finalize, map, mergeMap, tap, withLatestFrom } from 'rxjs/operators';
 import tickers = require('./tickers.json');
-import { RedditPost } from './types/posts.type';
-import { Ticker, TickerData } from './types/ticker.type';
+import { TickerData } from './types/ticker.type';
 import { Listing, Comment } from 'snoowrap';
 import { FirebaseDatabase } from './firebase';
 import { Platform } from './types/platform.enum';
-import * as https from 'https';
 import { getStockData } from './stocks';
 
 interface IngestedData {

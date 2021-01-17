@@ -3,7 +3,7 @@
         "module": "commonjs",
         "target": "es6",
         "outDir": "dist",
-        "lib": ["es2019"],
+        "lib": ["es2019", "dom"],
         "rootDir": ".",
         "sourceMap": true,
         "strict": false,

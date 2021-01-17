@@ -1,6 +1,4 @@
 import connection from './reddit-connection';
-import { Observable, from } from 'rxjs';
-import { finalize, tap } from 'rxjs/operators';
 import type { RedditPosts, RedditPost } from './types/posts.type';
 
 function fetchTopFromSubreddit(subreddit: string): Promise<RedditPosts> {
