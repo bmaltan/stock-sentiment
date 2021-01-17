@@ -97,7 +97,6 @@ export async function ingestRedditPosts() {
     }
 
     for (let sub of Object.keys(data)) {
-        console.log(date);
         const firebase = new FirebaseDatabase(sub, Platform.Reddit, date);
         firebase.addAllData(data[sub]);
         await firebase.saveData();
