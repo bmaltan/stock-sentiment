@@ -91,6 +91,10 @@
         }
     }
 
+    .mat-dialog-content {
+        padding: 24px !important;
+    }
+
     .mat-dialog-container > *:first-child {
         grid-template-rows: auto 1fr auto;
         display: grid;
@@ -102,6 +106,7 @@
         color: colors.$font;
         border-radius: measurements.$container-border-radius !important;
         padding: 14px measurements.$container-padding !important;
+        min-width: unset !important;
     }
 
     @media only screen and (max-width: 600px) {

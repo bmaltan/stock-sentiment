@@ -61,7 +61,7 @@ html, body {
 
     .platform-card {
         height: 90px;
-        width: 90px;
+        width: 100px;
         padding: measurements.$container-padding;
     
         border: colors.$border;
@@ -164,4 +164,8 @@ table {
         border: none;
         height: 42px;
     }
+}
+
+.flex-spacer {
+    flex: 1;
 }

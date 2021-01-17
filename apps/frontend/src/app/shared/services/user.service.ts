@@ -1,17 +1,17 @@
-import { AngularFireAuth } from "@angular/fire/auth";
-import { Injectable } from "@angular/core";
-import firebase from "firebase";
-import { ReplaySubject } from "rxjs";
-import { MatSnackBar } from "@angular/material/snack-bar";
-import { AngularFireDatabase } from "@angular/fire/database";
-import { last, map, take } from "rxjs/operators";
+import { AngularFireAuth } from '@angular/fire/auth';
+import { Injectable } from '@angular/core';
+import firebase from 'firebase';
+import { BehaviorSubject, ReplaySubject } from 'rxjs';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { AngularFireDatabase } from '@angular/fire/database';
+import { last, map, take } from 'rxjs/operators';
 
 @Injectable({
     providedIn: 'root'
 })
 export class UserService {
 
-    private user: ReplaySubject<firebase.User> = new ReplaySubject(1);
+    private user = new BehaviorSubject<firebase.User | undefined>(undefined);
     private favorites: ReplaySubject<string[]> = new ReplaySubject(1);
 
     constructor(
@@ -38,6 +38,7 @@ export class UserService {
             .createUserWithEmailAndPassword(email, password)
             .then(value => {
                 this.user.next(value.user as firebase.User);
+                this.snackbar.open('Welcome to Stock Sentiment!', undefined, { duration: 4000 })
                 return value;
             })
             .catch(err => {
@@ -50,6 +51,7 @@ export class UserService {
         return this.firebaseAuth.signInWithEmailAndPassword(email, password)
             .then(value => {
                 this.user.next(value.user as firebase.User);
+                this.snackbar.open('Welcome back!', undefined, { duration: 400000 })
                 return value;
             })
             .catch(err => {
@@ -60,6 +62,9 @@ export class UserService {
 
     logout() {
         this.firebaseAuth.signOut();
+        setTimeout(() => {
+            this.user.next(undefined);
+        }, 200); // to offset the mat fade-out duration for the menu
     }
 
     private getFavorites(userId: string): void {
@@ -95,7 +100,7 @@ export class UserService {
         });
 
         this.user.subscribe(user => {
-            this.db.object(`userPreferences/${user.uid}/favoritePlatforms/`).set(updatedFavorites);
+            if (user) this.db.object(`userPreferences/${user.uid}/favoritePlatforms/`).set(updatedFavorites);
         });
 
         this.favorites.next(updatedFavorites)

@@ -3,7 +3,7 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute } from '@angular/router';
 import { PlatformData, Stock } from '@invest-track/models';
-import { PlatformService } from '../../shared/services/database.service';
+import { DatabaseService } from '../../shared/services/database.service';
 import { Location } from '@angular/common';
 import { UserService } from '../../shared/services/user.service';
 
@@ -23,12 +23,12 @@ export class AnalysisComponent {
     isFavorite = false;
 
     displayedColumns: string[] = ['ticker', 'openingPrice', 'closingPrice', 'dailyChange', 'numOfPosts', 'numOfMentions'];
-    dataSource?: MatTableDataSource<Stock> = new MatTableDataSource();
+    dataSource: MatTableDataSource<Stock> = new MatTableDataSource();
 
     @ViewChild(MatSort) sort!: MatSort;
 
     constructor(
-        private databaseService: PlatformService,
+        private databaseService: DatabaseService,
         private route: ActivatedRoute,
         private userService: UserService,
         private location: Location
@@ -42,22 +42,22 @@ export class AnalysisComponent {
 
         this.userService.getUserFavorites().subscribe(favorites => {
             this.isFavorite = favorites.includes(this.currentPlatform);
-        })
+        });
     }
 
     async getPlatformData() {
         this.platformData = await this.databaseService.getPlatformData(this.currentPlatform);
         if (!this.platformData) return;
 
-        this.dataSource!.data = Object.values(this.platformData['2020-02-10'].topStocks) as unknown as Stock[];
+        this.dataSource.data = Object.values(this.platformData['2020-02-10'].topStocks) as unknown as Stock[];
         this.initSort();
 
         this.loading = false;
     }
 
     initSort() {
-        this.dataSource!.sort = this.sort;
-        this.dataSource!.sortingDataAccessor = (data: Stock, sortHeaderId: string) => {
+        this.dataSource.sort = this.sort;
+        this.dataSource.sortingDataAccessor = (data: Stock, sortHeaderId: string) => {
             switch (sortHeaderId) {
                 case 'dailyChange':
                     return data.openingPrice - data.closingPrice;

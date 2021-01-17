@@ -1,4 +1,7 @@
 import { Component } from '@angular/core';
+import { Platform } from '@invest-track/models';
+import { PlatformService } from '../../shared/services/platform.service';
+
 
 @Component({
     selector: 'app-dashboard',
@@ -6,43 +9,14 @@ import { Component } from '@angular/core';
     styleUrls: ['./dashboard.component.scss'],
 })
 export class DashboardComponent {
-  options: Option[] = [
-      {
-          name: 'r/investing',
-          icon: 'logo-reddit',
-          platform: 'reddit',
-          route: 'r-investing',
-      },
-      {
-          name: 'r/wsb',
-          icon: 'logo-reddit',
-          platform: 'reddit',
-          route: 'r-wsb',
-      },
-      {
-          name: 'r/stocks',
-          icon: 'logo-reddit',
-          platform: 'reddit',
-          route: 'r-stocks',
-      },
-      {
-          name: 'yahoo',
-          icon: 'logo-yahoo',
-          platform: 'yahoo',
-          route: 'yahoo',
-      },
-      {
-          name: 'twitter',
-          icon: 'logo-twitter',
-          platform: 'twitter',
-          route: 'twitter',
-      },
-  ];
+
+    platforms: Platform[] = [];
+
+    constructor(
+        private platformService: PlatformService
+    ) {
+        this.platforms = this.platformService.getPlatforms();
+    }
+
 }
 
-interface Option {
-  name: string;
-  icon: string;
-  platform: string;
-  route: string;
-}

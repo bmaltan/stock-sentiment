@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UserService } from '../services/user.service';
+import { MatDialogRef } from '@angular/material/dialog';
 
 @Component({
     selector: 'invest-track-dialog-login',
@@ -17,7 +18,8 @@ export class DialogLoginComponent implements OnInit {
 
     constructor(
         private fb: FormBuilder,
-        private userService: UserService
+        private userService: UserService,
+        private dialogRef: MatDialogRef<DialogLoginComponent>
     ) { }
 
     ngOnInit(): void {
@@ -39,12 +41,18 @@ export class DialogLoginComponent implements OnInit {
 
     async login() {
         const user = this.loginForm?.value;
-        await this.userService.login(user.email, user.password)
+        const userCredential = await this.userService.login(user.email, user.password);
+        if (userCredential?.user?.uid) {
+            this.dialogRef.close();
+        }
     }
 
     async signup() {
         const user = this.registerForm?.value;
-        await this.userService.signup(user.email, user.password);
+        const userCredential = await this.userService.signup(user.email, user.password);
+        if (userCredential?.user?.uid) {
+            this.dialogRef.close();
+        }
     }
 
 }
