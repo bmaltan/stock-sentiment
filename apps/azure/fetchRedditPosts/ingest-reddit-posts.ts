@@ -2,7 +2,7 @@ import { getHotPosts } from './reddit-posts';
 import tickers = require('./tickers.json');
 import { TickerData } from './types/ticker.type';
 import { Listing, Comment } from 'snoowrap';
-import { FirebaseDatabase } from './firebase';
+import { closeConnection, FirebaseDatabase } from './firebase';
 import { Platform } from './types/platform.enum';
 import { getStockData } from './stocks';
 
@@ -101,6 +101,7 @@ export async function ingestRedditPosts() {
         firebase.addAllData(data[sub]);
         await firebase.saveData();
     }
+    closeConnection();
 }
 
 interface Counter {

@@ -1,16 +1,16 @@
 // Import Admin SDK
 import * as admin from 'firebase-admin';
+import { allowedNodeEnvironmentFlags } from 'process';
 import { Platform } from './types/platform.enum';
 import { TickerData } from './types/ticker.type';
 
-admin.initializeApp({
+const app = admin.initializeApp({
     credential: admin.credential.cert(
         __dirname + '/service_account_credentials.json'
     ),
     databaseURL:
         'https://bs-invest-track-default-rtdb.europe-west1.firebasedatabase.app',
 });
-
 export class FirebaseDatabase {
     tickerData: { [key: string]: TickerData };
     platform: string;
@@ -58,4 +58,8 @@ export class FirebaseDatabase {
         const ref = db.ref(url);
         return ref;
     }
+}
+
+export function closeConnection() {
+    app.delete();
 }
