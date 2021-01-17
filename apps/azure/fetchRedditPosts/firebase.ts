@@ -50,7 +50,7 @@ export class FirebaseDatabase {
         const { url, data } = this.finalizeData();
 
         const ref = this.getFirebaseDatabaseRef(url);
-        await ref.set(data);
+        await ref.set(JSON.parse(JSON.stringify(data)));
     }
 
     private getFirebaseDatabaseRef(url: string): admin.database.Reference {
