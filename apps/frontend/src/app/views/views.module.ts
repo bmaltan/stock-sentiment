@@ -5,6 +5,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { AnalysisComponent } from './analysis/analysis.component';
 import { SharedModule } from '../shared/shared.module';
 import { RouterModule } from '@angular/router';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
     declarations: [
@@ -15,7 +16,8 @@ import { RouterModule } from '@angular/router';
         CommonModule,
         FlexLayoutModule,
         SharedModule,
-        RouterModule
+        RouterModule,
+        ReactiveFormsModule
     ]
 })
 export class ViewsModule { }

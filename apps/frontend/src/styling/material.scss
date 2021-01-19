@@ -77,6 +77,15 @@
         border-bottom-right-radius: measurements.$input-border-radius !important; 
     }
 
+    .mat-form-field-wrapper {
+        padding: 0;
+        margin: 0;
+
+        .mat-form-field-appearance-outline .mat-form-field-flex {
+            padding: 0;
+        }
+    }
+
     .mat-dialog-container {
         border-radius: measurements.$container-border-radius !important;
     }

@@ -1,14 +1,55 @@
 import { Injectable } from '@angular/core';
-import { Platform } from '@invest-track/models';
+import { AngularFireDatabase } from '@angular/fire/database';
+import { Platform, PlatformMetadata } from '@invest-track/models';
+import { map, take } from 'rxjs/operators';
+import type { PlatformData } from '@invest-track/models';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
     providedIn: 'root'
 })
 export class PlatformService {
 
+    private platformMetadata = new BehaviorSubject<PlatformMetadata[]>([]);
+
+    constructor(
+        private db: AngularFireDatabase
+    ) { }
+
     getPlatforms() {
         return platforms;
     }
+
+    getPlatformData(platform: string, date: string): Promise<PlatformData> {
+        return this.db.object('platforms/' + platform + '/' + date).snapshotChanges().pipe(
+            take(1),
+            map((data) => data.payload.val() as PlatformData))
+            .toPromise();
+    }
+
+    getPlatformMetadata() {
+        this.db.object('platformMetadata/').snapshotChanges().pipe(
+            take(1),
+            map((data) => {
+                const platformMetadata: PlatformMetadata[] = [];
+                const values = data.payload.val() as { [key: string]: { availableDates: string } };
+                const keys = Object.keys(values);
+
+                keys.forEach(key => {
+                    platformMetadata.push({
+                        name: key,
+                        availableDates: values[key].availableDates.split(',')
+                            .sort((a: string, b: string): number => (a > b) ? -1 : ((a < b) ? 1 : 0))
+                    })
+                })
+                this.platformMetadata.next(platformMetadata);
+            })).toPromise();
+    }
+
+    getAllPlatformMetadata(): BehaviorSubject<PlatformMetadata[]> {
+        return this.platformMetadata;
+    }
+
 }
 
 const platforms: Platform[] = [

@@ -12,3 +12,13 @@
 .negative-change {
     color: colors.$negative;
 }
+
+mat-form-field {
+    width: 160px;
+    margin: 0;
+
+    .mat-form-field-wrapper {
+        margin: 0;
+        padding: 0;
+    }
+}

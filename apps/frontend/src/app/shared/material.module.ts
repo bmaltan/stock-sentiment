@@ -9,7 +9,9 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatInputModule } from '@angular/material/input';
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
-
+import { MatSelectModule } from '@angular/material/select';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
 @NgModule({
     declarations: [],
     imports: [
@@ -20,7 +22,10 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
         MatMenuModule,
         MatDialogModule,
         MatInputModule,
-        MatSnackBarModule
+        MatSnackBarModule,
+        MatSelectModule,
+        MatDatepickerModule,
+        MatNativeDateModule
     ],
     exports: [
         MatTableModule,
@@ -29,7 +34,10 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
         MatMenuModule,
         MatDialogModule,
         MatInputModule,
-        MatSnackBarModule
+        MatSnackBarModule,
+        MatSelectModule,
+        MatDatepickerModule,
+        MatNativeDateModule
     ],
     providers: [
         { provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: { appearance: 'outline' } }
@@ -42,6 +50,8 @@ export class MaterialModule {
         'account',
         'arrow-left',
         'dislike',
+        'date',
+        'date-clear',
         'down',
         'enter',
         'exit',

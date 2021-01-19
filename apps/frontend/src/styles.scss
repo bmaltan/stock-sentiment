@@ -40,13 +40,28 @@ html, body {
 .route-header {
     margin-bottom: 16px;
 
-    h2.route-title {
+    .route-title {
+        font-size: 24px;
         margin: 0;
+        align-items: flex-end;
+
+        .date {
+            font-size: 22px;   
+        }
+    }
+
+    @media only screen and (max-width: 700px) {
+        .route-title {
+            font-size: 20px !important;
+
+            .date {
+                font-size: 18px !important;
+            }
+        }
     }
 
     mat-icon {
         align-self: center;
-        margin-top: 4px;
 
         &:hover {
             transform: scale(measurements.$icon-hover-scale);
@@ -168,4 +183,11 @@ table {
 
 .flex-spacer {
     flex: 1;
+}
+
+.hide {
+    transform: scale(0);
+    width: 0 !important;
+    height: 0 !important;
+    position: fixed !important;
 }
