@@ -31,8 +31,8 @@ export class AnalysisComponent {
 
     @ViewChild(MatSort) sort!: MatSort;
 
-    dateFilter = (date: Date) => {
-        const dateString = new Intl.DateTimeFormat('sv-SE').format(date).toString();
+    dateFilter = (date: Date | null) => {
+        const dateString = new Intl.DateTimeFormat('sv-SE').format(date!).toString();
         return this.availableDates.indexOf(dateString) > -1;
     };
 

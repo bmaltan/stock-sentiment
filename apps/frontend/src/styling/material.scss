@@ -123,4 +123,17 @@
             margin: 0 20px 20% 20px !important;
         }
     }
+
+    .mat-calendar-body-disabled > .mat-calendar-body-cell-content:not(.mat-calendar-body-selected):not(.mat-calendar-body-comparison-identical) {
+        color: rgb(0 0 0 / 15%) !important;
+    }
+
+    .mat-calendar-body-cell-content.mat-focus-indicator {
+        font-weight: bold;
+    }
+
+    .mat-datepicker-content {
+        border-radius: measurements.$container-border-radius !important;
+        padding: 0 20px 10px 20px;
+    }
 }

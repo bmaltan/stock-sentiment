@@ -10,7 +10,7 @@
         <mat-icon class="button" svgIcon="date-clear" (click)="picker.open()">
         </mat-icon>
         <mat-form-field class="hide">
-            <input matInput [formControl]="selectedDate" [matDatepicker]="picker" [matDatepickerFilter]=dateFilter>
+            <input matInput [formControl]="selectedDate" [matDatepicker]="picker" [matDatepickerFilter]="dateFilter">
             <mat-datepicker #picker></mat-datepicker>
         </mat-form-field>
         <div bsDisplayIfLoggedIn style="margin-left: 12px">
