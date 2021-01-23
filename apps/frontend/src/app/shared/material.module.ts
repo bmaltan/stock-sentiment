@@ -49,6 +49,7 @@ export class MaterialModule {
     icons = [
         'account',
         'arrow-left',
+        'chat',
         'dislike',
         'date',
         'date-clear',
@@ -62,6 +63,9 @@ export class MaterialModule {
         'logo-reddit',
         'logo-twitter',
         'logo-yahoo',
+        'mention',
+        'more',
+        'post',
         'settings',
         'up'
     ]

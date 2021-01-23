@@ -22,3 +22,16 @@ mat-form-field {
         padding: 0;
     }
 }
+
+.button.action {
+    height: 20px;
+    width: 20px;
+    margin-top: 5px;
+    transform: rotate(90deg);
+    margin-right: 12px;
+}
+
+.header-icon {
+    width: 20px;
+    height: 20px;
+}

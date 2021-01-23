@@ -7,6 +7,9 @@ import { Location } from '@angular/common';
 import { UserService } from '../../shared/services/user.service';
 import { PlatformService } from '../../shared/services/platform.service';
 import { FormControl } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
+import { DialogDiscussionsComponent } from './dialog-discussions/dialog-discussions.component';
+import { DevicePlatformService } from '../../shared/services/device-platform.service';
 
 @Component({
     selector: 'app-analysis',
@@ -26,7 +29,7 @@ export class AnalysisComponent {
 
     isFavorite = false;
 
-    displayedColumns: string[] = ['ticker', 'openingPrice', 'closingPrice', 'dailyChange', 'numOfPosts', 'numOfMentions'];
+    displayedColumns: string[] = ['ticker', 'openingPrice', 'closingPrice', 'dailyChange', 'numOfPosts', 'numOfMentions', 'actions'];
     dataSource: MatTableDataSource<Stock> = new MatTableDataSource();
 
     @ViewChild(MatSort) sort!: MatSort;
@@ -36,14 +39,19 @@ export class AnalysisComponent {
         return this.availableDates.indexOf(dateString) > -1;
     };
 
+    deviceIsMobile = false;
+
     constructor(
         private platformService: PlatformService,
         private route: ActivatedRoute,
         private userService: UserService,
-        private location: Location
+        private location: Location,
+        private dialog: MatDialog,
+        private devicePlatformService: DevicePlatformService
     ) {
         this.currentPlatform = this.route.snapshot.url[this.route.snapshot.url.length - 1].path;
         this.currentPlatformTitle = this.currentPlatform.replace(/-/, '/');
+        this.deviceIsMobile = devicePlatformService.checkIfMobile();
     }
 
     ngOnInit() {
@@ -89,11 +97,20 @@ export class AnalysisComponent {
         this.dataSource.sortingDataAccessor = (data: Stock, sortHeaderId: string) => {
             switch (sortHeaderId) {
                 case 'dailyChange':
-                    return data.openingPrice - data.closingPrice;
+                    // mat-sort doesn't handle negative values. adding 1000 as a quick workaround
+                    return ((data.closingPrice - data.openingPrice) / (data.openingPrice) * 100) + 1000;
                 default:
                     return data[sortHeaderId as keyof Omit<Stock, 'links'>] || 0;
             }
         };
+    }
+
+    seeDiscussions(stock: Stock) {
+        this.dialog.open(DialogDiscussionsComponent, {
+            data: {
+                stock: stock
+            }
+        });
     }
 
     toggleFavorite() {

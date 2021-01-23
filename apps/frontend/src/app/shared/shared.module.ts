@@ -9,13 +9,17 @@ import { DialogLoginComponent } from './dialog-login/dialog-login.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { DisplayIfLoggedInDirective } from './directives/display-if-logged-in.directive';
 import { DisplayIfNotLoggedInDirective } from './directives/display-if-not-logged-in.directive'
+import { DialogDiscussionsComponent } from '../views/analysis/dialog-discussions/dialog-discussions.component';
+import { ShortenDecimalPipe } from './pipes/shorten-decimal.pipe';
 @NgModule({
     declarations: [
         DialogSettingsComponent,
         DialogFavoritesComponent,
         DialogLoginComponent,
         DisplayIfLoggedInDirective,
-        DisplayIfNotLoggedInDirective
+        DisplayIfNotLoggedInDirective,
+        DialogDiscussionsComponent,
+        ShortenDecimalPipe
     ],
     imports: [
         CommonModule,
@@ -28,6 +32,7 @@ import { DisplayIfNotLoggedInDirective } from './directives/display-if-not-logge
         MaterialModule,
         DisplayIfLoggedInDirective,
         DisplayIfNotLoggedInDirective,
+        ShortenDecimalPipe
     ]
 })
 export class SharedModule { }
