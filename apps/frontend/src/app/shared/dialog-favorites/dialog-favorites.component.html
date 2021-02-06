@@ -1,27 +1,19 @@
-<h2 mat-dialog-title>
+<!-- <h2 mat-dialog-title>
     Favorites
 </h2>
 
 <div mat-dialog-content>
-    <div class="content-container">
-        <table mat-table *ngIf="dataSource" [dataSource]="dataSource" class="mat-elevation-z8">
-            <ng-container matColumnDef="name">
-                <th mat-header-cell *matHeaderCellDef> Favorite </th>
-                <td mat-cell *matCellDef="let element"> {{ element }} </td>
-            </ng-container>
 
-            <ng-container matColumnDef="actions">
-                <th mat-header-cell *matHeaderCellDef> </th>
-                <td mat-cell *matCellDef="let element"> </td>
-            </ng-container>
-
-            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-        </table>
+    <div gdColumns.gt-xs="repeat(3, auto)" gdColumns.lt-sm="repeat(2, auto)" gdGap="2rem" class="platform-container">
+        <div *ngFor="let favorite of favorites" [class]="'platform-card ' + platform.platform" gdRows="1fr auto"
+            gdGap="0.5rem" [routerLink]="['/analysis', platform.route]">
+            <mat-icon class="platform-icon large" [svgIcon]="platform.icon"></mat-icon>
+            <div class="platform-title"> {{ platform.name }} </div>
+        </div>
     </div>
 </div>
 
 <div mat-dialog-actions gdColumns="1fr auto">
     <div></div>
     <button mat-dialog-close>Close</button>
-</div>
+</div> -->

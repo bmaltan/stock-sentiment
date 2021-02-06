@@ -13,12 +13,12 @@
             <input matInput [formControl]="selectedDate" [matDatepicker]="picker" [matDatepickerFilter]="dateFilter">
             <mat-datepicker #picker></mat-datepicker>
         </mat-form-field>
-        <div bsDisplayIfLoggedIn style="margin-left: 12px">
+        <!-- <div bsDisplayIfLoggedIn style="margin-left: 12px">
             <mat-icon style="margin-top: 2px" *ngIf="isFavorite" class="button" svgIcon="liked"
                 (click)="toggleFavorite()"></mat-icon>
             <mat-icon style="margin-top: 2px" *ngIf="!isFavorite" class="button" svgIcon="like"
                 (click)="toggleFavorite()"></mat-icon>
-        </div>
+        </div> -->
     </div>
 </div>
 
