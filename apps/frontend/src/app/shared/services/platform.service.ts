@@ -38,7 +38,7 @@ export class PlatformService {
                 keys.forEach(key => {
                     platformMetadata.push({
                         name: key,
-                        availableDates: values[key].availableDates.split(',')
+                        availableDates: Object.values(values[key].availableDates)
                             .sort((a: string, b: string): number => (a > b) ? -1 : ((a < b) ? 1 : 0))
                     })
                 })
