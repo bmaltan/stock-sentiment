@@ -7,6 +7,6 @@
     <div *ngFor="let platform of platforms" [class]="'platform-card ' + platform.platform" gdRows="1fr auto"
         gdGap="0.5rem" [routerLink]="['/analysis', platform.route]">
         <mat-icon class="platform-icon large" [svgIcon]="platform.icon"></mat-icon>
-        <div class="platform-title"> {{ platform.name }} </div>
+        <div class="platform-title"> {{ platform.displayName || platform.name }} </div>
     </div>
 </div>

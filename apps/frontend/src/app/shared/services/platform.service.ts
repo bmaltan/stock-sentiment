@@ -60,10 +60,11 @@ const platforms: Platform[] = [
         route: 'r-investing',
     },
     {
-        name: 'r/wsb',
+        name: 'r/wallstreetbets',
+        displayName: 'r/wsb',
         icon: 'logo-reddit',
         platform: 'reddit',
-        route: 'r-wsb',
+        route: 'r-wallstreetbets',
     },
     {
         name: 'r/stocks',

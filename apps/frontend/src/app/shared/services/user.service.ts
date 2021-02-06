@@ -80,7 +80,7 @@ export class UserService {
             .toPromise();
     }
 
-    getUserFavorites() {
+    getUserFavoritePlatforms() {
         return this.favorites;
     }
 

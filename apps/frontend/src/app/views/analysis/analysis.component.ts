@@ -65,7 +65,7 @@ export class AnalysisComponent {
 
         this.getAvailableDates();
 
-        this.userService.getUserFavorites().subscribe(favorites => {
+        this.userService.getUserFavoritePlatforms().subscribe(favorites => {
             this.isFavorite = favorites.includes(this.currentPlatform);
         });
     }
