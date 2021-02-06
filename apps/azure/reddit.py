@@ -82,9 +82,9 @@ def get_applicable_date(d):
     # return applicableDate.toISOString().substring(0, 10)
 
 
-def get_stock_data(tickers: Set[str], d):
-    applicable_date = get_applicable_date(d)
-    tickers: str = ",".join(tickers)
+def get_stock_data(tickers: Set[str], d: datetime):
+    applicable_date = str(get_applicable_date(d))[:10]
+    tickers = ",".join(list(tickers))
 
     url = 'https://api.unibit.ai/v2/stock/historical'
     query = {
@@ -113,7 +113,6 @@ class Submission:
     stickied: bool
     flair: str
     likes: int
-    removed: bool
     total_awards: int
     id: str
     created_at_utc: datetime
@@ -150,14 +149,19 @@ class Submission:
             t["symbol"] for t in tickers if t["symbol"] in self.get_post_words()})
 
 
-def get_submissions(sub, tickers) -> List[Submission]:
-    # TODO: GET DATE? Which day?
+def get_submissions(sub, tickers, d: datetime) -> List[Submission]:
     subreddit = reddit.subreddit(sub)
-    hot = subreddit.hot(limit=1)
+    hot = subreddit.hot(limit=100)
 
     submissions = []
 
     for post in hot:
+        removed = post.removal_reason is not None
+        if removed:
+            continue
+
+        if datetime.fromtimestamp(post.created_utc) < d:
+            continue
 
         submission = Submission(
             score=post.score,
@@ -172,11 +176,9 @@ def get_submissions(sub, tickers) -> List[Submission]:
             flair=post.link_flair_text,
             body=post.selftext,
             url='https://www.reddit.com' + post.permalink,
-            removed=post.removal_reason is not None,
             total_awards=post.total_awards_received,
             created_at_utc=datetime.fromtimestamp(post.created_utc),
         )
-        # continue
         post.comments.replace_more(limit=0)
         comments = post.comments.list()
         submission.set_comments(comments)
@@ -187,19 +189,22 @@ def get_submissions(sub, tickers) -> List[Submission]:
     return submissions
 
 
-def get_all_submissions():
-    date = "2021-02-04"
+def get_all_submissions(date: str):
+    d = datetime.strptime(date, "%Y-%m-%d")
 
     with open('./tickers.json', encoding='utf-8') as tickers_json:
         tickers = json.loads(tickers_json.read())
 
     for sub in subreddits:
 
-        submissions = get_submissions(sub, tickers)
+        submissions = get_submissions(sub, tickers, d)
         all_tickers = {
             tick for s in submissions for tick in s.all_tickers_mentioned.keys()}
 
-        stock_data = get_stock_data(all_tickers, datetime(2021, 2, 4))
+        if len(all_tickers) == 0:
+            continue
+
+        stock_data = get_stock_data(all_tickers, d)
 
         has_saved_anything = False
         for ticker in all_tickers:
@@ -248,4 +253,4 @@ def get_all_submissions():
                 f'platformMetadata/r-{sub}/availableDates').push().set(date)
 
 
-get_all_submissions()
+get_all_submissions(date="2021-02-05")

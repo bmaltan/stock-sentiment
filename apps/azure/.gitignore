@@ -5,6 +5,7 @@ csx
 edge
 Publish
 
+.vscode
 *.user
 *.suo
 *.cscfg
@@ -41,5 +42,4 @@ venv.bak/
 __pycache__/
 *.py[cod]
 *$py.class
-
-fetchRedditPosts/service_account_credentials.json
+service_account_credentials.json
