@@ -4,7 +4,7 @@ import { MaterialModule } from './material.module';
 import { RouterModule } from '@angular/router';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { DialogSettingsComponent } from './dialog-settings/dialog-settings.component';
-import { DialogFavoritesComponent } from './dialog-favorites/dialog-favorites.component';
+// import { DialogFavoritesComponent } from './dialog-favorites/dialog-favorites.component';
 import { DialogLoginComponent } from './dialog-login/dialog-login.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { DisplayIfLoggedInDirective } from './directives/display-if-logged-in.directive';
@@ -14,7 +14,7 @@ import { ShortenDecimalPipe } from './pipes/shorten-decimal.pipe';
 @NgModule({
     declarations: [
         DialogSettingsComponent,
-        DialogFavoritesComponent,
+        // DialogFavoritesComponent,
         DialogLoginComponent,
         DisplayIfLoggedInDirective,
         DisplayIfNotLoggedInDirective,
