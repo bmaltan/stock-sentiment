@@ -46,6 +46,7 @@ export class AnalysisComponent {
     };
 
     filterForm!: FormGroup;
+    filterActive = false;
 
     constructor(
         private platformService: PlatformService,
@@ -106,6 +107,9 @@ export class AnalysisComponent {
                 case 'dailyChange':
                     // mat-sort doesn't handle negative values. adding 1000 as a quick workaround
                     return (((data.closingPrice - data.openingPrice) / (data.openingPrice) * 100) + 1000) || 0;
+                case 'openingPrice':
+                case 'closingPrice':
+                    return !data.closingPrice ? -1 : data[sortHeaderId];
                 default:
                     return data[sortHeaderId as keyof Omit<Stock, 'links'>] || 0;
             }
@@ -129,13 +133,33 @@ export class AnalysisComponent {
         });
     }
 
+    onSortChange(event: any) {
+        if (event.active === 'ticker') return;
+        if (this.dataSource.sort) {
+            if (this.dataSource.sort.direction === 'asc') {
+                this.dataSource.sort.direction = 'desc'
+            } else if (this.dataSource.sort.direction === 'desc') {
+                this.dataSource.sort.direction = '';
+            } else if (!this.dataSource.sort.direction) {
+                this.dataSource.sort.direction = 'asc'
+            }
+        }
+    }
+
     filter() {
         this.dataSource.filter = JSON.stringify(this.filterForm.value);
+
+        if (this.filterForm.value.filter?.length || this.filterForm.value.minimumMentions?.length) {
+            this.filterActive = true;
+        } else {
+            this.filterActive = false;
+        }
     }
 
     resetFilter() {
         this.filterForm.reset();
         this.dataSource.filter = '';
+        this.filterActive = false;
     }
 
     toggleFavorite() {
