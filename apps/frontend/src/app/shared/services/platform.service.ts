@@ -3,7 +3,7 @@ import { AngularFireDatabase } from '@angular/fire/database';
 import { Platform, PlatformMetadata } from '@invest-track/models';
 import { map, take } from 'rxjs/operators';
 import type { PlatformDataForDay } from '@invest-track/models';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, of } from 'rxjs';
 
 @Injectable({
     providedIn: 'root'
@@ -21,10 +21,20 @@ export class PlatformService {
     }
 
     getPlatformData(platform: string, date: string): Promise<PlatformDataForDay> {
-        return this.db.object('platforms/' + platform + '/' + date).snapshotChanges().pipe(
-            take(1),
-            map((data) => data.payload.val() as PlatformDataForDay))
-            .toPromise();
+        const query = 'platforms/' + platform + '/' + date;
+        const cachedData = window.localStorage.getItem(query);
+
+        if (cachedData) {
+            return of(JSON.parse(cachedData)).toPromise();
+        } else {
+            return this.db.object(query).snapshotChanges().pipe(
+                take(1),
+                map((data) => {
+                    window.localStorage.setItem(query, JSON.stringify(data.payload.val()))
+                    return data.payload.val() as PlatformDataForDay
+                }))
+                .toPromise();
+        }
     }
 
     getPlatformMetadata() {
