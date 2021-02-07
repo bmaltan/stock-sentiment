@@ -68,29 +68,6 @@ def split_to_words(s: str) -> List[str]:
     return s.split()
 
 
-def getLastFridayOf(d):
-    # const d = new Date(date.getTime())
-
-    # const day = d.getDay()
-    # const diff = day <= 5 ? 7 - 5 + day: day - 5
-
-    # d.setDate(d.getDate() - diff)
-    # d.setHours(0)
-    # d.setMinutes(0)
-    # d.setSeconds(0)
-
-    return d
-
-    # applicableDate = new Date(date.getTime())
-
-    # if (date.getDay() == 6 or date.getDay() == 0):
-    #     applicableDate = getLastFridayOf(date)
-    # elif (applicableDate.getHours() < 4):
-    #     applicableDate.setDate(applicableDate.getDate() - 1)
-
-    # return applicableDate.toISOString().substring(0, 10)
-
-
 def get_stock_data(tickers: Set[str], d: dt.datetime):
     applicable_date = str(d)[:10]
     tickers = ",".join(list(tickers))
@@ -106,7 +83,8 @@ def get_stock_data(tickers: Set[str], d: dt.datetime):
     }
     query = "&".join(f"{k}={v}" for (k, v) in query.items())
     r = requests.get(f'{url}?{query}', auth=('user', 'pass'))
-    return r.json()['result_data']
+    r.json()
+    return r['result_data'] if 'result_data' in r else dict()
 
 
 @dataclass
