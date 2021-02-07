@@ -116,4 +116,5 @@
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
     </table>
+    <mat-progress-bar style="margin: 20px 0" mode="buffer" *ngIf="loading"></mat-progress-bar>
 </div>
