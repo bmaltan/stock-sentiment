@@ -2,7 +2,6 @@
     "hosting": {
         "public": "dist/apps/frontend",
         "predeploy": [
-            "npm run lint frontend",
             "npm run build frontend --prod"
         ],
         "ignore": [
