@@ -34,7 +34,8 @@
                 <span *ngIf="!deviceIsMobile; else mobileDevicePosts"> Opening Price </span>
                 <ng-template #mobileDevicePosts> Open </ng-template>
             </th>
-            <td mat-cell *matCellDef="let element"> {{ element.openingPrice | shortenDecimal }} </td>
+            <td mat-cell *matCellDef="let element"> {{ element.openingPrice ? (element.openingPrice | shortenDecimal) :
+                'N/A' }} </td>
         </ng-container>
 
         <ng-container matColumnDef="closingPrice">
@@ -42,7 +43,8 @@
                 <span *ngIf="!deviceIsMobile; else mobileDevicePosts"> Closing Price </span>
                 <ng-template #mobileDevicePosts> Close </ng-template>
             </th>
-            <td mat-cell *matCellDef="let element"> {{ element.closingPrice | shortenDecimal }} </td>
+            <td mat-cell *matCellDef="let element"> {{ element.closingPrice ? (element.closingPrice | shortenDecimal) :
+                'N/A' }} </td>
         </ng-container>
 
         <ng-container matColumnDef="dailyChange">
@@ -51,7 +53,8 @@
                 <span [ngClass]="element.openingPrice - element.closingPrice < 0 ?
                     'positive-change' : 'negative-change'">
                     {{ (element.closingPrice - element.openingPrice) /
-                    element.openingPrice * 100 | number: '1.2-2' }}%
+                    element.openingPrice * 100 | number: '1.2-2' }}
+                    {{ element.closingPrice ? '%' : '' }}
                 </span>
             </td>
         </ng-container>

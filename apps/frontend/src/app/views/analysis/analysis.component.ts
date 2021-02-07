@@ -34,12 +34,15 @@ export class AnalysisComponent {
 
     @ViewChild(MatSort) sort!: MatSort;
 
-    dateFilter = (date: Date | null) => {
-        const dateString = new Intl.DateTimeFormat('sv-SE').format(date!).toString();
-        return this.availableDates.indexOf(dateString) > -1;
-    };
-
     deviceIsMobile = false;
+
+    dateFilter = (date: Date | null): boolean => {
+        if (date) {
+            const dateString = new Intl.DateTimeFormat('sv-SE').format(date).toString();
+            return this.availableDates.indexOf(dateString) > -1;
+        }
+        return false;
+    };
 
     constructor(
         private platformService: PlatformService,
@@ -98,7 +101,7 @@ export class AnalysisComponent {
             switch (sortHeaderId) {
                 case 'dailyChange':
                     // mat-sort doesn't handle negative values. adding 1000 as a quick workaround
-                    return ((data.closingPrice - data.openingPrice) / (data.openingPrice) * 100) + 1000;
+                    return (((data.closingPrice - data.openingPrice) / (data.openingPrice) * 100) + 1000) || 0;
                 default:
                     return data[sortHeaderId as keyof Omit<Stock, 'links'>] || 0;
             }
