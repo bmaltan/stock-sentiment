@@ -2,11 +2,11 @@ import { Component, ViewChild } from '@angular/core';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute } from '@angular/router';
-import { PlatformData, Stock } from '@invest-track/models';
+import { Stock } from '@invest-track/models';
 import { Location } from '@angular/common';
 import { UserService } from '../../shared/services/user.service';
 import { PlatformService } from '../../shared/services/platform.service';
-import { FormControl } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogDiscussionsComponent } from './dialog-discussions/dialog-discussions.component';
 import { DevicePlatformService } from '../../shared/services/device-platform.service';
@@ -21,7 +21,8 @@ export class AnalysisComponent {
     availableDates: string[] = []
     selectedDate = new FormControl('');
 
-    platformData?: PlatformData;
+    platformData?: Stock[];
+    platformDataInitial?: Stock[];
     currentPlatform = '';
     currentPlatformTitle = '';
 
@@ -44,12 +45,15 @@ export class AnalysisComponent {
         return false;
     };
 
+    filterForm!: FormGroup;
+
     constructor(
         private platformService: PlatformService,
         private route: ActivatedRoute,
         private userService: UserService,
         private location: Location,
         private dialog: MatDialog,
+        private fb: FormBuilder,
         private devicePlatformService: DevicePlatformService
     ) {
         this.currentPlatform = this.route.snapshot.url[this.route.snapshot.url.length - 1].path;
@@ -71,6 +75,11 @@ export class AnalysisComponent {
         this.userService.getUserFavoritePlatforms().subscribe(favorites => {
             this.isFavorite = favorites.includes(this.currentPlatform);
         });
+
+        this.filterForm = this.fb.group({
+            filter: [],
+            minimumMentions: []
+        })
     }
 
     getAvailableDates() {
@@ -86,10 +95,10 @@ export class AnalysisComponent {
     }
 
     async getPlatformData(date: string) {
-        this.platformData = await this.platformService.getPlatformData(this.currentPlatform, date);
+        this.platformData = Object.values(await (await this.platformService.getPlatformData(this.currentPlatform, date)).topStocks);
         if (!this.platformData) return;
 
-        this.dataSource.data = Object.values(this.platformData.topStocks) as unknown as Stock[];
+        this.dataSource.data = [...this.platformData];
         this.initSort();
 
         this.loading = false;
@@ -106,6 +115,12 @@ export class AnalysisComponent {
                     return data[sortHeaderId as keyof Omit<Stock, 'links'>] || 0;
             }
         };
+        this.dataSource.filterPredicate =
+            (stock: Stock, filter: string) => {
+                const filterParsed = JSON.parse(filter)
+                return (!filterParsed.filter || stock.ticker.toLocaleLowerCase().indexOf(filterParsed.filter.toLocaleLowerCase()) > -1)
+                    && (!filterParsed.minimumMentions || stock.numOfMentions >= filterParsed.minimumMentions)
+            };
     }
 
     seeDiscussions(stock: Stock) {
@@ -114,6 +129,15 @@ export class AnalysisComponent {
                 stock: stock
             }
         });
+    }
+
+    filter() {
+        this.dataSource.filter = JSON.stringify(this.filterForm.value);
+    }
+
+    resetFilter() {
+        this.filterForm.reset();
+        this.dataSource.filter = '';
     }
 
     toggleFavorite() {

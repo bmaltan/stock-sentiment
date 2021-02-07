@@ -190,3 +190,14 @@ table {
     height: 0 !important;
     position: fixed !important;
 }
+
+.filter-menu {
+    .mat-menu-content {
+        padding: 0 !important;
+    }
+
+    .filter-menu-content {
+        padding: measurements.$container-padding;
+        min-width: 180px;
+    }
+}

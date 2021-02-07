@@ -12,6 +12,8 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatSelectModule } from '@angular/material/select';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
+import { MatCheckboxModule, MAT_CHECKBOX_DEFAULT_OPTIONS } from '@angular/material/checkbox';
+
 @NgModule({
     declarations: [],
     imports: [
@@ -25,7 +27,8 @@ import { MatNativeDateModule } from '@angular/material/core';
         MatSnackBarModule,
         MatSelectModule,
         MatDatepickerModule,
-        MatNativeDateModule
+        MatNativeDateModule,
+        MatCheckboxModule
     ],
     exports: [
         MatTableModule,
@@ -37,10 +40,12 @@ import { MatNativeDateModule } from '@angular/material/core';
         MatSnackBarModule,
         MatSelectModule,
         MatDatepickerModule,
-        MatNativeDateModule
+        MatNativeDateModule,
+        MatCheckboxModule
     ],
     providers: [
-        { provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: { appearance: 'outline' } }
+        { provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: { appearance: 'outline' } },
+        { provide: MAT_CHECKBOX_DEFAULT_OPTIONS, useValue: { color: 'black' } },
     ]
 })
 
@@ -66,6 +71,7 @@ export class MaterialModule {
         'mention',
         'more',
         'post',
+        'search',
         'settings',
         'up'
     ]

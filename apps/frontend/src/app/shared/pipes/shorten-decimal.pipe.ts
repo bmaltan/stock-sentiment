@@ -4,7 +4,6 @@ import { Pipe, PipeTransform } from '@angular/core';
 export class ShortenDecimalPipe implements PipeTransform {
     transform(value: string | number): string | number {
         if (typeof value === 'number') {
-            console.log(value)
             if (value % 1 === 0) {
                 return value.toString() + '.00';
             } else if (value.toString().split('.')[1].length === 1) {
