@@ -1,17 +1,28 @@
+from dotenv import load_dotenv
 from typing import List, Set
 import praw
+from psaw import PushshiftAPI
 import os
 from collections import Counter
 import re
 from dataclasses import dataclass, field
-from datetime import datetime
+import datetime as dt
 import json
 from firebase_admin import initialize_app
 from firebase_admin import credentials
 from firebase_admin import db
 import requests
+import logging
 
-from dotenv import load_dotenv
+handler = logging.StreamHandler()
+handler.setLevel(logging.INFO)
+
+for name in ('psaw', 'praw', 'prawcore'):
+    logger = logging.getLogger(name)
+    logger.setLevel(logging.DEBUG)
+    logger.addHandler(handler)
+
+
 load_dotenv()
 
 firebase_cred = credentials.Certificate('./service_account_credentials.json')
@@ -20,13 +31,14 @@ firebase_app = initialize_app(firebase_cred, {
 })
 
 
-reddit = praw.Reddit(
+r = praw.Reddit(
     client_id=os.getenv('REDDIT_CLIENT_ID'),
     client_secret=os.getenv('REDDIT_CLIENT_SECRET'),
     username=os.getenv('REDDIT_USERNAME'),
     password=os.getenv('REDDIT_PASSWORD'),
     user_agent='test_test',
 )
+reddit = PushshiftAPI(r)
 
 subreddits = [
     'investing',
@@ -69,9 +81,6 @@ def getLastFridayOf(d):
 
     return d
 
-
-def get_applicable_date(d):
-    return d
     # applicableDate = new Date(date.getTime())
 
     # if (date.getDay() == 6 or date.getDay() == 0):
@@ -82,8 +91,8 @@ def get_applicable_date(d):
     # return applicableDate.toISOString().substring(0, 10)
 
 
-def get_stock_data(tickers: Set[str], d: datetime):
-    applicable_date = str(get_applicable_date(d))[:10]
+def get_stock_data(tickers: Set[str], d: dt.datetime):
+    applicable_date = str(d)[:10]
     tickers = ",".join(list(tickers))
 
     url = 'https://api.unibit.ai/v2/stock/historical'
@@ -105,17 +114,12 @@ class Submission:
     ups: int
     downs: int
     score: int
-    link: str
     url: str
     body: str
     title: str
     subreddit: str
-    stickied: bool
     flair: str
-    likes: int
     total_awards: int
-    id: str
-    created_at_utc: datetime
     comments: List[Comment] = field(default_factory=list)
     all_tickers_mentioned: Counter = field(default_factory=Counter)
     tickers_in_head: List[str] = field(default_factory=list)
@@ -149,37 +153,38 @@ class Submission:
             t["symbol"] for t in tickers if t["symbol"] in self.get_post_words()})
 
 
-def get_submissions(sub, tickers, d: datetime) -> List[Submission]:
-    subreddit = reddit.subreddit(sub)
-    hot = subreddit.hot(limit=100)
+def get_submissions(sub, tickers, d: dt.datetime) -> List[Submission]:
+    NYC_timezone_diff = dt.timedelta(hours=6)
+    d = d - NYC_timezone_diff
+    subreddit_posts = reddit.search_submissions(
+        after=int(d.timestamp()),
+        before=int(
+            (d + dt.timedelta(hours=23, minutes=59, seconds=59)).timestamp()),
+        subreddit=sub,
+        limit=1000,
+        filter=['title', 'permalink', "total_awards_received", 'link_flair_text',
+                'selftext', 'score', "ups", "downs", "removal_reason"],
+    )
 
     submissions = []
 
-    for post in hot:
+    for post in subreddit_posts:
         removed = post.removal_reason is not None
         if removed:
             continue
 
-        if datetime.fromtimestamp(post.created_utc) < d:
-            continue
-
         submission = Submission(
             score=post.score,
-            link=post.url,
             ups=post.ups,
             downs=post.downs,
             title=post.title,
             subreddit=sub,
-            likes=post.likes,
-            id=post.id,
-            stickied=post.stickied,
             flair=post.link_flair_text,
             body=post.selftext,
             url='https://www.reddit.com' + post.permalink,
             total_awards=post.total_awards_received,
-            created_at_utc=datetime.fromtimestamp(post.created_utc),
         )
-        post.comments.replace_more(limit=0)
+        post.comments.replace_more()
         comments = post.comments.list()
         submission.set_comments(comments)
         submission.set_all_tickers_mentioned(tickers)
@@ -190,7 +195,7 @@ def get_submissions(sub, tickers, d: datetime) -> List[Submission]:
 
 
 def get_all_submissions(date: str):
-    d = datetime.strptime(date, "%Y-%m-%d")
+    d = dt.datetime.strptime(date, "%Y-%m-%d")
 
     with open('./tickers.json', encoding='utf-8') as tickers_json:
         tickers = json.loads(tickers_json.read())
@@ -253,4 +258,4 @@ def get_all_submissions(date: str):
                 f'platformMetadata/r-{sub}/availableDates').push().set(date)
 
 
-get_all_submissions(date="2021-02-05")
+get_all_submissions(date="2021-01-25")
