@@ -3,6 +3,7 @@ from typing import List, Set
 import praw
 from psaw import PushshiftAPI
 import os
+import sys
 from collections import Counter
 import re
 from dataclasses import dataclass, field
@@ -139,7 +140,7 @@ def get_submissions(sub, tickers, d: dt.datetime) -> List[Submission]:
         before=int(
             (d + dt.timedelta(hours=23, minutes=59, seconds=59)).timestamp()),
         subreddit=sub,
-        limit=1000,
+        limit=500,
         filter=['title', 'permalink', "total_awards_received", 'link_flair_text',
                 'selftext', 'score', "ups", "downs", "removal_reason"],
     )
@@ -240,4 +241,6 @@ def get_all_submissions(date: str):
 
 
 if __name__ == '__main__':
-    get_all_submissions(date="2021-01-22")
+    arg_date = sys.argv[1]
+
+    get_all_submissions(date=arg_date)
