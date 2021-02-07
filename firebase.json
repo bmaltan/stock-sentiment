@@ -1,14 +1,8 @@
 {
     "hosting": {
         "public": "dist/apps/frontend",
-        "predeploy": [
-            "ng build --prod"
-        ],
-        "ignore": [
-            "firebase.json",
-            "**/.*",
-            "**/node_modules/**"
-        ],
+        "predeploy": ["npm run build --prod"],
+        "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
         "rewrites": [
             {
                 "source": "**",
