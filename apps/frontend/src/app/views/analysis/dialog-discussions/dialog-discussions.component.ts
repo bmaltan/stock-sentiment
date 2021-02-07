@@ -1,6 +1,8 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, ViewChild } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { Stock } from '@invest-track/models';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
+import { DiscussionLink, Stock } from '@invest-track/models';
 
 @Component({
     selector: 'invest-track-dialog-discussions',
@@ -9,13 +11,24 @@ import { Stock } from '@invest-track/models';
 })
 export class DialogDiscussionsComponent implements OnInit {
 
-    stock!: Stock;
+    displayedColumns: string[] = ['score', 'awards', 'title'];
+    dataSource: MatTableDataSource<DiscussionLink> = new MatTableDataSource();
 
-    constructor(@Inject(MAT_DIALOG_DATA) public data: { stock: Stock }) {
-        this.stock = data.stock;
-    }
+    @ViewChild(MatSort) sort!: MatSort;
+
+
+    constructor(@Inject(MAT_DIALOG_DATA) public data: { stock: Stock }) { }
 
     ngOnInit(): void {
+        if (this.data.stock.links?.length) {
+            this.dataSource.data = this.data.stock.links;
+        }
+
+        this.dataSource.sort = this.sort;
+    }
+
+    openLink(element: DiscussionLink) {
+        window.open(element.url, "_blank");
     }
 
 }

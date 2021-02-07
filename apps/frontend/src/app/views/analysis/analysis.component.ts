@@ -99,12 +99,7 @@ export class AnalysisComponent {
         if (!this.platformData) return;
 
         this.dataSource.data = [...this.platformData];
-        this.initSort();
 
-        this.loading = false;
-    }
-
-    initSort() {
         this.dataSource.sort = this.sort;
         this.dataSource.sortingDataAccessor = (data: Stock, sortHeaderId: string) => {
             switch (sortHeaderId) {
@@ -121,13 +116,16 @@ export class AnalysisComponent {
                 return (!filterParsed.filter || stock.ticker.toLocaleLowerCase().indexOf(filterParsed.filter.toLocaleLowerCase()) > -1)
                     && (!filterParsed.minimumMentions || stock.numOfMentions >= filterParsed.minimumMentions)
             };
+
+        this.loading = false;
     }
 
     seeDiscussions(stock: Stock) {
         this.dialog.open(DialogDiscussionsComponent, {
             data: {
                 stock: stock
-            }
+            },
+            width: '60vw'
         });
     }
 
