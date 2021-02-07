@@ -178,16 +178,19 @@ def get_all_submissions(date: str):
     with open('./tickers.json', encoding='utf-8') as tickers_json:
         tickers = json.loads(tickers_json.read())
 
+    stock_data = {}
+
     for sub in subreddits:
 
         submissions = get_submissions(sub, tickers, d)
-        all_tickers = {
-            tick for s in submissions for tick in s.all_tickers_mentioned.keys()}
+        all_tickers = list({
+            tick for s in submissions for tick in s.all_tickers_mentioned.keys()})
 
         if len(all_tickers) == 0:
             continue
 
-        stock_data = get_stock_data(all_tickers, d)
+        stock_data |= get_stock_data(
+            filter(lambda x: x not in stock_data, all_tickers), d)
 
         has_saved_anything = False
         for ticker in all_tickers:
@@ -236,4 +239,5 @@ def get_all_submissions(date: str):
                 f'platformMetadata/r-{sub}/availableDates').push().set(date)
 
 
-get_all_submissions(date="2021-01-25")
+if __name__ == '__main__':
+    get_all_submissions(date="2021-01-22")
