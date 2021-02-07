@@ -4,7 +4,7 @@
 
 <div mat-dialog-content style="padding: 30px 60px;">
     <div class="content-container no-border-radius">
-        <table mat-table *ngIf="dataSource" [dataSource]="dataSource" matSort>
+        <table mat-table [dataSource]="dataSource" (matSortChange)="onSortChange($event)" matSort>
 
             <ng-container matColumnDef="score">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 50px;"> Score </th>

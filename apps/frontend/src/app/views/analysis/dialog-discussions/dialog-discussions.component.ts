@@ -16,15 +16,40 @@ export class DialogDiscussionsComponent implements OnInit {
 
     @ViewChild(MatSort) sort!: MatSort;
 
-
     constructor(@Inject(MAT_DIALOG_DATA) public data: { stock: Stock }) { }
 
     ngOnInit(): void {
         if (this.data.stock.links?.length) {
             this.dataSource.data = this.data.stock.links;
         }
+    }
 
+    ngAfterViewInit() {
         this.dataSource.sort = this.sort;
+        this.dataSource.sortingDataAccessor = (data: DiscussionLink, sortHeaderId: string) => {
+            switch (sortHeaderId) {
+                case 'score':
+                case 'awards':
+                    return data[sortHeaderId] || 0;
+                case 'title':
+                    return data[sortHeaderId].toLocaleLowerCase();
+                default:
+                    return data[sortHeaderId as keyof DiscussionLink] || 0;
+            }
+        };
+    }
+
+    onSortChange(event: any) {
+        if (event.active === 'title') return;
+        if (this.dataSource.sort) {
+            if (this.dataSource.sort.direction === 'asc') {
+                this.dataSource.sort.direction = 'desc'
+            } else if (this.dataSource.sort.direction === 'desc') {
+                this.dataSource.sort.direction = '';
+            } else if (!this.dataSource.sort.direction) {
+                this.dataSource.sort.direction = 'asc'
+            }
+        }
     }
 
     openLink(element: DiscussionLink) {
