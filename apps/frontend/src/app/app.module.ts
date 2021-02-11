@@ -11,6 +11,7 @@ import { HeaderComponent } from './views/navigation/header/header.component';
 import { FooterComponent } from './views/navigation/footer/footer.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AngularFireModule } from '@angular/fire';
+import { AngularFireAnalyticsModule } from '@angular/fire/analytics';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import { AngularFireDatabaseModule } from '@angular/fire/database';
 import { environment } from '../environments/environment';
@@ -30,6 +31,7 @@ import { environment } from '../environments/environment';
         HttpClientModule,
         BrowserAnimationsModule,
         AngularFireModule.initializeApp(environment.firebase),
+        AngularFireAnalyticsModule,
         AngularFireAuthModule,
         AngularFireDatabaseModule,
         AngularFireAuthModule
