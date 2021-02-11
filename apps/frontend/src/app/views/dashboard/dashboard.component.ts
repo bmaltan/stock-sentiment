@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Platform } from '@invest-track/models';
 import { PlatformService } from '../../shared/services/platform.service';
 
@@ -13,9 +15,19 @@ export class DashboardComponent {
     platforms: Platform[] = [];
 
     constructor(
-        private platformService: PlatformService
+        private platformService: PlatformService,
+        private route: ActivatedRoute,
+        private router: Router,
+        private snackbar: MatSnackBar,
     ) {
         this.platforms = this.platformService.getPlatforms();
+        const url = route.snapshot.url[0]?.path;
+        if (url === 'donation-cancel') {
+            router.navigate(['']);
+        } else if (url === 'donation-success') {
+            this.snackbar.open('Thanks for the fuel!', undefined, { duration: 4000 });
+            router.navigate(['']);
+        }
     }
 
 }

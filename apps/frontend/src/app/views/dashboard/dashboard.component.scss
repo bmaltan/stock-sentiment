@@ -1,10 +1,15 @@
 .intro-text {
     margin: 10px 0 40px 0;
     padding: 0 20px;
+    text-align: center;
 }
 
 @media only screen and (max-width: 600px) {
     .intro-text {
         margin: 0 0 10px 0;
     }
+}
+
+a {
+    color: inherit;
 }

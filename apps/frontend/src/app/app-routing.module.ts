@@ -6,7 +6,10 @@ import { DashboardComponent } from './views/dashboard/dashboard.component';
 const routes: Routes = [
     { path: '', component: DashboardComponent },
     { path: 'dashboard', component: DashboardComponent },
+    { path: 'donation-cancel', component: DashboardComponent },
+    { path: 'donation-success', component: DashboardComponent },
     { path: 'analysis/:id', component: AnalysisComponent },
+    { path: '**', component: DashboardComponent },
 ];
 
 @NgModule({
