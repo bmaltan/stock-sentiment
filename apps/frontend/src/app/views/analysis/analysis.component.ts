@@ -64,6 +64,9 @@ export class AnalysisComponent {
 
     ngOnInit() {
         this.selectedDate.valueChanges.subscribe(value => {
+            this.loading = true;
+            this.dataSource.data = [];
+
             if (value.toISOString) {
                 const date = new Intl.DateTimeFormat('sv-SE').format(value).toString();
                 this.selectedDate.setValue(date, { emitEvent: false });
@@ -131,6 +134,10 @@ export class AnalysisComponent {
             },
             width: '60vw'
         });
+    }
+
+    openStockInYahoo(stock: Stock) {
+        window.open(`https://finance.yahoo.com/quote/${stock.ticker}`, '_')
     }
 
     onSortChange(event: any) {

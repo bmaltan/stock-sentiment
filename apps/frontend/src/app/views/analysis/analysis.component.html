@@ -105,9 +105,14 @@
             <td mat-cell *matCellDef="let element">
                 <mat-icon class="button action" svgIcon="more" [matMenuTriggerFor]="actions"></mat-icon>
                 <mat-menu #actions="matMenu">
+                    <div class="actions-ticker-title"> {{ element.ticker }} </div>
                     <button mat-menu-item (click)="seeDiscussions(element)">
                         <mat-icon svgIcon="chat"></mat-icon>
                         <span>Discussions</span>
+                    </button>
+                    <button mat-menu-item (click)="openStockInYahoo(element)">
+                        <mat-icon svgIcon="logo-yahoo"></mat-icon>
+                        <span>See in Yahoo</span>
                     </button>
                 </mat-menu>
             </td>
