@@ -5974,7 +5974,6 @@
     { "name": "FOX RIVER RESOURCES CORP", "symbol": "FXRVF" },
     { "name": "ISE CHEMICALS CORP", "symbol": "ICHMF" },
     { "name": "JB HI-FI LTD-UNSPONSORED ADR", "symbol": "JBHHY" },
-    { "name": "AMERISOURCEBERGEN CORP", "symbol": "ABC" },
     { "name": "CHOICEONE FINANCIAL SVCS INC", "symbol": "COFS" },
     { "name": "BLACKROCK MARYLAND MUNI BOND", "symbol": "BZM" },
     { "name": "YUM CHINA HOLDINGS INC", "symbol": "YUMC" },
@@ -6044,7 +6043,6 @@
     { "name": "CLEAN POWER CAPITAL CORP", "symbol": "MOTNF" },
     { "name": "RINGCENTRAL INC-CLASS A", "symbol": "RNG" },
     { "name": "ECOPLUS INC", "symbol": "ECPL" },
-    { "name": "AAF FIRST PRIORITY CLO BOND", "symbol": "AAA" },
     { "name": "IMDEX LTD", "symbol": "IMDXF" },
     { "name": "MONDI PLC", "symbol": "MONDF" },
     { "name": "COMPASS DIVERSIFIED HOLDINGS", "symbol": "CODI" },
@@ -21387,7 +21385,6 @@
         "symbol": "PACE+"
     },
     { "name": "ZOOM TECHNOLOGIES INC", "symbol": "ZTNO" },
-    { "name": "INITIO INC", "symbol": "INTO" },
     { "name": "SHIKOKU ELECTRIC POWER CO", "symbol": "SHEKF" },
     { "name": "APPLIED MOLECULAR TRANSPORT", "symbol": "AMTI" },
     { "name": "SEAFCO PCL-NVDR", "symbol": "SFCCF" },
