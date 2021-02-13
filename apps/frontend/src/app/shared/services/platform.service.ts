@@ -92,10 +92,10 @@ export class PlatformService {
     ): PlatformDataForDay {
         return {
             topStocks: [
-                ...data.topStocks.map(
-                    (ticker: StockShort) =>
+                ...Object.entries(data.topStocks).map(
+                    ([tickerName, ticker]: [string, StockShort]) =>
                         ({
-                            ticker: ticker.t,
+                            ticker: tickerName,
                             closingPrice: ticker.c,
                             openingPrice: ticker.o,
                             numOfMentions: ticker.nm,
