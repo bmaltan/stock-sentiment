@@ -53,20 +53,17 @@ def get_all_submissions(date: str):
                 has_saved_anything = True
 
                 ticker_data = {
-                    "ticker": ticker,
-                    "numOfMentions": num_of_mentions,
-                    "numOfPosts": total_mentioned_in_head,
-                    "links": [s.to_link() for s in mentioned_anywhere]
+                    "nm": num_of_mentions,
+                    "np": total_mentioned_in_head,
+                    "l": [s.to_link() for s in mentioned_anywhere]
                 }
 
                 if ticker in stock_data and stock_data[ticker]:
                     stock_data_for_ticker = stock_data[ticker][1] if len(
                         stock_data[ticker]) == 2 else stock_data[ticker][0]
                     ticker_data |= {
-                        "openingPrice": stock_data_for_ticker["open"],
-                        "closingPrice": stock_data_for_ticker["close"],
-                        "high": stock_data_for_ticker["high"],
-                        "low": stock_data_for_ticker["low"],
+                        "o": stock_data_for_ticker["open"],
+                        "c": stock_data_for_ticker["close"],
                     }
 
                 firebase.save_ticker_data(
