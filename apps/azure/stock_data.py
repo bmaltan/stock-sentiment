@@ -16,6 +16,7 @@ def get_stock_data(tickers: Set[str], d: dt.datetime):
         "startDate": applicable_date,
         "endDate": applicable_date,
         "accessKey": os.getenv("UNIBIT_API_SECRET"),
+        "selectedFields": "open,close",
     }
     query = "&".join(f"{k}={v}" for (k, v) in query.items())
     r = requests.get(f'{url}?{query}')
