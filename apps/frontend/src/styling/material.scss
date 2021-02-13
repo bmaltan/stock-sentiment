@@ -42,12 +42,6 @@
         }
     }
 
-    .cdk-overlay-transparent-backdrop, 
-    .cdk-overlay-transparent-backdrop.cdk-overlay-backdrop-showing {
-        opacity: 0.3;
-        background: black;
-    }
-
     .mat-form-field-flex > .mat-form-field-infix { 
         padding: 0.4em 0.8em !important;
     }
