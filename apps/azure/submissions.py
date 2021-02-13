@@ -145,7 +145,7 @@ def get_submissions(subreddit, tickers, d: dt.datetime) -> List[Submission]:
             total_awards=post.total_awards_received,
         )
         time.sleep(1)
-        post.comments.replace_more(limit=None)
+        post.comments.replace_more(limit=0)
         comments = post.comments.list()
         submission.set_comments(comments)
         submission.set_all_tickers_mentioned(tickers)
