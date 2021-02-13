@@ -64,13 +64,10 @@ class Submission:
 
     def to_link(self) -> dict:
         return {
-            "title": self.title,
-            "url": self.url,
-            "score": self.score,
-            "awards": self.total_awards,
-            "flair": self.flair,
-            "ups": self.ups,
-            "downs": self.downs,
+            "t": self.title,
+            "u": self.url,
+            "s": self.score,
+            "a": self.total_awards,
         }
 
     def set_comments(self, comments):
@@ -148,7 +145,7 @@ def get_submissions(subreddit, tickers, d: dt.datetime) -> List[Submission]:
             total_awards=post.total_awards_received,
         )
         time.sleep(1)
-        post.comments.replace_more()
+        post.comments.replace_more(limit=None)
         comments = post.comments.list()
         submission.set_comments(comments)
         submission.set_all_tickers_mentioned(tickers)
