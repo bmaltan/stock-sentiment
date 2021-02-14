@@ -69,7 +69,12 @@
         </ng-container>
 
         <ng-container matColumnDef="dailyChange">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header> Change </th>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                <span *ngIf="!deviceIsMobile; else mobileDevicePosts"> Change </span>
+                <ng-template #mobileDevicePosts>
+                    <mat-icon class="header-icon" svgIcon="difference"></mat-icon>
+                </ng-template>
+            </th>
             <td mat-cell *matCellDef="let element">
                 <span [ngClass]="element.openingPrice - element.closingPrice < 0 ?
                     'positive-change' : 'negative-change'">

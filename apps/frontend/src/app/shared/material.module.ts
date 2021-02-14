@@ -61,6 +61,7 @@ export class MaterialModule {
         'dislike',
         'date',
         'date-clear',
+        'difference',
         'down',
         'enter',
         'exit',

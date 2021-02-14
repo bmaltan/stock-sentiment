@@ -132,7 +132,7 @@ export class AnalysisComponent {
             data: {
                 stock: stock
             },
-            width: '60vw'
+            width: this.deviceIsMobile ? '' : '60vw'
         });
     }
 
