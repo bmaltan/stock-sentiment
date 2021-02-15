@@ -18,7 +18,7 @@ import { BehaviorSubject, of } from 'rxjs';
 export class PlatformService {
     private platformMetadata = new BehaviorSubject<PlatformMetadata[]>([]);
 
-    constructor(private db: AngularFireDatabase) {}
+    constructor(private db: AngularFireDatabase) { }
 
     getPlatforms() {
         return platforms;
@@ -29,7 +29,7 @@ export class PlatformService {
         date: string
     ): Promise<PlatformDataForDay> {
         const query = 'platforms/' + platform + '/' + date;
-        const cachedData = window.localStorage.getItem(query);
+        const cachedData = window.sessionStorage.getItem(query);
 
         if (cachedData) {
             return of(JSON.parse(cachedData)).toPromise();
@@ -42,7 +42,7 @@ export class PlatformService {
                     map((data) => {
                         const dbValues = data.payload.val() as PlatformDataForDayShort;
                         const converted = this.convertToFrontendModel(dbValues);
-                        window.localStorage.setItem(
+                        window.sessionStorage.setItem(
                             query,
                             JSON.stringify(converted)
                         );
@@ -94,22 +94,22 @@ export class PlatformService {
             topStocks: [
                 ...Object.entries(data.topStocks).map(
                     ([tickerName, ticker]: [string, StockShort]) =>
-                        ({
-                            ticker: tickerName,
-                            closingPrice: ticker.c,
-                            openingPrice: ticker.o,
-                            numOfMentions: ticker.nm,
-                            numOfPosts: ticker.np,
-                            links: ticker.l?.map(
-                                (link: DiscussionLinkShort) =>
-                                    ({
-                                        awards: link.a,
-                                        score: link.s,
-                                        url: link.u,
-                                        title: link.t,
-                                    } as DiscussionLink)
-                            ),
-                        } as Stock)
+                    ({
+                        ticker: tickerName,
+                        closingPrice: ticker.c,
+                        openingPrice: ticker.o,
+                        numOfMentions: ticker.nm,
+                        numOfPosts: ticker.np,
+                        links: ticker.l?.map(
+                            (link: DiscussionLinkShort) =>
+                            ({
+                                awards: link.a,
+                                score: link.s,
+                                url: link.u,
+                                title: link.t,
+                            } as DiscussionLink)
+                        ),
+                    } as Stock)
                 ),
             ],
         } as PlatformDataForDay;
