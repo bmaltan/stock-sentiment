@@ -1,0 +1,63 @@
+<div gdRows="auto 1fr">
+    <div>
+        <div>Use this page to generate screenshots</div>
+        <span class="date">{{ selectedDate.value }}</span>
+        <mat-icon class="button" svgIcon="date-clear" (click)="picker.open()">
+        </mat-icon>
+        <mat-form-field class="hide">
+            <input matInput [formControl]="selectedDate" [matDatepicker]="picker" [matDatepickerFilter]="dateFilter">
+            <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>Subreddit to highlight</mat-label>
+            <mat-select [formControl]="platformToHighlight">
+                <mat-option *ngFor="let platform of allPlatformData" [value]="platform.platform">
+                    {{ platform.platform }}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+    </div>
+    <div>
+        <div style="font-size: 24px; margin: 20px 0;">The most discussed stocks of {{ selectedDate.value }}</div>
+        <div gdColumns="1fr 1fr 1fr" gdGap="1rem">
+            <div class="content-container" *ngFor="let platform of allPlatformData">
+                <div style="margin: 10px 0 0 24px;">{{ platform.platform }}</div>
+
+                <table mat-table [dataSource]="platform.stocks">
+                    <ng-container matColumnDef="ticker">
+                        <th mat-header-cell *matHeaderCellDef> Ticker </th>
+                        <td mat-cell *matCellDef="let element"> {{ element.ticker }} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="numOfPosts">
+                        <th mat-header-cell *matHeaderCellDef style="max-width: 40px;">
+                            <mat-icon class="header-icon" svgIcon="post"></mat-icon>
+                        </th>
+                        <td mat-cell *matCellDef="let element"> {{ element.numOfPosts }} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="numOfMentions">
+                        <th mat-header-cell *matHeaderCellDef style="max-width: 70px;">
+                            <mat-icon class="header-icon" svgIcon="mention"></mat-icon>
+                        </th>
+                        <td mat-cell *matCellDef="let element"> {{ element.numOfMentions }} </td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                </table>
+            </div>
+        </div>
+        <div style="margin: 10px;">
+            <div>
+                <mat-icon class="header-icon" svgIcon="post"></mat-icon>
+                <span>Posts that mention the ticker</span>
+            </div>
+            <div>
+                <mat-icon class="header-icon" svgIcon="mention"></mat-icon>
+                <span>Initially displayed comments (not under "X more replies") that mention the ticker</span>
+            </div>
+        </div>
+        <div style="text-align: right; margin: 20px;">stocksentiment.io</div>
+    </div>
+</div>

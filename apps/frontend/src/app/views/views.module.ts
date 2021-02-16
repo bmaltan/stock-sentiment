@@ -6,11 +6,13 @@ import { AnalysisComponent } from './analysis/analysis.component';
 import { SharedModule } from '../shared/shared.module';
 import { RouterModule } from '@angular/router';
 import { ReactiveFormsModule } from '@angular/forms';
+import { ScreenshotGeneratorComponent } from './screenshot-generator/screenshot-generator.component';
 
 @NgModule({
     declarations: [
         DashboardComponent,
         AnalysisComponent,
+        ScreenshotGeneratorComponent,
     ],
     imports: [
         CommonModule,
