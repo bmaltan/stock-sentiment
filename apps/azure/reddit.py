@@ -7,12 +7,12 @@ from stock_data import get_stock_data
 import firebase
 
 subreddits = [
-    'investing',
-    'pennystocks',
-    'stocks',
-    'stockmarket',
+    # 'investing',
+    # 'pennystocks',
+    # 'stocks',
+    # 'stockmarket',
     'stock_picks',
-    'wallstreetbets',
+    # 'wallstreetbets',
 ]
 
 
@@ -58,12 +58,10 @@ def get_all_submissions(date: str):
                     "l": [s.to_link() for s in mentioned_anywhere]
                 }
 
-                if ticker in stock_data and stock_data[ticker]:
-                    stock_data_for_ticker = stock_data[ticker][1] if len(
-                        stock_data[ticker]) == 2 else stock_data[ticker][0]
+                if ticker in stock_data:
                     ticker_data |= {
-                        "o": stock_data_for_ticker["open"],
-                        "c": stock_data_for_ticker["close"],
+                        "o": stock_data[ticker]["open"],
+                        "c": stock_data[ticker]["close"],
                     }
 
                 firebase.save_ticker_data(

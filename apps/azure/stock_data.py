@@ -1,28 +1,22 @@
-import requests
-import os
 import datetime as dt
 from typing import Set
+from yahooquery import Ticker
 
 
 def get_stock_data(tickers: Set[str], d: dt.datetime):
-    print('getting some stock data')
-    applicable_date = str(d)[:10]
-    tickers = ",".join(list(tickers))
+    result = {}
+    d = d + dt.timedelta(days=1)
+    d = d.strftime("%Y-%m-%d")
+    for t in tickers:
+        ticker = Ticker(t)
+        df = ticker.history(period="1d", interval="1d",
+                            start=d, end=d)
+        if "open" not in df or "close" not in df:
+            continue
 
-    url = 'https://api.unibit.ai/v2/stock/historical'
-    query = {
-        "tickers": tickers,
-        "interval": 1,
-        "startDate": applicable_date,
-        "endDate": applicable_date,
-        "accessKey": os.getenv("UNIBIT_API_SECRET"),
-        "selectedFields": "open,close",
-    }
-    query = "&".join(f"{k}={v}" for (k, v) in query.items())
-    r = requests.get(f'{url}?{query}')
-    json = r.json()
-    if 'result_data' in json:
-        return json['result_data']
-    else:
-        print('something went wrong with stock api', r.text)
-        return dict()
+        result[t] = {
+            "open": df["open"].iloc[0],
+            "close": df["close"].iloc[0],
+        }
+
+    return result

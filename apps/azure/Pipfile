@@ -9,7 +9,7 @@ datetime = "*"
 praw = "*"
 python-dotenv = "*"
 firebase-admin = "*"
-requests = "*"
+yahooquery = "*"
 
 [dev-packages]
 
