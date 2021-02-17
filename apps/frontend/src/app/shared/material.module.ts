@@ -14,6 +14,8 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatCheckboxModule, MAT_CHECKBOX_DEFAULT_OPTIONS } from '@angular/material/checkbox';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatBottomSheetModule } from '@angular/material/bottom-sheet';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @NgModule({
     declarations: [],
@@ -30,7 +32,9 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
         MatDatepickerModule,
         MatNativeDateModule,
         MatCheckboxModule,
-        MatProgressBarModule
+        MatProgressBarModule,
+        MatBottomSheetModule,
+        MatTooltipModule
     ],
     exports: [
         MatTableModule,
@@ -44,7 +48,9 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
         MatDatepickerModule,
         MatNativeDateModule,
         MatCheckboxModule,
-        MatProgressBarModule
+        MatProgressBarModule,
+        MatBottomSheetModule,
+        MatTooltipModule
     ],
     providers: [
         { provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: { appearance: 'outline' } },
