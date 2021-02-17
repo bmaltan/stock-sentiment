@@ -36,6 +36,8 @@ export class ScreenshotGeneratorComponent implements OnInit {
 
     ngOnInit(): void {
         this.selectedDate.valueChanges.subscribe(value => {
+            this.allPlatformData = [];
+
             if (value.toISOString) {
                 const date = new Intl.DateTimeFormat('sv-SE').format(value).toString();
                 this.selectedDate.setValue(date, { emitEvent: false });
@@ -64,13 +66,11 @@ export class ScreenshotGeneratorComponent implements OnInit {
                 });
 
                 this.allStocks = this.allStocks.filter(stock => stock.numOfMentions > 1)
-                console.log(this.allStocks.filter(stock => stock.numOfMentions > 1))
 
                 this.allPlatformData.push({
                     platform: platform.name,
                     stocks: stocks
                 })
-                console.log(this.allStocks)
             });
         });
 
