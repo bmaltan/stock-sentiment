@@ -42,7 +42,7 @@ class Comment:
 
 
 def split_to_words(s: str) -> List[str]:
-    s = re.sub(r'[.,\/#!$%\^&\*;:{}=\-_`~()]', '', s)
+    s = re.sub(r'[.,\/#!$%\^&\*;:{}=\-_`~()]', ' ', s)
     s = re.sub(r'\s{2,}', ' ', s)
     return s.split()
 
