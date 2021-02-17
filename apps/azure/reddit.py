@@ -7,12 +7,12 @@ from stock_data import get_stock_data
 import firebase
 
 subreddits = [
-    # 'investing',
-    # 'pennystocks',
-    # 'stocks',
-    # 'stockmarket',
+    'investing',
+    'pennystocks',
+    'stocks',
+    'stockmarket',
     'stock_picks',
-    # 'wallstreetbets',
+    'wallstreetbets',
 ]
 
 

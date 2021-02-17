@@ -141,7 +141,7 @@ def get_submissions(subreddit, tickers, d: dt.datetime) -> List[Submission]:
             subreddit=subreddit,
             flair=post.link_flair_text,
             body=post.selftext,
-            url='https://www.reddit.com' + post.permalink,
+            url=post.id,
             total_awards=post.total_awards_received,
         )
         time.sleep(1)
