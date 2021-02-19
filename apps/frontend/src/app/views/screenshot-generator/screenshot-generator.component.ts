@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Platform, Stock } from '@invest-track/models';
 import { PlatformService } from '../../shared/services/platform.service';
+import html2canvas from 'html2canvas';
 
 @Component({
     selector: 'invest-track-screenshot-generator',
@@ -93,6 +94,13 @@ export class ScreenshotGeneratorComponent implements OnInit {
                 this.selectedDate.setValue(this.availableDates[0]);
             }
         })
+    }
+
+    generateScreenshot() {
+        html2canvas(document.querySelector("#capture") as HTMLElement).then(canvas => {
+            const w: any = window.open();
+            w.document.write(`<img src="${canvas.toDataURL("image/png")}">`);
+        });
     }
 
 }
