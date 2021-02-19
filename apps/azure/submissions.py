@@ -113,7 +113,9 @@ def get_submissions(subreddit, tickers, d: dt.datetime) -> List[Submission]:
                  minutes=59,
                  seconds=59)).timestamp()),
         subreddit=subreddit,
-        limit=5000,
+        limit=50000,
+        sort_type='score',
+        sort='desc',
         filter=[
             'title',
             'permalink',
