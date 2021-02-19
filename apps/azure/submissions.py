@@ -113,7 +113,7 @@ def get_submissions(subreddit, tickers, d: dt.datetime) -> List[Submission]:
                  minutes=59,
                  seconds=59)).timestamp()),
         subreddit=subreddit,
-        limit=500,
+        limit=5000,
         filter=[
             'title',
             'permalink',
@@ -145,7 +145,7 @@ def get_submissions(subreddit, tickers, d: dt.datetime) -> List[Submission]:
             total_awards=post.total_awards_received,
         )
         time.sleep(1)
-        post.comments.replace_more(limit=0)
+        post.comments.replace_more(limit=None)
         comments = post.comments.list()
         submission.set_comments(comments)
         submission.set_all_tickers_mentioned(tickers)
