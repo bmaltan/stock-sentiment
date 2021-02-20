@@ -1,12 +1,10 @@
 import praw
 from psaw import PushshiftAPI
 import os
-from dataclasses import dataclass, field
 from typing import List
 import re
 from collections import Counter
 import datetime as dt
-import time
 import logging
 from dotenv import load_dotenv
 load_dotenv()
@@ -29,71 +27,51 @@ r = praw.Reddit(
 reddit = PushshiftAPI(r)
 
 
-@dataclass
-class Comment:
-    removed: bool
-    stickied: bool
-    ups: int
-    downs: int
-    score: int
-    score_hidden: int
-    body: str
-    id: str
-
-
 def split_to_words(s: str) -> List[str]:
     s = re.sub(r'[.,\/#!$%\^&\*;:{}=\-_`~()]', ' ', s)
     s = re.sub(r'\s{2,}', ' ', s)
     return s.split()
 
 
-@dataclass
 class Submission:
-    ups: int
-    downs: int
     score: int
-    url: str
+    id: str
     body: str
     title: str
     subreddit: str
-    flair: str
-    total_awards: int
-    comments: List[Comment] = field(default_factory=list)
-    all_tickers_mentioned: Counter = field(default_factory=Counter)
-    tickers_in_head: List[str] = field(default_factory=list)
+    awards: int
+    all_tickers_mentioned: Counter
+    tickers_in_head: List[str]
+
+    def __init__(self, score, id, body, title, subreddit, awards):
+        self.score = score
+        self.id = id
+        self.body = body
+        self.title = title
+        self.subreddit = subreddit
+        self.awards = awards
 
     def to_link(self) -> dict:
         return {
             "t": self.title,
-            "u": self.url,
+            "u": self.id,
             "s": self.score,
-            "a": self.total_awards,
+            "a": self.awards,
         }
-
-    def set_comments(self, comments):
-        self.comments = [Comment(
-            removed=comment.removal_reason is not None,
-            stickied=comment.stickied,
-            ups=comment.ups,
-            downs=comment.downs,
-            score=comment.score,
-            score_hidden=comment.score_hidden,
-            body=comment.body,
-            id=comment.id,
-        ) for comment in comments]
 
     def get_post_words(self):
         return split_to_words(f'{self.body} {self.title}')
 
-    def get_comment_words(self):
+    def get_comment_words(self, comments):
         return split_to_words(
-            " ".join([comment.body for comment in self.comments]))
+            " ".join(comment.body for comment in comments))
 
-    def set_all_tickers_mentioned(self, tickers):
-        all_words = self.get_post_words() + self.get_comment_words()
+    def set_all_tickers_mentioned(self, tickers, comments):
+        all_words = self.get_post_words() + self.get_comment_words(comments)
 
+        all_tickers = [t["symbol"] for t in tickers]
         self.all_tickers_mentioned = Counter(
-            t["symbol"] for t in tickers if t["symbol"] in all_words)
+            word for word in all_words if word in all_tickers)
 
     def set_tickers_in_head(self, tickers):
         self.tickers_in_head = list({
@@ -102,7 +80,7 @@ class Submission:
 
 def get_submissions(subreddit, tickers, d: dt.datetime) -> List[Submission]:
     NYC_timezone_diff = dt.timedelta(hours=6)
-    d = d - NYC_timezone_diff
+    d = d + NYC_timezone_diff
     subreddit_posts = reddit.search_submissions(
         after=int(
             d.timestamp()),
@@ -114,43 +92,36 @@ def get_submissions(subreddit, tickers, d: dt.datetime) -> List[Submission]:
                  seconds=59)).timestamp()),
         subreddit=subreddit,
         limit=50000,
-        sort_type='score',
-        sort='desc',
         filter=[
+            'id',
             'title',
-            'permalink',
             "total_awards_received",
-            'link_flair_text',
             'selftext',
             'score',
-            "ups",
-            "downs",
             "removal_reason"],
     )
 
     submissions = []
 
+    submission_ids = set()
     for post in subreddit_posts:
-        removed = post.removal_reason is not None
-        if removed:
+        removed = (post.removal_reason is not None or post.selftext ==
+                   '[removed]') and post.score < 10
+        if removed or post.score < 0 or post.id in submission_ids:
             continue
 
+        submission_ids.add(post.id)
         submission = Submission(
             score=post.score,
-            ups=post.ups,
-            downs=post.downs,
             title=post.title,
             subreddit=subreddit,
-            flair=post.link_flair_text,
             body=post.selftext,
-            url=post.id,
-            total_awards=post.total_awards_received,
+            id=post.id,
+            awards=post.total_awards_received,
         )
-        time.sleep(1)
         post.comments.replace_more(limit=None)
         comments = post.comments.list()
-        submission.set_comments(comments)
-        submission.set_all_tickers_mentioned(tickers)
+        submission.set_all_tickers_mentioned(tickers, comments)
         submission.set_tickers_in_head(tickers)
         submissions.append(submission)
 
