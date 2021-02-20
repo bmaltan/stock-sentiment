@@ -11,6 +11,7 @@ import { DisplayIfLoggedInDirective } from './directives/display-if-logged-in.di
 import { DisplayIfNotLoggedInDirective } from './directives/display-if-not-logged-in.directive'
 import { DialogDiscussionsComponent } from '../views/analysis/dialog-discussions/dialog-discussions.component';
 import { ShortenDecimalPipe } from './pipes/shorten-decimal.pipe';
+import { GdprPromptComponent } from './gdpr-prompt/gdpr-prompt.component';
 @NgModule({
     declarations: [
         DialogSettingsComponent,
@@ -19,7 +20,8 @@ import { ShortenDecimalPipe } from './pipes/shorten-decimal.pipe';
         DisplayIfLoggedInDirective,
         DisplayIfNotLoggedInDirective,
         DialogDiscussionsComponent,
-        ShortenDecimalPipe
+        ShortenDecimalPipe,
+        GdprPromptComponent
     ],
     imports: [
         CommonModule,

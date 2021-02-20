@@ -1,7 +1,6 @@
 <div class="header-container">
-    <div class="title-container" [routerLink]="'/'">
-        <!-- <mat-icon class="logo-ss" svgIcon="logo-ss"></mat-icon> -->
-        <h1 class="site-title">
+    <div class="title-container" [routerLink]="url !== '/rejected' ? '/' : []">
+        <h1 class="site-title" [routerLink]>
             Stock Sentiment
         </h1>
     </div>

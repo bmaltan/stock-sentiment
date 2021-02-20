@@ -1,4 +1,7 @@
+import { Location } from '@angular/common';
 import { Component } from '@angular/core';
+import { MatBottomSheet } from '@angular/material/bottom-sheet';
+import { GdprPromptComponent } from './shared/gdpr-prompt/gdpr-prompt.component';
 import { DevicePlatformService } from './shared/services/device-platform.service';
 import { PlatformService } from './shared/services/platform.service';
 
@@ -12,9 +15,21 @@ export class AppComponent {
 
     constructor(
         private platformService: PlatformService,
-        private devicePlatformService: DevicePlatformService
+        private devicePlatformService: DevicePlatformService,
+        private bottomSheet: MatBottomSheet,
+        private location: Location
     ) {
         platformService.getPlatformMetadata();
+    }
+
+    ngOnInit() {
+        const cachedGdprResponse = window.localStorage.getItem('gdprResponse');
+
+        if (Intl.DateTimeFormat().resolvedOptions().timeZone.toLowerCase().indexOf('europe') > -1
+            && this.location.path() !== '/rejected'
+            && cachedGdprResponse !== 'true') {
+            this.bottomSheet.open(GdprPromptComponent);
+        }
     }
 }
 

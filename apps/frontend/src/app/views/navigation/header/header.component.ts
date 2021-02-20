@@ -14,12 +14,16 @@ import { UserService } from '../../../shared/services/user.service';
 
 export class HeaderComponent {
 
+    url = '';
+
     constructor(
         private dialog: MatDialog,
         private userService: UserService,
         private router: Router,
         private location: Location
-    ) { }
+    ) {
+        this.url = location.path();
+    }
 
     openLogin() {
         this.dialog.open(DialogLoginComponent, { autoFocus: false });
