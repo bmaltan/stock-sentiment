@@ -75,7 +75,7 @@ def run_reddit(date, sub):
         'stock_picks',
         'wallstreetbets',
         'daytrading',
-        'robinhoodpennystocks', 
+        'robinhoodpennystocks',
     ]
     if sub is not None and sub in subreddits:
         subreddits = [sub]

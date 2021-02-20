@@ -19,7 +19,7 @@ for name in ('psaw', 'praw', 'prawcore'):
 
 
 def split_to_words(s: str) -> List[str]:
-    s = re.sub(r'[.,/#!$%^&\*;:+-?{}\[\]"\'=-_`<>~()]', ' ', s)
+    s = re.sub(r'[\.,\/#!\$\%\^&\*;:\+-\?{}\[\]"\'=\-_`<>~\(\)]', ' ', s)
     s = re.sub(r'\s{2,}', ' ', s)
     return s.split()
 
@@ -28,16 +28,14 @@ class Submission:
     score: int
     id: str
     title: str
-    subreddit: str
     awards: int
     all_tickers_mentioned: Counter
     tickers_in_head: List[str]
 
-    def __init__(self, score, id, title, subreddit, awards):
+    def __init__(self, score, id, title, awards):
         self.score = score
         self.id = id
         self.title = title
-        self.subreddit = subreddit
         self.awards = awards
 
     def to_link(self) -> dict:
@@ -47,6 +45,9 @@ class Submission:
             "s": self.score,
             "a": self.awards,
         }
+
+    def __str__(self):
+        return f'{self.id} {self.title} {self.all_tickers_mentioned} {self.tickers_in_head}'
 
     def get_post_words(self, body):
         return split_to_words(f'{body} {self.title}')
@@ -64,8 +65,9 @@ class Submission:
             word for word in all_words if word in all_tickers)
 
     def set_tickers_in_head(self, body, tickers):
-        self.tickers_in_head = list({
-            t["symbol"] for t in tickers if t["symbol"] in self.get_post_words(body)})
+        words_in_head = self.get_post_words(body)
+        self.tickers_in_head = list(
+            set(t["symbol"] for t in tickers if t["symbol"] in words_in_head))
 
 
 def get_submissions(subreddit, tickers, d: dt.datetime) -> List[Submission]:
@@ -113,7 +115,6 @@ def get_submissions(subreddit, tickers, d: dt.datetime) -> List[Submission]:
         submission = Submission(
             score=post.score,
             title=post.title,
-            subreddit=subreddit,
             id=post.id,
             awards=post.total_awards_received,
         )
