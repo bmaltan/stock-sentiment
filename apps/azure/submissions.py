@@ -17,15 +17,6 @@ for name in ('psaw', 'praw', 'prawcore'):
     logger.setLevel(logging.DEBUG)
     logger.addHandler(handler)
 
-r = praw.Reddit(
-    client_id=os.getenv('REDDIT_CLIENT_ID'),
-    client_secret=os.getenv('REDDIT_CLIENT_SECRET'),
-    username=os.getenv('REDDIT_USERNAME'),
-    password=os.getenv('REDDIT_PASSWORD'),
-    user_agent='test_Agent_for_our_new_bot',
-)
-reddit = PushshiftAPI(r)
-
 
 def split_to_words(s: str) -> List[str]:
     s = re.sub(r'[.,\/#!$%\^&\*;:{}=\-_`~()]', ' ', s)
@@ -79,9 +70,18 @@ class Submission:
 
 
 def get_submissions(subreddit, tickers, d: dt.datetime) -> List[Submission]:
+    praw_instance = praw.Reddit(
+        client_id=os.getenv(f'REDDIT_CLIENT_ID_{subreddit}'),
+        client_secret=os.getenv(f'REDDIT_CLIENT_SECRET_{subreddit}'),
+        username=os.getenv(f'REDDIT_USERNAME_{subreddit}'),
+        password=os.getenv(f'REDDIT_PASSWORD_{subreddit}'),
+        user_agent=f'UserAgent::bs::Script::{subreddit}',
+    )
+    reddit_api = PushshiftAPI(praw_instance)
+
     NYC_timezone_diff = dt.timedelta(hours=6)
     d = d + NYC_timezone_diff
-    subreddit_posts = reddit.search_submissions(
+    subreddit_posts = reddit_api.search_submissions(
         after=int(
             d.timestamp()),
         before=int(
