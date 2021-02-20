@@ -19,7 +19,7 @@ for name in ('psaw', 'praw', 'prawcore'):
 
 
 def split_to_words(s: str) -> List[str]:
-    s = re.sub(r'[.,\/#!$%\^&\*;:{}=\-_`~()]', ' ', s)
+    s = re.sub(r'[.,/#!$%^&\*;:+-?{}\[\]"\'=-_`<>~()]', ' ', s)
     s = re.sub(r'\s{2,}', ' ', s)
     return s.split()
 
@@ -27,17 +27,15 @@ def split_to_words(s: str) -> List[str]:
 class Submission:
     score: int
     id: str
-    body: str
     title: str
     subreddit: str
     awards: int
     all_tickers_mentioned: Counter
     tickers_in_head: List[str]
 
-    def __init__(self, score, id, body, title, subreddit, awards):
+    def __init__(self, score, id, title, subreddit, awards):
         self.score = score
         self.id = id
-        self.body = body
         self.title = title
         self.subreddit = subreddit
         self.awards = awards
@@ -50,15 +48,16 @@ class Submission:
             "a": self.awards,
         }
 
-    def get_post_words(self):
-        return split_to_words(f'{self.body} {self.title}')
+    def get_post_words(self, body):
+        return split_to_words(f'{body} {self.title}')
 
     def get_comment_words(self, comments):
         return split_to_words(
             " ".join(comment.body for comment in comments))
 
-    def set_all_tickers_mentioned(self, tickers, comments):
-        all_words = self.get_post_words() + self.get_comment_words(comments)
+    def set_all_tickers_mentioned(self, body, tickers, comments):
+        all_words = self.get_post_words(
+            body) + self.get_comment_words(comments)
 
         all_tickers = [t["symbol"] for t in tickers]
         self.all_tickers_mentioned = Counter(
@@ -115,13 +114,12 @@ def get_submissions(subreddit, tickers, d: dt.datetime) -> List[Submission]:
             score=post.score,
             title=post.title,
             subreddit=subreddit,
-            body=post.selftext,
             id=post.id,
             awards=post.total_awards_received,
         )
         post.comments.replace_more(limit=None)
         comments = post.comments.list()
-        submission.set_all_tickers_mentioned(tickers, comments)
+        submission.set_all_tickers_mentioned(post.body, tickers, comments)
         submission.set_tickers_in_head(tickers)
         submissions.append(submission)
 
