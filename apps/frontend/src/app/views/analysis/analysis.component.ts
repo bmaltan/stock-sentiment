@@ -1,7 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { MatSort, MatSortable } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Stock } from '@invest-track/models';
 import { Location } from '@angular/common';
 import { UserService } from '../../shared/services/user.service';
@@ -55,7 +55,8 @@ export class AnalysisComponent {
         private location: Location,
         private dialog: MatDialog,
         private fb: FormBuilder,
-        private devicePlatformService: DevicePlatformService
+        private devicePlatformService: DevicePlatformService,
+        private router: Router
     ) {
         this.currentPlatform = this.route.snapshot.url[this.route.snapshot.url.length - 1].path;
         this.currentPlatformTitle = this.currentPlatform.replace(/-/, '/');
@@ -140,6 +141,9 @@ export class AnalysisComponent {
             },
             width: this.deviceIsMobile ? '' : '60vw'
         });
+        const url = this.router.createUrlTree(['discussions']).toString();
+        this.location.go(url);
+
     }
 
     openStockInYahoo(stock: Stock) {

@@ -1,7 +1,7 @@
+import { Location } from '@angular/common';
 import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { MatTableDataSource } from '@angular/material/table';
-// import { DialogFavoritesComponent } from '../../../shared/dialog-favorites/dialog-favorites.component';
+import { Router } from '@angular/router';
 import { DialogLoginComponent } from '../../../shared/dialog-login/dialog-login.component';
 import { DialogSettingsComponent } from '../../../shared/dialog-settings/dialog-settings.component';
 import { UserService } from '../../../shared/services/user.service';
@@ -16,11 +16,16 @@ export class HeaderComponent {
 
     constructor(
         private dialog: MatDialog,
-        private userService: UserService
+        private userService: UserService,
+        private router: Router,
+        private location: Location
     ) { }
 
     openLogin() {
         this.dialog.open(DialogLoginComponent, { autoFocus: false });
+
+        const url = this.router.createUrlTree(['login']).toString();
+        this.location.go(url);
     }
 
     // openFavorites() {
