@@ -19,12 +19,12 @@
         <button mat-flat-button (click)="generateScreenshot()">Generate screenshot</button>
     </div>
 
-    <div style="max-width: 650px" id="capture">
-        <div style="font-size: 24px; margin: 20px 0;">The most discussed stocks of {{ selectedDate.value }}</div>
+    <div id="capture">
+        <div style="font-size: 24px; margin: 0 0 20px 0;">The most discussed stocks of {{ selectedDate.value }}</div>
         <div gdColumns="1fr 1fr" gdGap="1rem">
-            <div class="content-container" *ngFor="let platform of allPlatformData">
-                <div style="margin: 10px 0 0 24px;">{{ platform.platform }}</div>
-
+            <div *ngFor="let platform of allPlatformData, let i = index" class="content-container"
+                [ngClass]="{'highlighted': selectedIndex > -1 && i === 0}">
+                <div class="platform-title">{{ platform.platform }}</div>
                 <table mat-table [dataSource]="platform.stocks">
                     <ng-container matColumnDef="ticker">
                         <th mat-header-cell *matHeaderCellDef> Ticker </th>
@@ -64,6 +64,6 @@
                 <span>Initially displayed comments (not under "X more replies") that mention the ticker</span>
             </div>
         </div>
-        <div style="text-align: right; margin: 20px;">stocksentiment.io</div>
+        <div style="text-align: right; margin: 20px; color: #FF5700">stocksentiment.io</div>
     </div>
 </div>

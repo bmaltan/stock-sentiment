@@ -11,3 +11,18 @@ mat-form-field {
 .icon {
     width: 24px;
 }
+
+#capture {
+    max-width: 650px;
+    padding: 20px;
+
+    .platform-title {
+        padding: 10px 0 0 24px;
+        font-weight: bold;
+        color: #FF5700;
+    }
+    
+    .highlighted {
+        border: solid 2px black;
+    }
+}

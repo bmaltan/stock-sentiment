@@ -18,6 +18,7 @@ export class ScreenshotGeneratorComponent implements OnInit {
     availablePlatforms: Platform[] = [];
     allPlatformData: { platform: string, stocks: Stock[] }[] = [];
     platformToHighlight = new FormControl('');
+    selectedIndex = -1;
 
     displayedColumns = ['ticker', 'numOfPosts', 'numOfMentions'];
 
@@ -77,7 +78,11 @@ export class ScreenshotGeneratorComponent implements OnInit {
 
 
         this.platformToHighlight.valueChanges.subscribe(value => {
-            this.allPlatformData.findIndex(platform => platform.platform === value);
+            this.selectedIndex = this.allPlatformData.findIndex(platform => platform.platform === value);
+            if (this.selectedIndex) {
+                const selectedPlatform = this.allPlatformData.splice(this.selectedIndex, 1)[0];
+                this.allPlatformData.unshift(selectedPlatform);
+            }
         })
 
         this.getAvailableDates();
