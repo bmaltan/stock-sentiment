@@ -63,9 +63,9 @@ class Submission:
         self.all_tickers_mentioned = Counter(
             word for word in all_words if word in all_tickers)
 
-    def set_tickers_in_head(self, tickers):
+    def set_tickers_in_head(self, body, tickers):
         self.tickers_in_head = list({
-            t["symbol"] for t in tickers if t["symbol"] in self.get_post_words()})
+            t["symbol"] for t in tickers if t["symbol"] in self.get_post_words(body)})
 
 
 def get_submissions(subreddit, tickers, d: dt.datetime) -> List[Submission]:
@@ -119,8 +119,8 @@ def get_submissions(subreddit, tickers, d: dt.datetime) -> List[Submission]:
         )
         post.comments.replace_more(limit=None)
         comments = post.comments.list()
-        submission.set_all_tickers_mentioned(post.body, tickers, comments)
-        submission.set_tickers_in_head(tickers)
+        submission.set_all_tickers_mentioned(post.selftext, tickers, comments)
+        submission.set_tickers_in_head(post.selftext, tickers)
         submissions.append(submission)
 
     return submissions
