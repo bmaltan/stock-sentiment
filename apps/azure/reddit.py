@@ -6,17 +6,8 @@ import json
 from stock_data import get_stock_data
 import firebase
 
-subreddits = [
-    'investing',
-    'pennystocks',
-    'stocks',
-    'stockmarket',
-    'stock_picks',
-    'wallstreetbets',
-]
 
-
-def get_all_submissions(date: str):
+def get_all_submissions(date: str, subreddits):
     d = dt.datetime.strptime(date, "%Y-%m-%d")
 
     with open('./tickers.json', encoding='utf-8') as tickers_json:
@@ -29,7 +20,7 @@ def get_all_submissions(date: str):
 
         submissions = get_submissions(sub, tickers, d)
         all_tickers = list({
-            tick for s in submissions for tick in s.all_tickers_mentioned.keys()})
+            tick for submis in submissions for tick in submis.all_tickers_mentioned.keys()})
 
         if len(all_tickers) == 0:
             continue
@@ -42,11 +33,11 @@ def get_all_submissions(date: str):
             mentioned_anywhere = []
             total_mentioned_in_head = 0
             num_of_mentions = 0
-            for s in submissions:
-                if s.all_tickers_mentioned[ticker] > 0:
-                    mentioned_anywhere.append(s)
-                    num_of_mentions += s.all_tickers_mentioned[ticker]
-                if ticker in s.tickers_in_head:
+            for submi in submissions:
+                if submi.all_tickers_mentioned[ticker] > 0:
+                    mentioned_anywhere.append(submi)
+                    num_of_mentions += submi.all_tickers_mentioned[ticker]
+                if ticker in submi.tickers_in_head:
                     total_mentioned_in_head += 1
 
             if total_mentioned_in_head or mentioned_anywhere:
@@ -75,7 +66,30 @@ def get_all_submissions(date: str):
             firebase.save_available_date(subreddit=sub, date=date)
 
 
+def run_reddit(date, sub):
+    subreddits = [
+        'investing',
+        'pennystocks',
+        'stocks',
+        'stockmarket',
+        'stock_picks',
+        'wallstreetbets',
+        'daytrading',
+        'robinhoodpennystocks', 
+    ]
+    if sub is not None and sub in subreddits:
+        subreddits = [sub]
+
+    print('fetching reddit and stock data for subs',
+          subreddits, 'for date', date)
+    get_all_submissions(date, subreddits)
+
+
 if __name__ == '__main__':
     arg_date = sys.argv[1]
-    print('fetching reddit and stock data for ', arg_date)
-    get_all_submissions(date=arg_date)
+
+    arg_sub = None
+    if len(sys.argv) > 2:
+        arg_sub = sys.argv[2]
+
+    run_reddit(arg_date, arg_sub)
