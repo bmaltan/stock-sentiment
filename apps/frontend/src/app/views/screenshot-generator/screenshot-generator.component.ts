@@ -102,9 +102,11 @@ export class ScreenshotGeneratorComponent implements OnInit {
     }
 
     generateScreenshot() {
-        html2canvas(document.querySelector("#capture") as HTMLElement).then(canvas => {
-            const w: any = window.open();
-            w.document.write(`<img src="${canvas.toDataURL("image/png")}">`);
+        html2canvas(document.querySelector('#capture') as HTMLElement).then(canvas => {
+            const downloadElement = document.createElement("a");
+            downloadElement.href = canvas.toDataURL();
+            downloadElement.download = `StockSentiment${this.selectedDate.value}.png`;
+            downloadElement.click();
         });
     }
 

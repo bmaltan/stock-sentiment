@@ -20,7 +20,7 @@
     </div>
 
     <div id="capture">
-        <div style="font-size: 24px; margin: 0 0 20px 0;">The most discussed stocks of {{ selectedDate.value }}</div>
+        <div class="screenshot-title">The most discussed stocks of {{ selectedDate.value }}</div>
         <div gdColumns="1fr 1fr" gdGap="1rem">
             <div *ngFor="let platform of allPlatformData, let i = index" class="content-container"
                 [ngClass]="{'highlighted': selectedIndex > -1 && i === 0}">

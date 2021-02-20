@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { MatSort } from '@angular/material/sort';
+import { MatSort, MatSortable } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute } from '@angular/router';
 import { Stock } from '@invest-track/models';
@@ -103,8 +103,13 @@ export class AnalysisComponent {
         if (!this.platformData) return;
 
         this.dataSource.data = [...this.platformData];
+        this.initSort();
+    }
 
+    initSort() {
+        this.sort.sort(({ id: 'numOfMentions', start: 'desc' }) as MatSortable);
         this.dataSource.sort = this.sort;
+
         this.dataSource.sortingDataAccessor = (data: Stock, sortHeaderId: string) => {
             switch (sortHeaderId) {
                 case 'dailyChange':
@@ -117,6 +122,7 @@ export class AnalysisComponent {
                     return data[sortHeaderId as keyof Omit<Stock, 'links'>] || 0;
             }
         };
+
         this.dataSource.filterPredicate =
             (stock: Stock, filter: string) => {
                 const filterParsed = JSON.parse(filter)
