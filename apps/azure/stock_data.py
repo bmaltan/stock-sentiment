@@ -4,7 +4,6 @@ from yahooquery import Ticker
 
 
 def get_stock_data(tickers: Set[str], d: dt.datetime):
-    print('getting some stock data')
     result = {}
     d = d + dt.timedelta(days=1)
     d = d.strftime("%Y-%m-%d")

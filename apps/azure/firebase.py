@@ -16,6 +16,6 @@ def save_ticker_data(subreddit: str, date: str, ticker: str, ticker_data: Any):
 
 
 def save_available_date(subreddit: str, date: str):
-    print('saved some data to db')
+    print('saved some data to db', subreddit)
     db.reference(
         f'platformMetadata/r-{subreddit}/availableDates').push().set(date)

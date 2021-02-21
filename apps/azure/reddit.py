@@ -25,6 +25,7 @@ def get_all_submissions(date: str, subreddits):
         if len(all_tickers) == 0:
             continue
 
+        print('getting some stock data', sub)
         stock_data |= get_stock_data(
             filter(lambda x: x not in stock_data, all_tickers), d)
 
