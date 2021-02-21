@@ -1,5 +1,5 @@
 export const environment = {
-    production: false,
+    production: true,
     firebase: {
         apiKey: 'AIzaSyCUcOsU-JNdXKXTQ6g09NtXQAArwuI3oMs',
         authDomain: 'bs-invest-track.firebaseapp.com',
