@@ -18,7 +18,7 @@ import { BehaviorSubject, of } from 'rxjs';
 export class PlatformService {
     private platformMetadata = new BehaviorSubject<PlatformMetadata[]>([]);
 
-    constructor(private db: AngularFireDatabase) {}
+    constructor(private db: AngularFireDatabase) { }
 
     getPlatforms() {
         return platforms;
@@ -98,25 +98,25 @@ export class PlatformService {
             topStocks: [
                 ...Object.entries(data.topStocks).map(
                     ([tickerName, ticker]: [string, StockShort]) =>
-                        ({
-                            ticker: tickerName,
-                            closingPrice: ticker.c,
-                            openingPrice: ticker.o,
-                            numOfMentions: ticker.nm,
-                            numOfPosts: ticker.np,
-                            links: ticker.l?.map(
-                                (link: DiscussionLinkShort) =>
-                                    ({
-                                        awards: link.a,
-                                        score: link.s,
-                                        url: this.getLinkForPlatform(
-                                            platform,
-                                            link.u
-                                        ),
-                                        title: link.t,
-                                    } as DiscussionLink)
-                            ),
-                        } as Stock)
+                    ({
+                        ticker: tickerName,
+                        closingPrice: ticker.c,
+                        openingPrice: ticker.o,
+                        numOfMentions: ticker.nm,
+                        numOfPosts: ticker.np,
+                        links: ticker.l?.map(
+                            (link: DiscussionLinkShort) =>
+                            ({
+                                awards: link.a,
+                                score: link.s,
+                                url: this.getLinkForPlatform(
+                                    platform,
+                                    link.u
+                                ),
+                                title: link.t,
+                            } as DiscussionLink)
+                        ),
+                    } as Stock)
                 ),
             ],
         } as PlatformDataForDay;
@@ -171,6 +171,19 @@ const platforms: Platform[] = [
         icon: 'logo-reddit',
         platform: 'reddit',
         route: 'r-stock_picks',
+    },
+    {
+        name: 'r/daytrading',
+        icon: 'logo-reddit',
+        platform: 'reddit',
+        route: 'r-daytrading',
+    },
+    {
+        name: 'r/robinhoodpennystocks',
+        displayName: 'r/RHpenny',
+        icon: 'logo-reddit',
+        platform: 'reddit',
+        route: 'r-robinhoodpennystocks',
     },
     // {
     //     name: 'yahoo',
