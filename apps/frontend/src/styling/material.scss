@@ -175,4 +175,11 @@
         fill: #00000075 !important;
     }
 
+    .mat-table {
+        tr.mat-row:last-child {
+            td {
+                border-bottom: none;
+            }
+        }
+    }
 }
