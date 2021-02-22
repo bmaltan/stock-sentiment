@@ -7,14 +7,13 @@ import { Router } from '@angular/router';
     templateUrl: './gdpr-prompt.component.html',
     styleUrls: ['./gdpr-prompt.component.scss']
 })
-export class GdprPromptComponent implements OnInit {
+export class GdprPromptComponent {
 
     constructor(
         private bottomSheetRef: MatBottomSheetRef<GdprPromptComponent>,
         private router: Router
-    ) { }
-
-    ngOnInit(): void {
+    ) {
+        bottomSheetRef.disableClose = true;
     }
 
     consentToCookies() {
