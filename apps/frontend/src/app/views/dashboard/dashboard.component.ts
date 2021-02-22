@@ -12,7 +12,7 @@ import { PlatformService } from '../../shared/services/platform.service';
 })
 export class DashboardComponent {
 
-    platforms: Platform[] = [];
+    allPlatforms: Platform[] = [];
 
     constructor(
         private platformService: PlatformService,
@@ -20,7 +20,7 @@ export class DashboardComponent {
         private router: Router,
         private snackbar: MatSnackBar,
     ) {
-        this.platforms = this.platformService.getPlatforms();
+        this.allPlatforms = this.platformService.getPlatforms();
         const url = route.snapshot.url[0]?.path;
         if (url === 'donation-cancel') {
             router.navigate(['']);

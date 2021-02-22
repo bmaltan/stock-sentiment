@@ -15,7 +15,7 @@ export class ScreenshotGeneratorComponent implements OnInit {
     selectedDate = new FormControl('');
     selectedPlatform = new FormControl('r-investing');
 
-    availablePlatforms: Platform[] = [];
+    availablePlatformCategories: Platform[] = [];
     allPlatformData: { platform: string, stocks: Stock[] }[] = [];
     platformToHighlight = new FormControl('');
     selectedIndex = -1;
@@ -45,35 +45,38 @@ export class ScreenshotGeneratorComponent implements OnInit {
                 this.selectedDate.setValue(date, { emitEvent: false });
             }
 
-            this.availablePlatforms.forEach(async platform => {
-                let stocks = (await this.platformService.getPlatformData(platform.route, this.selectedDate.value)).topStocks;
-                stocks = stocks.sort((a, b) => {
-                    if (a.numOfPosts !== b.numOfPosts) {
-                        return b.numOfPosts - a.numOfPosts;
-                    } else {
-                        return b.numOfMentions - a.numOfMentions;
-                    }
-                }).slice(0, 5);
+            this.availablePlatformCategories.forEach(category => {
+                category.platforms.forEach(async platform => {
+                    let stocks = (await this.platformService.getPlatformData(platform.route, this.selectedDate.value)).topStocks;
+                    stocks = stocks.sort((a, b) => {
+                        if (a.numOfPosts !== b.numOfPosts) {
+                            return b.numOfPosts - a.numOfPosts;
+                        } else {
+                            return b.numOfMentions - a.numOfMentions;
+                        }
+                    }).slice(0, 5);
 
-                stocks.forEach(stock => {
-                    const index = this.allStocks.findIndex(s => s.ticker === stock.ticker);
-                    if (index === -1) {
-                        this.allStocks.push({
-                            ticker: stock.ticker,
-                            numOfMentions: 1
-                        });
-                    } else {
-                        this.allStocks[index].numOfMentions++;
-                    }
+                    stocks.forEach(stock => {
+                        const index = this.allStocks.findIndex(s => s.ticker === stock.ticker);
+                        if (index === -1) {
+                            this.allStocks.push({
+                                ticker: stock.ticker,
+                                numOfMentions: 1
+                            });
+                        } else {
+                            this.allStocks[index].numOfMentions++;
+                        }
+                    });
+
+                    this.allStocks = this.allStocks.filter(stock => stock.numOfMentions > 1)
+
+                    this.allPlatformData.push({
+                        platform: platform.name,
+                        stocks: stocks
+                    })
                 });
 
-                this.allStocks = this.allStocks.filter(stock => stock.numOfMentions > 1)
-
-                this.allPlatformData.push({
-                    platform: platform.name,
-                    stocks: stocks
-                })
-            });
+            })
         });
 
 
@@ -86,7 +89,7 @@ export class ScreenshotGeneratorComponent implements OnInit {
         })
 
         this.getAvailableDates();
-        this.availablePlatforms = this.platformService.getPlatforms();
+        this.availablePlatformCategories = this.platformService.getPlatforms();
     }
 
     getAvailableDates() {

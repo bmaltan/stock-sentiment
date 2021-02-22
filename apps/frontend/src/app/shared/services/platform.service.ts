@@ -136,65 +136,44 @@ export class PlatformService {
 
 const platforms: Platform[] = [
     {
-        name: 'r/investing',
+        category: "Reddit, Stocks",
         icon: 'logo-reddit',
-        platform: 'reddit',
-        route: 'r-investing',
-    },
-    {
-        name: 'r/wallstreetbets',
-        displayName: 'r/wsb',
-        icon: 'logo-reddit',
-        platform: 'reddit',
-        route: 'r-wallstreetbets',
-    },
-    {
-        name: 'r/stocks',
-        icon: 'logo-reddit',
-        platform: 'reddit',
-        route: 'r-stocks',
-    },
-    {
-        name: 'r/pennystocks',
-        icon: 'logo-reddit',
-        platform: 'reddit',
-        route: 'r-pennystocks',
-    },
-    {
-        name: 'r/stockmarket',
-        icon: 'logo-reddit',
-        platform: 'reddit',
-        route: 'r-stockmarket',
-    },
-    {
-        name: 'r/stock_picks',
-        icon: 'logo-reddit',
-        platform: 'reddit',
-        route: 'r-stock_picks',
-    },
-    {
-        name: 'r/daytrading',
-        icon: 'logo-reddit',
-        platform: 'reddit',
-        route: 'r-daytrading',
-    },
-    {
-        name: 'r/robinhoodpennystocks',
-        displayName: 'r/RHpenny',
-        icon: 'logo-reddit',
-        platform: 'reddit',
-        route: 'r-robinhoodpennystocks',
-    },
-    // {
-    //     name: 'yahoo',
-    //     icon: 'logo-yahoo',
-    //     platform: 'yahoo',
-    //     route: 'yahoo',
-    // },
-    // {
-    //     name: 'twitter',
-    //     icon: 'logo-twitter',
-    //     platform: 'twitter',
-    //     route: 'twitter',
-    // },
+        source: 'reddit',
+        platforms: [
+            {
+                name: 'r/investing',
+                route: 'r-investing',
+            },
+            {
+                name: 'r/wallstreetbets',
+                displayName: 'r/wsb',
+                route: 'r-wallstreetbets',
+            },
+            {
+                name: 'r/stocks',
+                route: 'r-stocks',
+            },
+            {
+                name: 'r/pennystocks',
+                route: 'r-pennystocks',
+            },
+            {
+                name: 'r/stockmarket',
+                route: 'r-stockmarket',
+            },
+            {
+                name: 'r/stock_picks',
+                route: 'r-stock_picks',
+            },
+            {
+                name: 'r/daytrading',
+                route: 'r-daytrading',
+            },
+            {
+                name: 'r/robinhoodpennystocks',
+                displayName: 'r/RHpenny',
+                route: 'r-robinhoodpennystocks',
+            }
+        ]
+    }
 ];

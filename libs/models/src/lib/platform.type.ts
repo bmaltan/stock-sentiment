@@ -1,7 +1,11 @@
 export interface Platform {
-    name: string;
-    displayName?: string;
+    category: string;
     icon: string;
-    platform: string;
-    route: string;
+    source: string;
+
+    platforms: {
+        name: string;
+        displayName?: string;
+        route: string;
+    }[];
 }

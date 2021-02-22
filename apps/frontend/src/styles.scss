@@ -61,6 +61,12 @@ html, body {
     width: fit-content; 
     margin: auto;
 
+    .platform-category-title {
+        font-size: 24px;
+        margin: 0 0 12px 4px;
+        font-weight: 700;
+    }
+
     .platform-card {
         height: 90px;
         width: 100px;
@@ -86,21 +92,19 @@ html, body {
             box-shadow: colors.$container-shadow-pressed, colors.$container-shadow-highlight;
         }
     
-        @each $platform, $color in colors.$platforms {
-            &.#{$platform} {
-                mat-icon {
-                    color: map.get(colors.$platforms, $platform);
-                    align-self: flex-end;
-                }
+    }
 
-                .platform-title {
-                    color: map.get(colors.$platforms, $platform);
-                    font-weight: 500;
-                }
+    @each $platform, $color in colors.$platforms {
+        .#{$platform} {
+            color: map.get(colors.$platforms, $platform);
+            
+            mat-icon {
+                color: map.get(colors.$platforms, $platform);
+                align-self: flex-end;
+            }
 
-                &:hover {
-                    filter: saturate(1.75);
-                }
+            &:hover {
+                filter: saturate(1.75);
             }
         }
     }
