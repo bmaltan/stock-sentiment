@@ -197,3 +197,9 @@ table {
         min-width: 180px;
     }
 }
+
+.ellipsis {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
