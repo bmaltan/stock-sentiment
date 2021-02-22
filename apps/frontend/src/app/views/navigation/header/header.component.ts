@@ -22,7 +22,9 @@ export class HeaderComponent {
         private router: Router,
         private location: Location
     ) {
-        this.url = location.path();
+        this.router.events.subscribe(val => {
+            this.url = location.path();
+        })
     }
 
     openLogin() {
