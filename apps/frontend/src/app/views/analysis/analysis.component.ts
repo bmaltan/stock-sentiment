@@ -83,7 +83,8 @@ export class AnalysisComponent {
 
         this.filterForm = this.fb.group({
             filter: [],
-            minimumMentions: []
+            minimumMentions: [],
+            minimumChange: []
         })
     }
 
@@ -129,6 +130,7 @@ export class AnalysisComponent {
                 const filterParsed = JSON.parse(filter)
                 return (!filterParsed.filter || stock.ticker.toLocaleLowerCase().indexOf(filterParsed.filter.toLocaleLowerCase()) > -1)
                     && (!filterParsed.minimumMentions || stock.numOfMentions >= filterParsed.minimumMentions)
+                    && (!filterParsed.minimumChange || Math.abs((((stock.closingPrice - stock.openingPrice) / (stock.openingPrice) * 100)) || 0) >= filterParsed.minimumChange)
             };
 
         this.loading = false;
@@ -143,7 +145,6 @@ export class AnalysisComponent {
         });
         const url = this.router.createUrlTree(['discussions']).toString();
         this.location.go(url);
-
     }
 
     openStockInYahoo(stock: Stock) {
