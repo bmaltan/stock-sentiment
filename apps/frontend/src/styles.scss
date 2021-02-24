@@ -31,6 +31,7 @@ html, body {
         font-size: 18px;
         margin: 0;
         align-items: flex-end;
+        padding-bottom: 4px;
 
         .date {
             font-size: 18px;   
@@ -195,6 +196,15 @@ table {
     .filter-menu-content {
         padding: measurements.$container-padding;
         min-width: 180px;
+    }
+}
+
+.export-menu {
+    display: flex;
+    flex-direction: column;
+
+    button:not(:last-child) {
+        margin-bottom: 10px;
     }
 }
 

@@ -16,6 +16,7 @@ import { MatCheckboxModule, MAT_CHECKBOX_DEFAULT_OPTIONS } from '@angular/materi
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatBottomSheetModule } from '@angular/material/bottom-sheet';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatTableExporterModule } from 'mat-table-exporter';
 
 @NgModule({
     declarations: [],
@@ -34,7 +35,8 @@ import { MatTooltipModule } from '@angular/material/tooltip';
         MatCheckboxModule,
         MatProgressBarModule,
         MatBottomSheetModule,
-        MatTooltipModule
+        MatTooltipModule,
+        MatTableExporterModule
     ],
     exports: [
         MatTableModule,
@@ -50,7 +52,8 @@ import { MatTooltipModule } from '@angular/material/tooltip';
         MatCheckboxModule,
         MatProgressBarModule,
         MatBottomSheetModule,
-        MatTooltipModule
+        MatTooltipModule,
+        MatTableExporterModule
     ],
     providers: [
         { provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: { appearance: 'outline' } },
@@ -71,6 +74,7 @@ export class MaterialModule {
         'down',
         'enter',
         'exit',
+        'export',
         'info',
         'like',
         'liked',
