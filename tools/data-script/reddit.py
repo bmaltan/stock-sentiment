@@ -1,4 +1,5 @@
 
+from typing import List
 from submissions import get_submissions
 import sys
 import datetime as dt
@@ -7,10 +8,14 @@ from stock_data import get_stock_data
 import firebase
 
 
-def get_all_submissions(date: str, subreddits):
+def get_all_submissions(date: str, subreddits: List[str], is_crypto: bool = False):
     d = dt.datetime.strptime(date, "%Y-%m-%d")
 
-    with open('./tickers.json', encoding='utf-8') as tickers_json:
+    file_name = './tickers.json'
+    if is_crypto:
+        file_name = './cryptos.json'
+
+    with open(file_name, encoding='utf-8') as tickers_json:
         tickers = json.loads(tickers_json.read())
 
     stock_data = {}
@@ -26,8 +31,10 @@ def get_all_submissions(date: str, subreddits):
             continue
 
         print('getting some stock data', sub)
-        stock_data |= get_stock_data(
-            filter(lambda x: x not in stock_data, all_tickers), d)
+        def crypto_map(x): return x + '-USD'
+        def stock_map(x): return x
+        stock_data |= get_stock_data(map(crypto_map if is_crypto else stock_map,
+                                         filter(lambda x: x not in stock_data, all_tickers)), d)
 
         has_saved_anything = False
         for ticker in all_tickers:
@@ -68,7 +75,7 @@ def get_all_submissions(date: str, subreddits):
 
 
 def run_reddit(date, sub):
-    subreddits = [
+    stocks_subreddits = [
         'investing',
         'pennystocks',
         'stocks',
@@ -78,12 +85,30 @@ def run_reddit(date, sub):
         'daytrading',
         'robinhoodpennystocks',
     ]
-    if sub is not None and sub in subreddits:
-        subreddits = [sub]
+    crypto_subreddits = [
+        'cryptocurrency',
+        'cryptomarkets',
+        'crypto_currency_news',
+        'cryptocurrencies',
+    ]
 
-    print('fetching reddit and stock data for subs',
-          subreddits, 'for date', date)
-    get_all_submissions(date, subreddits)
+    if sub is not None:
+        if sub in stocks_subreddits:
+            stocks_subreddits = [sub]
+            crypto_subreddits = []
+        elif sub in crypto_subreddits:
+            crypto_subreddits = [sub]
+            stocks_subreddits = []
+
+    if stocks_subreddits:
+        print('fetching reddit and stock data for subs',
+              stocks_subreddits, 'for date', date)
+        get_all_submissions(date, stocks_subreddits)
+
+    if crypto_subreddits:
+        print('fetching reddit and crypto data for subs',
+              stocks_subreddits, 'for date', date)
+        get_all_submissions(date, crypto_subreddits, True)
 
 
 if __name__ == '__main__':
