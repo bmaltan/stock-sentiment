@@ -252,10 +252,6 @@
         "name": "ARBITRAGE"
     },
     {
-        "symbol": "ARE",
-        "name": "ARENON"
-    },
-    {
         "symbol": "ARK",
         "name": "ARK"
     },
@@ -434,10 +430,6 @@
     {
         "symbol": "AERO",
         "name": "Aero Coin"
-    },
-    {
-        "symbol": "AM",
-        "name": "AeroMe"
     },
     {
         "symbol": "ARN",
@@ -666,10 +658,6 @@
     {
         "symbol": "ACP",
         "name": "Anarchists Prime"
-    },
-    {
-        "symbol": "AND",
-        "name": "AndromedaCoin"
     },
     {
         "symbol": "ANGL",
@@ -6434,10 +6422,6 @@
     {
         "symbol": "HQX",
         "name": "HOQU"
-    },
-    {
-        "symbol": "HODL",
-        "name": "HOdlcoin"
     },
     {
         "symbol": "HTML",
