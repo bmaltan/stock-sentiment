@@ -148,7 +148,11 @@ export class AnalysisComponent {
     }
 
     openStockInYahoo(stock: Stock) {
-        window.open(`https://finance.yahoo.com/quote/${stock.ticker}`, '_')
+        if (this.currentPlatform.indexOf('crypto') > -1) {
+            window.open(`https://finance.yahoo.com/quote/${stock.ticker}-USD`, '_');
+        } else {
+            window.open(`https://finance.yahoo.com/quote/${stock.ticker}`, '_');
+        }
     }
 
     onSortChange(event: any) {

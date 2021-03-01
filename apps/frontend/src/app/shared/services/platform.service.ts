@@ -175,5 +175,28 @@ const platforms: Platform[] = [
                 route: 'r-robinhoodpennystocks',
             }
         ]
+    },
+    {
+        category: "Reddit, Cryptocurrencies",
+        icon: 'logo-reddit',
+        source: 'reddit',
+        platforms: [
+            {
+                name: 'r/cryptocurrency',
+                route: 'r-cryptocurrency',
+            },
+            {
+                name: 'r/cryptomarkets',
+                route: 'r-cryptomarkets',
+            },
+            {
+                name: 'r/crypto_currency_news',
+                route: 'r-crypto_currency_news',
+            },
+            {
+                name: 'r/cryptocurrencies',
+                route: 'r-cryptocurrencies',
+            },
+        ]
     }
 ];

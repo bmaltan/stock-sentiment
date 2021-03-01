@@ -62,53 +62,42 @@ html, body {
     width: fit-content; 
     margin: auto;
 
-    .platform-category-title {
-        font-size: 24px;
-        margin: 0 0 12px 4px;
-        font-weight: 700;
-    }
-
-    .platform-card {
-        height: 90px;
-        width: 100px;
-        padding: measurements.$container-padding;
-    
-        border: colors.$border;
+    .platform-category {
+        padding: 1.5rem;
         box-shadow: colors.$container-shadow;
         border-radius: measurements.$container-border-radius;
-        cursor: pointer;
-        justify-items: right;
-        transition: all measurements.$anim-duration measurements.$anim-type;
 
-        &:hover {
-            box-shadow: colors.$container-shadow-highlight;
-
-            mat-icon {
-                transition: transform measurements.$anim-duration measurements.$anim-type;
-                transform: scale(1.05);
-            }
+        .platform-icon {
+            height: 40px;
         }
 
-        &:active{
-            box-shadow: colors.$container-shadow-pressed, colors.$container-shadow-highlight;
+        .platform-category-title {
+            font-size: 24px;
+            margin: 0 0 16px 4px;
         }
     
-    }
-
-    @each $platform, $color in colors.$platforms {
-        .#{$platform} {
-            color: map.get(colors.$platforms, $platform);
-            
-            mat-icon {
-                color: map.get(colors.$platforms, $platform);
-                align-self: flex-end;
-            }
-
+        .platform-card {
+            padding: calc(#{measurements.$container-padding} / 2) measurements.$container-padding;
+            border: colors.$border;
+            border-radius: measurements.$container-border-radius;
+            cursor: pointer;
+            justify-items: left;
+            transition: all measurements.$anim-duration measurements.$anim-type;
+            z-index: 2;
+            background-color: white;
+    
             &:hover {
-                filter: saturate(1.75);
+                box-shadow: colors.$container-shadow-highlight;
+                transform: scale(1.05);
             }
+    
+            &:active{
+                box-shadow: colors.$container-shadow-pressed, colors.$container-shadow-highlight;
+            }
+        
         }
     }
+
 }
 
 .content-container {

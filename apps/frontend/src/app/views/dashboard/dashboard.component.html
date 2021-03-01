@@ -7,13 +7,15 @@
     </a>
 </div>
 
-<div class="platform-container">
-    <div *ngFor="let platformCategory of allPlatforms" [class]="platformCategory.source">
-        <!-- <div class="platform-category-title"> {{ platformCategory.category }} </div> -->
-        <div gdColumns.gt-xs="repeat(3, auto)" gdColumns.lt-sm="repeat(2, auto)" gdGap="2rem">
-            <div *ngFor="let platform of platformCategory.platforms" class="platform-card" gdRows="1fr auto"
-                gdGap="0.5rem" [routerLink]="['/analysis', platform.route]">
-                <mat-icon class="platform-icon large" [svgIcon]="platformCategory.icon"></mat-icon>
+<div class="platform-container" gdColumns.gt-xs="repeat(2, auto)" gdColumns.lt-sm="repeat(1, auto)" gdGap="2rem">
+    <div *ngFor="let platformCategory of allPlatforms" [class]="'platform-category ' + platformCategory.source">
+        <div gdColumns="auto 1fr">
+            <!-- <mat-icon class="platform-icon large" [svgIcon]="platformCategory.icon"></mat-icon> -->
+            <div class="platform-category-title"> {{ platformCategory.category }} </div>
+        </div>
+        <div gdColumns.gt-xs="repeat(2, auto)" gdColumns.lt-sm="repeat(1, auto)" gdGap="1rem">
+            <div *ngFor="let platform of platformCategory.platforms" class="platform-card"
+                [routerLink]="['/analysis', platform.route]">
                 <div class="platform-title"> {{ platform.displayName || platform.name }} </div>
             </div>
         </div>
