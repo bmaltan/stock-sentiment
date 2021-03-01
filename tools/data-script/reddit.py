@@ -62,6 +62,11 @@ def get_all_submissions(date: str, subreddits: List[str], is_crypto: bool = Fals
                         "o": stock_data[ticker]["open"],
                         "c": stock_data[ticker]["close"],
                     }
+                if ticker + '-USD' in stock_data:
+                    ticker_data |= {
+                        "o": stock_data[ticker + '-USD']["open"],
+                        "c": stock_data[ticker + '-USD']["close"],
+                    }
 
                 firebase.save_ticker_data(
                     subreddit=sub,
