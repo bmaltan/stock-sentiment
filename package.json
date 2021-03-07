@@ -48,6 +48,7 @@
         "@azure/functions": "^1.2.2",
         "@ngx-translate/core": "^13.0.0",
         "@nrwl/angular": "11.0.15",
+        "angular2-chartjs": "^0.5.1",
         "firebase": "^7.0 || ^8.0",
         "firebase-admin": "^9.4.2",
         "html2canvas": "^1.0.0-rc.7",

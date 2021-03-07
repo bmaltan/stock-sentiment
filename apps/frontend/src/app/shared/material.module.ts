@@ -17,6 +17,9 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatBottomSheetModule } from '@angular/material/bottom-sheet';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatTableExporterModule } from 'mat-table-exporter';
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatDividerModule } from '@angular/material/divider';
 
 @NgModule({
     declarations: [],
@@ -36,7 +39,10 @@ import { MatTableExporterModule } from 'mat-table-exporter';
         MatProgressBarModule,
         MatBottomSheetModule,
         MatTooltipModule,
-        MatTableExporterModule
+        MatTableExporterModule,
+        MatTabsModule,
+        MatButtonToggleModule,
+        MatDividerModule
     ],
     exports: [
         MatTableModule,
@@ -53,7 +59,10 @@ import { MatTableExporterModule } from 'mat-table-exporter';
         MatProgressBarModule,
         MatBottomSheetModule,
         MatTooltipModule,
-        MatTableExporterModule
+        MatTableExporterModule,
+        MatTabsModule,
+        MatButtonToggleModule,
+        MatDividerModule
     ],
     providers: [
         { provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: { appearance: 'outline' } },
@@ -66,7 +75,9 @@ export class MaterialModule {
     icons = [
         'account',
         'arrow-left',
+        'breakouts',
         'chat',
+        'correlation',
         'dislike',
         'date',
         'date-clear',

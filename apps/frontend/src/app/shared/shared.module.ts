@@ -12,6 +12,7 @@ import { DisplayIfNotLoggedInDirective } from './directives/display-if-not-logge
 import { DialogDiscussionsComponent } from '../views/analysis/dialog-discussions/dialog-discussions.component';
 import { ShortenDecimalPipe } from './pipes/shorten-decimal.pipe';
 import { GdprPromptComponent } from './gdpr-prompt/gdpr-prompt.component';
+import { ChartModule } from 'angular2-chartjs';
 @NgModule({
     declarations: [
         DialogSettingsComponent,
@@ -34,7 +35,8 @@ import { GdprPromptComponent } from './gdpr-prompt/gdpr-prompt.component';
         MaterialModule,
         DisplayIfLoggedInDirective,
         DisplayIfNotLoggedInDirective,
-        ShortenDecimalPipe
+        ShortenDecimalPipe,
+        ChartModule
     ]
 })
 export class SharedModule { }

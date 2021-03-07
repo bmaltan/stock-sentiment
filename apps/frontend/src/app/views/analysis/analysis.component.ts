@@ -48,6 +48,37 @@ export class AnalysisComponent {
     filterForm!: FormGroup;
     filterActive = false;
 
+    type = 'line';
+    data = {
+        labels: ["02", "03", "04", "05", "06", "07"],
+        datasets: [
+            {
+                label: "Price",
+                data: [65, 59, 80, 81, 56, 55, 40],
+                yAxisID: 'price',
+                fill: false,
+                borderColor: 'black',
+                borderWidth: '2'
+            },
+            {
+                label: "Mentions",
+                data: [250, 29, 80, 21, 56, 55, 40],
+                yAxisID: 'mentions',
+                borderWidth: '1'
+            }
+        ]
+    };
+    options = {
+        responsive: true,
+        scales: {
+            yAxes: [
+                { type: "linear", "id": "price", display: true, position: "left" },
+                { type: "linear", "id": "mentions", display: false, position: "right" }
+            ]
+        }
+    };
+
+
     constructor(
         private platformService: PlatformService,
         private route: ActivatedRoute,
