@@ -40,10 +40,10 @@ class Submission:
 
     def to_link(self) -> dict:
         return {
-            "t": self.title,
-            "u": self.id,
-            "s": self.score,
-            "a": self.awards,
+            "title": self.title,
+            "url": self.id,
+            "score": self.score,
+            "awards": self.awards,
         }
 
     def __str__(self):
