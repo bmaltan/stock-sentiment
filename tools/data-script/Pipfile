@@ -11,6 +11,7 @@ python-dotenv = "*"
 firebase-admin = "*"
 yahooquery = "*"
 websocket = "*"
+psycopg2 = "*"
 
 [dev-packages]
 
