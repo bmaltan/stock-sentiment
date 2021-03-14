@@ -36,7 +36,6 @@ def get_all_submissions(date: str, subreddits: List[str], is_crypto: bool = Fals
         stock_data |= get_stock_data(map(crypto_map if is_crypto else stock_map,
                                          filter(lambda x: x not in stock_data, all_tickers)), d)
 
-        has_saved_anything = False
         for ticker in all_tickers:
             mentioned_anywhere = []
             total_mentioned_in_head = 0
@@ -49,23 +48,21 @@ def get_all_submissions(date: str, subreddits: List[str], is_crypto: bool = Fals
                     total_mentioned_in_head += 1
 
             if total_mentioned_in_head or mentioned_anywhere:
-                has_saved_anything = True
 
                 ticker_data = {
-                    "nm": num_of_mentions,
-                    "np": total_mentioned_in_head,
-                    "l": [s.to_link() for s in mentioned_anywhere]
+                    "platform": sub,
+                    "ticker": ticker,
+                    "day": date,
+                    "neutral_mention": num_of_mentions,
+                    "num_of_posts": total_mentioned_in_head,
+                    "links": [s.to_link() for s in mentioned_anywhere]
                 }
 
-                if ticker in stock_data:
+                stock_key = ticker + '-USD' if is_crypto else ticker
+                if stock_key in stock_data:
                     ticker_data |= {
-                        "o": stock_data[ticker]["open"],
-                        "c": stock_data[ticker]["close"],
-                    }
-                if ticker + '-USD' in stock_data:
-                    ticker_data |= {
-                        "o": stock_data[ticker + '-USD']["open"],
-                        "c": stock_data[ticker + '-USD']["close"],
+                        "open": stock_data[stock_key]["open"],
+                        "close": stock_data[stock_key]["close"],
                     }
 
                 firebase.save_ticker_data(
@@ -74,9 +71,6 @@ def get_all_submissions(date: str, subreddits: List[str], is_crypto: bool = Fals
                     ticker=ticker,
                     ticker_data=ticker_data,
                 )
-
-        if has_saved_anything:
-            firebase.save_available_date(subreddit=sub, date=date)
 
 
 def run_reddit(date, sub):
