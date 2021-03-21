@@ -1,120 +1,57 @@
 
 from typing import List
-from submissions import get_submissions
-import sys
+from models.SingleTickerMention import SingleTickerMention
+from models.Platform import Platform
+import praw
+import os
 import datetime as dt
 import json
-from stock_data import get_stock_data
-import firebase
 
 
-def get_all_submissions(date: str, subreddits: List[str], is_crypto: bool = False):
-    d = dt.datetime.strptime(date, "%Y-%m-%d")
+# get a submission from reddit
+# or get a comment from reddit
+# for submission - save the link
+# for comment - save the post's link
+# check all words if
 
-    file_name = './tickers.json'
-    if is_crypto:
-        file_name = './cryptos.json'
-
-    with open(file_name, encoding='utf-8') as tickers_json:
-        tickers = json.loads(tickers_json.read())
-
-    stock_data = {}
-
-    for sub in subreddits:
-        print('fetching for subreddit', sub)
-
-        submissions = get_submissions(sub, tickers, d)
-        all_tickers = list({
-            tick for submis in submissions for tick in submis.all_tickers_mentioned.keys()})
-
-        if len(all_tickers) == 0:
-            continue
-
-        print('getting some stock data', sub)
-        def crypto_map(x): return x + '-USD'
-        def stock_map(x): return x
-        stock_data |= get_stock_data(map(crypto_map if is_crypto else stock_map,
-                                         filter(lambda x: x not in stock_data, all_tickers)), d)
-
-        for ticker in all_tickers:
-            mentioned_anywhere = []
-            total_mentioned_in_head = 0
-            num_of_mentions = 0
-            for submi in submissions:
-                if submi.all_tickers_mentioned[ticker] > 0:
-                    mentioned_anywhere.append(submi)
-                    num_of_mentions += submi.all_tickers_mentioned[ticker]
-                if ticker in submi.tickers_in_head:
-                    total_mentioned_in_head += 1
-
-            if total_mentioned_in_head or mentioned_anywhere:
-
-                ticker_data = {
-                    "platform": sub,
-                    "ticker": ticker,
-                    "day": date,
-                    "neutral_mention": num_of_mentions,
-                    "num_of_posts": total_mentioned_in_head,
-                    "links": [s.to_link() for s in mentioned_anywhere]
-                }
-
-                stock_key = ticker + '-USD' if is_crypto else ticker
-                if stock_key in stock_data:
-                    ticker_data |= {
-                        "open": stock_data[stock_key]["open"],
-                        "close": stock_data[stock_key]["close"],
-                    }
-
-                firebase.save_ticker_data(
-                    subreddit=sub,
-                    date=date,
-                    ticker=ticker,
-                    ticker_data=ticker_data,
-                )
+def submissions_and_comments(subreddit, **kwargs):
+    results = []
+    results.extend(subreddit.new(**kwargs))
+    results.extend(subreddit.comments(**kwargs))
+    results.sort(key=lambda post: post.created_utc, reverse=True)
+    return results
 
 
-def run_reddit(date, sub):
-    stocks_subreddits = [
-        'investing',
-        'pennystocks',
-        'stocks',
-        'stockmarket',
-        'stock_picks',
-        'wallstreetbets',
-        'daytrading',
-        'robinhoodpennystocks',
-    ]
-    crypto_subreddits = [
-        'cryptocurrency',
-        'cryptomarkets',
-        'crypto_currency_news',
-        'cryptocurrencies',
-    ]
+def stream(platform: Platform) -> List:
+    r = praw.Reddit(
+        client_id=os.getenv(f'REDDIT_CLIENT_ID_{platform.name}'),
+        client_secret=os.getenv(f'REDDIT_CLIENT_SECRET_{platform.name}'),
+        username=os.getenv(f'REDDIT_USERNAME_{platform.name}'),
+        password=os.getenv(f'REDDIT_PASSWORD_{platform.name}'),
+        user_agent=f'UserAgent::bs::Script::{platform.name}',
+    )
 
-    if sub is not None:
-        if sub in stocks_subreddits:
-            stocks_subreddits = [sub]
-            crypto_subreddits = []
-        elif sub in crypto_subreddits:
-            crypto_subreddits = [sub]
-            stocks_subreddits = []
+    stream = praw.models.util.stream_generator(
+        lambda **kwargs: submissions_and_comments(r.subreddit(platform.name), **kwargs), skip_existing=True)
 
-    if stocks_subreddits:
-        print('fetching reddit and stock data for subs',
-              stocks_subreddits, 'for date', date)
-        get_all_submissions(date, stocks_subreddits)
+    for post in stream:
+        date = dt.datetime.fromtimestamp(post.created_utc)
+        date = date.strftime("%Y-%m-%d")
 
-    if crypto_subreddits:
-        print('fetching reddit and crypto data for subs',
-              stocks_subreddits, 'for date', date)
-        get_all_submissions(date, crypto_subreddits, True)
+        text: str = ''
+        post_link: str = ''
+        is_head: bool = False
 
+        if isinstance(post, praw.models.reddit.comment.Comment):
+            text = post.body
+            post_link = post.link_id.replace("t3_", '')
+            is_head = False
+        elif isinstance(post, praw.models.reddit.submission.Submission):
+            text = post.title + ' ' + post.selftext
+            post_link = post.id
+            is_head = True
 
-if __name__ == '__main__':
-    arg_date = sys.argv[1]
+        mention = SingleTickerMention(
+            platform=platform.display, date=date, post_link=post_link, is_head=is_head)
 
-    arg_sub = None
-    if len(sys.argv) > 2:
-        arg_sub = sys.argv[2]
-
-    run_reddit(arg_date, arg_sub)
+        yield (text, mention)
