@@ -8,7 +8,6 @@ datetime = "*"
 praw = "*"
 python-dotenv = "*"
 yahooquery = "*"
-websocket = "*"
 psycopg2 = "*"
 
 [dev-packages]
