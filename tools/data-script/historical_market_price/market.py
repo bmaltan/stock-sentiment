@@ -2,9 +2,10 @@ import datetime as dt
 
 from typing import Set
 from yahooquery import Ticker
+from ..models.Ticker import InvestTicker
 
 
-def get_stock_data(tickers: Set, d: dt.datetime):
+def get_stock_data(tickers: Set[InvestTicker], d: dt.datetime):
     result = {}
     intended_day = d
     date_for_api = d + dt.timedelta(days=1)
