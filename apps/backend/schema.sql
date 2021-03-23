@@ -12,3 +12,14 @@ CREATE TABLE IF NOT EXISTS daily_tickers (
 
     PRIMARY KEY(platform, ticker, day)
 );
+
+CREATE TABLE IF NOT EXISTS temp_mentions (
+    platform        VARCHAR(64) NOT NULL,
+    ticker          VARCHAR(10) NOT NULL,
+    day             DATE NOT NULL,         
+    post_link       VARCHAR(128),
+    head            INTEGER,
+    bear            INTEGER,
+    neutral         INTEGER,
+    bull            INTEGER
+);
