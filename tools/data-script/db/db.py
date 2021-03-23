@@ -1,17 +1,38 @@
 import psycopg2
 from os import getenv
-
-conn = psycopg2.connect(getenv("DATABASE_URL"))
-
-cur = conn.cursor()
-
-cur.execute("""INSERT INTO temp_daily 
-(platform, date, ticker, post_link, head, bear, neutral, bull) 
-VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
-""",
-            (100, "abc'def"))
+from models.SingleTickerMention import SingleTickerMention
+from models.Sentiment import Sentiment
 
 
+def get_connection():
+    return
+
+
+conn = get_connection()
+
+
+def save_single_mention(mention: SingleTickerMention):
+    with psycopg2.connect(getenv("DATABASE_URL")) as conn:
+        with conn.cursor() as curs:
+            curs.execute("""INSERT INTO temp_mentions 
+    (platform, day, ticker, post_link, head, bear, neutral, bull) 
+    VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
+    """,
+                         (
+                             mention.platform,
+                             mention.date,
+                             mention.ticker,
+                             mention.post_link,
+                             1 if mention.is_head else 0,
+                             1 if mention.sentiment == Sentiment.Bear else 0,
+                             1 if mention.sentiment == Sentiment.Neutral else 0,
+                             1 if mention.sentiment == Sentiment.Bull else 0,
+                         )
+                         )
+
+
+def aggregate():
+    pass
 
 
 # head = (1=title or body, 0 = mention)

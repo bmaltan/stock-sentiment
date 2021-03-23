@@ -7,6 +7,7 @@ from platforms.stream import stream
 import helper
 from tickers.tickers import get_tickers
 from models.Sentiment import Sentiment
+from db import db
 
 handler = logging.StreamHandler()
 handler.setLevel(logging.DEBUG)
@@ -45,7 +46,7 @@ def run(platform: Platform):
 
         for t in mentioned_tickers:
             m = mention.copy_for_ticker(t.symbol, Sentiment.Neutral)
-            print(m)
+            db.save_single_mention(m)
 
 
 if __name__ == '__main__':
