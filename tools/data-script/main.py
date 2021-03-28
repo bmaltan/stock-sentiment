@@ -1,11 +1,16 @@
 import sys
 import logging
 import datetime as dt
+from typing import List
 from models.Platform import Platform
 from models.TickerType import TickerType
+from models.SingleTickerMention import SingleTickerMention
+from models.RedditSubmission import RedditSubmission
 from platforms.stream import stream
+from platforms import reddit
 import helper
 from tickers.tickers import get_tickers
+from historical_market_price import market
 from models.Sentiment import Sentiment
 from db import db
 
@@ -49,12 +54,51 @@ def run(platform: Platform):
             db.save_single_mention(m)
 
 
-if __name__ == '__main__':
-    platform = sys.argv[1]
+def get_reddit_submissions(mentions: List[SingleTickerMention]) -> List[RedditSubmission]:
 
-    if platform in available_platforms:
-        index = available_platforms.index(platform)
-        platform = available_platforms[index]
-        run(platform)
+    def find_platform(platform: str) -> Platform:
+        for p in available_platforms:
+            if p.display == platform:
+                return p
+
+    unique = set((x["platform"], x["post_link"])
+                 for x in mentions if x["platform"].startswith("r-"))
+
+    result = []
+    for (platform, id) in unique:
+        if (subm := reddit.get_one_submission_by_id(
+            platform=find_platform(platform),
+            id=id
+        )) is not None:
+            result.append(subm)
+
+    return result
+
+
+def aggregate_for_yesterday():
+    yesterday = dt.date.today() - dt.timedelta(1)
+    tickers = get_tickers(TickerType.All)
+    # for market_price in market.get_stock_data(tickers, yesterday):
+    #     db.save_market_price(market_price)
+
+    temp_mentions = db.get_all_temp_mentions()
+    submissions = get_reddit_submissions(temp_mentions)
+
+    print(submissions)
+    print('aggregation uuu')
+
+    # db.delete_temp_mentions()
+
+
+if __name__ == '__main__':
+    if sys.argv[1] == "aggregate":
+        aggregate_for_yesterday()
     else:
-        print('try other platforms. available ones:', available_platforms)
+        platform = sys.argv[1]
+
+        if platform in available_platforms:
+            index = available_platforms.index(platform)
+            platform = available_platforms[index]
+            run(platform)
+        else:
+            print('try other platforms. available ones:', available_platforms)
