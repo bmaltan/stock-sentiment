@@ -75,12 +75,15 @@ def get_reddit_submissions(mentions: List[SingleTickerMention]) -> List[RedditSu
     return result
 
 
-def aggregate_for_yesterday():
+def fetch_market_prices():
     yesterday = dt.date.today() - dt.timedelta(1)
     tickers = get_tickers(TickerType.All)
-    # for market_price in market.get_stock_data(tickers, yesterday):
-    #     db.save_market_price(market_price)
+    for market_price in market.get_stock_data(tickers, yesterday):
+        db.save_market_price(market_price)
 
+
+def aggregate_for_yesterday():
+    tickers = get_tickers(TickerType.All)
     temp_mentions = db.get_all_temp_mentions()
     submissions = get_reddit_submissions(temp_mentions)
 
@@ -91,14 +94,28 @@ def aggregate_for_yesterday():
 
 
 if __name__ == '__main__':
-    if sys.argv[1] == "aggregate":
-        aggregate_for_yesterday()
-    else:
-        platform = sys.argv[1]
+    command = sys.argv[1]
+    if command == "help":
+        print("""
+commands:
 
-        if platform in available_platforms:
+    market: 
+        fetches yesterday's market prices for all tickers (stocks and cryptos)
+    sentiment <platform>: 
+        starts fetchign real-time data from given platform. 
+    help: 
+        prints this text""")
+    elif command == "market":
+        fetch_market_prices()
+    elif command == "aggregate":
+        aggregate_for_yesterday()
+    elif command == "sentiment":
+        if len(sys.argv) > 2 and (platform := sys.argv[2]) and platform in available_platforms:
             index = available_platforms.index(platform)
             platform = available_platforms[index]
             run(platform)
         else:
-            print('try other platforms. available ones:', available_platforms)
+            print('we do not support that platform. try other platforms. currently available ones:',
+                  available_platforms)
+    else:
+        print("cannot understand what you want. try running help?")
