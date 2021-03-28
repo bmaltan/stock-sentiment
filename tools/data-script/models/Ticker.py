@@ -14,3 +14,11 @@ class InvestTicker:
             return self.symbol == o
         else:
             return o == self
+
+    def __repr__(self) -> str:
+        return "InvestTicker(" + self.symbol + ", " + str(self.type) + ")"
+
+    def get_symbol(self) -> str:
+        if self.type == TickerType.Crypto:
+            return self.symbol + '-USD'
+        return self.symbol

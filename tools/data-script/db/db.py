@@ -1,14 +1,38 @@
+from typing import List
 import psycopg2
 from os import getenv
 from models.SingleTickerMention import SingleTickerMention
 from models.Sentiment import Sentiment
 
 
-def get_connection():
-    return
+def save_market_price(market_price):
+    with psycopg2.connect(getenv("DATABASE_URL")) as conn:
+        with conn.cursor() as curs:
+            curs.execute("""INSERT INTO historical_market_price 
+    (ticker, day, is_crypto, open, close) 
+    VALUES (%s, %s, %s, %s, %s)
+    """,
+                         (
+                             market_price["ticker"],
+                             market_price["date"],
+                             market_price["is_crypto"],
+                             market_price["open"],
+                             market_price["close"],
+                         )
+                         )
 
 
-conn = get_connection()
+def get_all_temp_mentions() -> List[SingleTickerMention]:
+    with psycopg2.connect(getenv("DATABASE_URL")) as conn:
+        with conn.cursor() as curs:
+            curs.execute("SELECT * from temp_mentions;")
+            return curs.fetchall()
+
+
+def delete_temp_mentions():
+    with psycopg2.connect(getenv("DATABASE_URL")) as conn:
+        with conn.cursor() as curs:
+            curs.execute("DELETE from temp_mentions;")
 
 
 def save_single_mention(mention: SingleTickerMention):
