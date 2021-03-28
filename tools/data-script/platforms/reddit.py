@@ -18,8 +18,12 @@ def submissions_and_comments(subreddit, **kwargs):
 
 def get_one_submission_by_id(platform: Platform, id: str) -> praw.models.reddit.submission.Submission:
     r = get_reddit_connection(platform)
-    submission = r.submission(id="39zje0")
-    submission = RedditSubmission(
+    submission = r.submission(id=id)
+
+    if submission.score < 10 or submission.removed_by_category or submission.selftext == "[deleted]" or submission.removal_reason:
+        return None
+
+    return RedditSubmission(
         score=submission.score,
         title=submission.title,
         id=submission.id,
@@ -57,7 +61,7 @@ def stream(platform: Platform) -> List:
 
 
 def get_reddit_connection(platform):
-    praw.Reddit(
+    return praw.Reddit(
         client_id=os.getenv(f'REDDIT_CLIENT_ID_{platform.name}'),
         client_secret=os.getenv(f'REDDIT_CLIENT_SECRET_{platform.name}'),
         username=os.getenv(f'REDDIT_USERNAME_{platform.name}'),
