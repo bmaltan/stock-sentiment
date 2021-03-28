@@ -25,8 +25,18 @@ def save_market_price(market_price):
 def get_all_temp_mentions() -> List[SingleTickerMention]:
     with psycopg2.connect(getenv("DATABASE_URL")) as conn:
         with conn.cursor() as curs:
-            curs.execute("SELECT * from temp_mentions;")
-            return curs.fetchall()
+            curs.execute(
+                "SELECT platform, day, ticker, post_link, head, bear, neutral, bull from temp_mentions")
+            return [{
+                "platform": record[0],
+                "day": record[1],
+                "ticker": record[2],
+                "post_link": record[3],
+                "head": record[4],
+                "bear": record[5],
+                "neutral": record[6],
+                "bull": record[7],
+            } for record in curs]
 
 
 def delete_temp_mentions():
