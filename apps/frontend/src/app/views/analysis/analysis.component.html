@@ -6,7 +6,7 @@
 </div>
 
 <div class="content-container">
-    <mat-tab-group mat-stretch-tabs>
+    <mat-tab-group mat-stretch-tabs [selectedIndex]="mainTabIndex" (selectedTabChange)="onMainTabChange($event)">
         <mat-tab label="Daily Data">
             <div class="daily-data-toolbar" gdColumns="1fr auto" style="border-bottom: 1px solid rgba(0, 0, 0, 0.12)">
                 <div gdColumns="auto 1fr">
@@ -165,16 +165,19 @@
                 <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
                 <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
             </table>
-            <mat-progress-bar style="margin: 20px 0" mode="buffer" *ngIf="loading"></mat-progress-bar>
+            <mat-progress-bar style="margin: 20px 0" mode="buffer" *ngIf="loadingDailyData"></mat-progress-bar>
         </mat-tab>
         <mat-tab>
             <ng-template mat-tab-label>Analysis</ng-template>
-            <mat-tab-group mat-stretch-tabs class="thin-tabs">
+            <mat-tab-group mat-stretch-tabs class="thin-tabs" [selectedIndex]="analysisTabIndex">
                 <mat-tab label="Correlation">
                     <ng-template mat-tab-label>
                         <mat-icon svgIcon="correlation"></mat-icon>
                         Correlation
                     </ng-template>
+                    <mat-progress-bar style="margin: 20px 0" mode="buffer" *ngIf="loadingCorrelation">
+                    </mat-progress-bar>
+
                     <div gdColumns.gt-sm="repeat(2, 1fr)" gdColumns.lt-md="repeat(1, 1fr)" gdGap="2rem"
                         style="padding: 1rem;">
                         <div>
@@ -200,12 +203,16 @@
                         <mat-icon svgIcon="breakouts"></mat-icon>
                         Breakouts
                     </ng-template>
+                    <mat-progress-bar style="margin: 20px 0" mode="buffer" *ngIf="loadingCorrelation">
+                    </mat-progress-bar>
                 </mat-tab>
                 <mat-tab>
                     <ng-template mat-tab-label>
                         <mat-icon svgIcon="like"></mat-icon>
-                        Thing
+                        Deep Dive
                     </ng-template>
+                    <mat-progress-bar style="margin: 20px 0" mode="buffer" *ngIf="loadingCorrelation">
+                    </mat-progress-bar>
                 </mat-tab>
             </mat-tab-group>
         </mat-tab>

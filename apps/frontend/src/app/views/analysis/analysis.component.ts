@@ -10,6 +10,7 @@ import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogDiscussionsComponent } from './dialog-discussions/dialog-discussions.component';
 import { DevicePlatformService } from '../../shared/services/device-platform.service';
+import { MatTabChangeEvent } from '@angular/material/tabs';
 
 @Component({
     selector: 'app-analysis',
@@ -26,7 +27,10 @@ export class AnalysisComponent {
     currentPlatform = '';
     currentPlatformTitle = '';
 
-    loading = true;
+    loadingDailyData = true;
+    loadingCorrelation = false;
+    loadingBreakouts = false;
+    loadingDeepDive = false;
 
     isFavorite = false;
 
@@ -75,9 +79,14 @@ export class AnalysisComponent {
                 { type: "linear", "id": "price", display: true, position: "left" },
                 { type: "linear", "id": "mentions", display: false, position: "right" }
             ]
+        },
+        legend: {
+            display: false
         }
     };
 
+    mainTabIndex = 0;
+    analysisTabIndex = 0;
 
     constructor(
         private platformService: PlatformService,
@@ -96,7 +105,7 @@ export class AnalysisComponent {
 
     ngOnInit() {
         this.selectedDate.valueChanges.subscribe(value => {
-            this.loading = true;
+            this.loadingDailyData = true;
             this.dataSource.data = [];
 
             if (value.toISOString) {
@@ -164,7 +173,7 @@ export class AnalysisComponent {
                     && (!filterParsed.minimumChange || Math.abs((((stock.closingPrice - stock.openingPrice) / (stock.openingPrice) * 100)) || 0) >= filterParsed.minimumChange)
             };
 
-        this.loading = false;
+        this.loadingDailyData = false;
     }
 
     seeDiscussions(stock: Stock) {
@@ -217,6 +226,21 @@ export class AnalysisComponent {
 
     toggleFavorite() {
         this.userService.toggleFavorite(this.currentPlatform);
+    }
+
+    onMainTabChange(event: MatTabChangeEvent) {
+        if (event.index === 1 && this.analysisTabIndex === 0) {
+            setTimeout(() => {
+                this.analysisTabIndex = 1;
+            }, 1);
+            setTimeout(() => {
+                this.analysisTabIndex = 0;
+            }, 2);
+        }
+    }
+
+    onAnalysisTabChange(event: MatTabChangeEvent) {
+        this.analysisTabIndex = event.index;
     }
 
     goBack() {
