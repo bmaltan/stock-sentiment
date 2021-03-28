@@ -23,3 +23,13 @@ CREATE TABLE IF NOT EXISTS temp_mentions (
     neutral         INTEGER,
     bull            INTEGER
 );
+
+CREATE TABLE IF NOT EXISTS historical_market_price (
+    ticker          VARCHAR(10) NOT NULL,
+    day             DATE NOT NULL,
+    is_crypto       BOOLEAN NOT NULL,         
+    open            DECIMAL(18, 8),
+    close           DECIMAL(18, 8),
+
+    PRIMARY KEY(ticker, day, is_crypto)
+);
