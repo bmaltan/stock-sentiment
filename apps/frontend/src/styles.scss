@@ -75,15 +75,16 @@ html, body {
         .platform-card {
             padding: calc(#{measurements.$container-padding} / 2) measurements.$container-padding;
             border: colors.$border;
-            border-radius: measurements.$container-border-radius;
+            border-radius: measurements.$container-border-radius / 2;
             cursor: pointer;
             justify-items: left;
             transition: all measurements.$anim-duration measurements.$anim-type;
             z-index: 2;
-            background-color: white;
-    
+            background: linear-gradient(60deg, #f8f8f8, #ffffff);
+
             &:hover {
                 box-shadow: colors.$container-shadow-highlight;
+                background: linear-gradient(60deg, #f1f1f1, #ffffff);
                 transform: scale(1.05);
             }
     
