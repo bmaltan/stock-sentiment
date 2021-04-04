@@ -4,6 +4,11 @@ version = "0.1.0"
 authors = ["Sedat Sert <bmsedat@gmail.com>", "Bugra Murat Altan <bmaltan@live.com>"]
 edition = "2018"
 
+[profile.release]
+opt-level = 's'  # Optimize for size.
+lto = true # Link Time Optimization (LTO)
+
+
 [dependencies]
 actix-web = "3"
 actix-rt = "1.1.1"

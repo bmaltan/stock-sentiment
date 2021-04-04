@@ -21,3 +21,10 @@ cargo run
 ```
 
 By default application will be available on `http://localhost:5000`. If you wish to change address or port you can do it inside `.env` file
+
+# to build
+
+```bash
+rustup target add x86_64-unknown-linux-musl
+RUSTFLAGS='-C link-arg=-s' cargo build --release --target x86_64-unknown-linux-musl
+```
