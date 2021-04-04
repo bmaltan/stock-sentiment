@@ -1,9 +1,7 @@
 import { Location } from '@angular/common';
 import { Component } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
-import { DialogLoginComponent } from '../../../shared/dialog-login/dialog-login.component';
-import { DialogSettingsComponent } from '../../../shared/dialog-settings/dialog-settings.component';
+import { DialogService } from '../../../shared/services/dialog.service';
 import { UserService } from '../../../shared/services/user.service';
 
 @Component({
@@ -17,7 +15,7 @@ export class HeaderComponent {
     url = '';
 
     constructor(
-        private dialog: MatDialog,
+        private dialogService: DialogService,
         private userService: UserService,
         private router: Router,
         private location: Location
@@ -28,10 +26,7 @@ export class HeaderComponent {
     }
 
     openLogin() {
-        this.dialog.open(DialogLoginComponent, { autoFocus: false });
-
-        const url = this.router.createUrlTree(['login']).toString();
-        this.location.go(url);
+        this.dialogService.openDialog('login');
     }
 
     // openFavorites() {
@@ -39,7 +34,7 @@ export class HeaderComponent {
     // }
 
     openSettings() {
-        this.dialog.open(DialogSettingsComponent, {});
+        this.dialogService.openDialog('settings');
     }
 
     logout() {

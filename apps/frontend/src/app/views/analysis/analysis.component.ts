@@ -1,16 +1,15 @@
 import { Component, ViewChild } from '@angular/core';
 import { MatSort, MatSortable } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { Stock } from '@invest-track/models';
 import { Location } from '@angular/common';
 import { UserService } from '../../shared/services/user.service';
 import { PlatformService } from '../../shared/services/platform.service';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
-import { MatDialog } from '@angular/material/dialog';
-import { DialogDiscussionsComponent } from './dialog-discussions/dialog-discussions.component';
 import { DevicePlatformService } from '../../shared/services/device-platform.service';
 import { MatTabChangeEvent } from '@angular/material/tabs';
+import { DialogService } from '../../shared/services/dialog.service';
 
 @Component({
     selector: 'app-analysis',
@@ -19,7 +18,7 @@ import { MatTabChangeEvent } from '@angular/material/tabs';
 })
 export class AnalysisComponent {
 
-    availableDates: string[] = []
+    availableDates: string[] = [];
     selectedDate = new FormControl('');
 
     platformData?: Stock[];
@@ -93,10 +92,9 @@ export class AnalysisComponent {
         private route: ActivatedRoute,
         private userService: UserService,
         private location: Location,
-        private dialog: MatDialog,
         private fb: FormBuilder,
         private devicePlatformService: DevicePlatformService,
-        private router: Router
+        private dialogService: DialogService
     ) {
         this.currentPlatform = this.route.snapshot.url[this.route.snapshot.url.length - 1].path;
         this.currentPlatformTitle = this.currentPlatform.replace(/-/, '/');
@@ -177,14 +175,12 @@ export class AnalysisComponent {
     }
 
     seeDiscussions(stock: Stock) {
-        this.dialog.open(DialogDiscussionsComponent, {
+        this.dialogService.openDialog('discussions', {
             data: {
                 stock: stock
             },
             width: this.deviceIsMobile ? '' : '60vw'
-        });
-        const url = this.router.createUrlTree(['discussions']).toString();
-        this.location.go(url);
+        })
     }
 
     openStockInYahoo(stock: Stock) {
