@@ -11,6 +11,7 @@
 * {
     font-family: 'Open Sans';
     transition: background measurements.$anim-duration;
+    -webkit-tap-highlight-color: transparent;
 
     &:focus {
         outline: none;
@@ -199,3 +200,4 @@ table {
     overflow: hidden;
     text-overflow: ellipsis;
 }
+
