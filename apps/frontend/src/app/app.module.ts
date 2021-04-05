@@ -23,7 +23,7 @@ import { environment } from '../environments/environment';
         FooterComponent
     ],
     imports: [
-        BrowserModule,
+        BrowserModule.withServerTransition({ appId: 'serverApp' }),
         AppRoutingModule,
         ViewsModule,
         SharedModule,
@@ -34,7 +34,7 @@ import { environment } from '../environments/environment';
         AngularFireAnalyticsModule,
         AngularFireAuthModule,
         AngularFireDatabaseModule,
-        AngularFireAuthModule
+        AngularFireAuthModule,
     ],
     providers: [],
     bootstrap: [AppComponent]

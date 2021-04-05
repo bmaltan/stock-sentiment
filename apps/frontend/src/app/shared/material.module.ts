@@ -1,5 +1,5 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Inject, NgModule, PLATFORM_ID } from '@angular/core';
+import { CommonModule, isPlatformServer } from '@angular/common';
 import { MatTableModule } from '@angular/material/table';
 import { MatIconModule, MatIconRegistry } from '@angular/material/icon';
 import { MatDialogModule } from '@angular/material/dialog';
@@ -104,9 +104,14 @@ export class MaterialModule {
     constructor(
         private domSanitizer: DomSanitizer,
         private matIconRegistry: MatIconRegistry,
+        @Inject(PLATFORM_ID) private platformId: string
     ) {
         this.icons.forEach(icon => {
-            this.matIconRegistry.addSvgIcon(icon, this.domSanitizer.bypassSecurityTrustResourceUrl(`../../assets/icons/${icon}.svg`));
+            if (isPlatformServer(this.platformId)) {
+                this.matIconRegistry.addSvgIconLiteral(icon, this.domSanitizer.bypassSecurityTrustHtml('<svg></svg>'));
+            } else {
+                this.matIconRegistry.addSvgIcon(icon, this.domSanitizer.bypassSecurityTrustResourceUrl(`../../assets/icons/${icon}.svg`));
+            }
         })
     }
 }

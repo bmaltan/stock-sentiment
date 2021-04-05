@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { AngularFireDatabase } from '@angular/fire/database';
 import { Platform, PlatformMetadata } from '@invest-track/models';
 import { map, take } from 'rxjs/operators';
@@ -11,6 +11,7 @@ import type {
     StockShort,
 } from '@invest-track/models';
 import { BehaviorSubject, of } from 'rxjs';
+import { isPlatformServer } from '@angular/common';
 
 @Injectable({
     providedIn: 'root',
@@ -18,7 +19,10 @@ import { BehaviorSubject, of } from 'rxjs';
 export class PlatformService {
     private platformMetadata = new BehaviorSubject<PlatformMetadata[]>([]);
 
-    constructor(private db: AngularFireDatabase) { }
+    constructor(
+        private db: AngularFireDatabase,
+        @Inject(PLATFORM_ID) private platformId: string
+    ) { }
 
     getPlatforms() {
         return platforms;
@@ -29,7 +33,7 @@ export class PlatformService {
         date: string
     ): Promise<PlatformDataForDay> {
         const query = 'platforms/' + platform + '/' + date;
-        const cachedData = window.sessionStorage.getItem(query);
+        const cachedData = !isPlatformServer(this.platformId) ? window.sessionStorage.getItem(query) : null;
 
         if (cachedData) {
             return of(JSON.parse(cachedData)).toPromise();

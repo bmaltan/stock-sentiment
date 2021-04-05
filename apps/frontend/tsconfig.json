@@ -4,6 +4,7 @@
     "include": [],
     "compilerOptions": {
         "strict": true,
+        "types": ["node"]
     },
     "references": [
         {

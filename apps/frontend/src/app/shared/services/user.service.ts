@@ -1,10 +1,11 @@
 import { AngularFireAuth } from '@angular/fire/auth';
-import { Injectable } from '@angular/core';
+import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import firebase from 'firebase';
 import { BehaviorSubject, ReplaySubject } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AngularFireDatabase } from '@angular/fire/database';
 import { last, map, take } from 'rxjs/operators';
+import { isPlatformServer } from '@angular/common';
 
 @Injectable({
     providedIn: 'root'
@@ -17,7 +18,8 @@ export class UserService {
     constructor(
         private firebaseAuth: AngularFireAuth,
         private db: AngularFireDatabase,
-        private snackbar: MatSnackBar
+        private snackbar: MatSnackBar,
+        @Inject(PLATFORM_ID) private platformId: string
     ) {
         firebaseAuth.onAuthStateChanged(user => {
             if (user) {
@@ -26,7 +28,9 @@ export class UserService {
             }
         })
 
-        firebaseAuth.setPersistence('local');
+        if (!isPlatformServer(this.platformId)) {
+            firebaseAuth.setPersistence('local');
+        }
     }
 
     getCurrentUser() {

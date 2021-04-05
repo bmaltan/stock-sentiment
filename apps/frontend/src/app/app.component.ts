@@ -1,5 +1,5 @@
-import { Location } from '@angular/common';
-import { Component } from '@angular/core';
+import { isPlatformServer, Location } from '@angular/common';
+import { Component, Inject, PLATFORM_ID } from '@angular/core';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { GdprPromptComponent } from './shared/gdpr-prompt/gdpr-prompt.component';
 import { DevicePlatformService } from './shared/services/device-platform.service';
@@ -17,18 +17,21 @@ export class AppComponent {
         private platformService: PlatformService,
         private devicePlatformService: DevicePlatformService,
         private bottomSheet: MatBottomSheet,
-        private location: Location
+        private location: Location,
+        @Inject(PLATFORM_ID) private platformId: string
     ) {
-        platformService.getPlatformMetadata();
+        if (!isPlatformServer(this.platformId)) platformService.getPlatformMetadata();
     }
 
     ngOnInit() {
-        const cachedGdprResponse = window.localStorage.getItem('gdprResponse');
-
-        if (Intl.DateTimeFormat().resolvedOptions().timeZone.toLowerCase().indexOf('europe') > -1
-            && this.location.path() !== '/rejected'
-            && cachedGdprResponse !== 'true') {
-            this.bottomSheet.open(GdprPromptComponent);
+        if (!isPlatformServer(this.platformId)) {
+            const cachedGdprResponse = window.localStorage.getItem('gdprResponse');
+    
+            if (Intl.DateTimeFormat().resolvedOptions().timeZone.toLowerCase().indexOf('europe') > -1
+                && this.location.path() !== '/rejected'
+                && cachedGdprResponse !== 'true') {
+                this.bottomSheet.open(GdprPromptComponent);
+            }
         }
     }
 }
