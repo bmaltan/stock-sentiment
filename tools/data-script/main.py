@@ -5,6 +5,7 @@ from typing import List
 from models.Platform import Platform
 from models.TickerType import TickerType
 from models.SingleTickerMention import SingleTickerMention
+from models.DailyTickerMention import DailyTickerMention
 from models.RedditSubmission import RedditSubmission
 from platforms.stream import stream
 from platforms import reddit
@@ -54,12 +55,11 @@ def run(platform: Platform):
             db.save_single_mention(m)
 
 
-def get_reddit_submissions(mentions: List[SingleTickerMention]) -> List[RedditSubmission]:
+def find(arr: List, pred) -> Platform:
+    return next(filter(pred, arr), None)
 
-    def find_platform(platform: str) -> Platform:
-        for p in available_platforms:
-            if p.display == platform:
-                return p
+
+def get_reddit_submissions(mentions: List[SingleTickerMention]) -> List[RedditSubmission]:
 
     unique = set((x["platform"], x["post_link"])
                  for x in mentions if x["platform"].startswith("r-"))
@@ -67,7 +67,8 @@ def get_reddit_submissions(mentions: List[SingleTickerMention]) -> List[RedditSu
     result = []
     for (platform, id) in unique:
         if (subm := reddit.get_one_submission_by_id(
-            platform=find_platform(platform),
+            platform=find(available_platforms,
+                          lambda p: p.display == platform),
             id=id
         )) is not None:
             result.append(subm)
@@ -75,35 +76,104 @@ def get_reddit_submissions(mentions: List[SingleTickerMention]) -> List[RedditSu
     return result
 
 
+def yesterday():
+    return dt.date.today() - dt.timedelta(1)
+
+
 def fetch_market_prices():
-    yesterday = dt.date.today() - dt.timedelta(1)
+    date = yesterday()
     tickers = get_tickers(TickerType.All)
-    for market_price in market.get_stock_data(tickers, yesterday):
+    for market_price in market.get_stock_data(tickers, date):
         db.save_market_price(market_price)
 
 
+def aggregate_tickers_and_reddit(mentions, submissions):
+    daily_mentions = []
+
+    for mention in mentions:
+        d = find(daily_mentions, lambda x: x.ticker ==
+                 mention["ticker"] and x.platform == mention["platform"])
+
+        if d:
+            d.bull_mention += mention["bull"]
+            d.bear_mention += mention["bear"]
+            d.neutral_mention += mention["neutral"]
+            d.num_of_posts += mention["head"]
+            d.links.append(
+                find(submissions, lambda x: mention["post_link"] == x.id)
+            )
+        else:
+            d = DailyTickerMention(
+                platform=mention["platform"],
+                date=mention["day"],
+                ticker=mention["ticker"],
+                bull_mention=mention["bull"],
+                bear_mention=mention["bear"],
+                neutral_mention=mention["neutral"],
+                num_of_posts=mention["head"],
+                links=[
+                    find(submissions, lambda x: mention["post_link"] == x.id)
+                ],
+            )
+            if "open" in mention:
+                d.open = mention["open"]
+                d.close = mention["close"]
+
+            daily_mentions.append(d)
+
+    return daily_mentions
+
+
+def add_market_to_mentions(mentions):
+    date = yesterday().strftime("%Y-%m-%d")
+    market_prices = db.get_market_prices(date)
+    for mention in mentions:
+        index = available_platforms.index(mention["platform"])
+        platform = available_platforms[index]
+        is_crypto = platform.type == TickerType.Crypto
+
+        market_price = find(
+            market_prices,
+            lambda x: x["is_crypto"] == is_crypto and x["ticker"] == mention["ticker"]
+        )
+
+        if market_price:
+            mention["open"] = market_price["open"]
+            mention["close"] = market_price["close"]
+
+    return mentions
+
+
 def aggregate_for_yesterday():
-    tickers = get_tickers(TickerType.All)
     temp_mentions = db.get_all_temp_mentions()
-    submissions = get_reddit_submissions(temp_mentions)
+    reddit_submissions = get_reddit_submissions(temp_mentions)
 
-    print(submissions)
-    print('aggregation uuu')
+    temp_mentions = add_market_to_mentions(temp_mentions)
+    daily = aggregate_tickers_and_reddit(
+        temp_mentions, reddit_submissions)
 
-    # db.delete_temp_mentions()
+    db.save_daily_tickers(daily)
+
+    db.delete_temp_mentions()
 
 
 if __name__ == '__main__':
-    command = sys.argv[1]
+    if len(sys.argv) > 1:
+        command = sys.argv[1]
+    else:
+        command = 'help'
+
     if command == "help":
         print("""
 commands:
 
-    market: 
+    market:
         fetches yesterday's market prices for all tickers (stocks and cryptos)
-    sentiment <platform>: 
-        starts fetchign real-time data from given platform. 
-    help: 
+    aggregate:
+        aggregates yesterday's mentions with market prices and reddit post scores
+    sentiment <platform>:
+        starts fetchign real-time data from given platform.
+    help:
         prints this text""")
     elif command == "market":
         fetch_market_prices()

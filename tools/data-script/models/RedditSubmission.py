@@ -10,6 +10,3 @@ class RedditSubmission:
         self.id = id
         self.title = title
         self.awards = awards
-
-    def __repr__(self) -> str:
-        return f"RedditSubmission({self.id}, {self.title[0:10]}, {self.score}, {self.awards})"

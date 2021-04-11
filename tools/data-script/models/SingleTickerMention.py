@@ -26,11 +26,3 @@ class SingleTickerMention:
             new_mention.sentiment = sentiment
 
         return new_mention
-
-    def __repr__(self) -> str:
-        return "Single Mention (" + ", ".join([self.platform,
-                                               self.date,
-                                               self.post_link,
-                                               str(self.is_head),
-                                               str(self.sentiment),
-                                               self.ticker]) + ")"
