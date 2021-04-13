@@ -22,40 +22,47 @@ for logger_name in ("praw", "prawcore"):
     logger.setLevel(logging.DEBUG)
     logger.addHandler(handler)
 
+availabe_platforms = {
+    "wsb": [
+        Platform("reddit", "r-wsb", "wallstreetbets", TickerType.Stock),
+    ],
+    "stock": [
+        Platform("reddit", "r-investing", "investing", TickerType.Stock),
+        Platform("reddit", "r-pennystocks", "pennystocks", TickerType.Stock),
+        Platform("reddit", "r-stocks", "stocks", TickerType.Stock),
+        Platform("reddit", "r-stockmarket", "stockmarket", TickerType.Stock),
+        Platform("reddit", "r-stock_picks", "stock_picks", TickerType.Stock),
+        Platform("reddit", "r-daytrading", "daytrading", TickerType.Stock),
+        Platform("reddit", "r-RHpennystocks",
+                 "robinhoodpennystocks", TickerType.Stock),
+    ],
+    "crypto": [
+        Platform("reddit", "r-cryptocurrency",
+                 "cryptocurrency", TickerType.Crypto),
+        Platform("reddit", "r-cryptomarkets",
+                 "cryptomarkets", TickerType.Crypto),
+        Platform("reddit", "r-crypto_currency_news",
+                 "crypto_currency_news", TickerType.Crypto),
+        Platform("reddit", "r-cryptocurrencies",
+                 "cryptocurrencies", TickerType.Crypto),
+    ]
+}
 
-available_platforms = [
-    Platform("reddit", "r-investing", "investing", TickerType.Stock),
-    Platform("reddit", "r-pennystocks", "pennystocks", TickerType.Stock),
-    Platform("reddit", "r-stocks", "stocks", TickerType.Stock),
-    Platform("reddit", "r-stockmarket", "stockmarket", TickerType.Stock),
-    Platform("reddit", "r-stock_picks", "stock_picks", TickerType.Stock),
-    Platform("reddit", "r-wsb", "wallstreetbets", TickerType.Stock),
-    Platform("reddit", "r-daytrading", "daytrading", TickerType.Stock),
-    Platform("reddit", "r-RHpennystocks",
-             "robinhoodpennystocks", TickerType.Stock),
-    Platform("reddit", "r-cryptocurrency",
-             "cryptocurrency", TickerType.Crypto),
-    Platform("reddit", "r-cryptomarkets", "cryptomarkets", TickerType.Crypto),
-    Platform("reddit", "r-crypto_currency_news",
-             "crypto_currency_news", TickerType.Crypto),
-    Platform("reddit", "r-cryptocurrencies",
-             "cryptocurrencies", TickerType.Crypto),
-]
 
+def run(platforms: List[Platform]):
 
-def run(platform: Platform):
+    tickers = get_tickers(platforms[0].type)
 
-    tickers = get_tickers(platform.type)
-
-    for (text, mention) in stream(platform):
+    for (text, mention) in stream(platforms):
         mentioned_tickers = helper.find_mentioned_tickers(text, tickers)
 
         for t in mentioned_tickers:
+            # find sentiment here
             m = mention.copy_for_ticker(t.symbol, Sentiment.Neutral)
             db.save_single_mention(m)
 
 
-def find(arr: List, pred) -> Platform:
+def find(arr: List, pred):
     return next(filter(pred, arr), None)
 
 
@@ -173,6 +180,8 @@ commands:
         aggregates yesterday's mentions with market prices and reddit post scores
     sentiment <platform>:
         starts fetchign real-time data from given platform.
+        platform: 
+            can be either wsb, crypto or stock
     help:
         prints this text""")
     elif command == "market":
@@ -180,12 +189,15 @@ commands:
     elif command == "aggregate":
         aggregate_for_yesterday()
     elif command == "sentiment":
-        if len(sys.argv) > 2 and (platform := sys.argv[2]) and platform in available_platforms:
-            index = available_platforms.index(platform)
-            platform = available_platforms[index]
-            run(platform)
+        if len(sys.argv) > 2 and (platform := sys.argv[2]):
+            if platform in availabe_platforms:
+                run(availabe_platforms[platform])
+            else:
+                print(
+                    'we do not support that platform. try other platforms: stock, crypto or wsb')
+
         else:
-            print('we do not support that platform. try other platforms. currently available ones:',
-                  available_platforms)
+            print(
+                'we do not support that platform. try other platforms: stock, crypto or wsb')
     else:
         print("cannot understand what you want. try running help?")

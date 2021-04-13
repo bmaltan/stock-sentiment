@@ -107,16 +107,3 @@ def save_single_mention(mention: SingleTickerMention):
                              1 if mention.sentiment == Sentiment.Bull else 0,
                          )
                          )
-
-
-def aggregate():
-    pass
-
-
-# head = (1=title or body, 0 = mention)
-# sentiment = (-1 = bear, 0 = neutral, 1 = bull)
-# platform date ticker post_link        head     bear  neutral   bull
-# r-wsb    2020-01-14  APPL  aefahwhk   0        1     0         0
-#
-#
-#

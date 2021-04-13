@@ -31,11 +31,12 @@ def get_one_submission_by_id(platform: Platform, id: str) -> praw.models.reddit.
     )
 
 
-def stream(platform: Platform) -> List:
-    r = get_reddit_connection(platform)
+def stream(platforms: List[Platform]) -> List:
+    r = get_reddit_connection(platforms[0])
 
     stream = praw.models.util.stream_generator(
-        lambda **kwargs: submissions_and_comments(r.subreddit(platform.name), **kwargs), skip_existing=True)
+        lambda **kwargs: submissions_and_comments(r.subreddit(
+            "+".join(p.name for p in platforms)), **kwargs), skip_existing=True)
 
     for post in stream:
         date = dt.datetime.fromtimestamp(post.created_utc)
@@ -55,12 +56,13 @@ def stream(platform: Platform) -> List:
             is_head = True
 
         mention = SingleTickerMention(
-            platform=platform.display, date=date, post_link=post_link, is_head=is_head)
+            platform=find(platforms, lambda x: x.name == post.subreddit).display, date=date, post_link=post_link, is_head=is_head)
 
         yield (text, mention)
 
 
 def get_reddit_connection(platform):
+    print(platform.name)
     return praw.Reddit(
         client_id=os.getenv(f'REDDIT_CLIENT_ID_{platform.name}'),
         client_secret=os.getenv(f'REDDIT_CLIENT_SECRET_{platform.name}'),
@@ -68,3 +70,7 @@ def get_reddit_connection(platform):
         password=os.getenv(f'REDDIT_PASSWORD_{platform.name}'),
         user_agent=f'UserAgent::bs::Script::{platform.name}',
     )
+
+
+def find(arr: List, pred):
+    return next(filter(pred, arr), None)
