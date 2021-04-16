@@ -11,8 +11,8 @@ jobs:
     steps:
       - name: Checkout Repo
         uses: actions/checkout@master
-      - name: seed into backend folder
-        run: cd ./apps/backend
+        with:
+          path: ./apps/backend
       - name: Install Rust
         uses: actions-rs/toolchain@v1
         with:
