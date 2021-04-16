@@ -16,9 +16,9 @@ jobs:
         working-directory: ./apps/backend
         uses: actions-rs/toolchain@v1
         with:
-            toolchain: stable
-            target: x86_64-unknown-linux-musl
-            default: true
+          toolchain: stable
+          target: x86_64-unknown-linux-musl
+          default: true
       
       - name: Tests
         working-directory: ./apps/backend
