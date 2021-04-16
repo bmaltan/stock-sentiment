@@ -22,7 +22,7 @@ jobs:
       - name: Tests
         uses: actions-rs/cargo@v1
         with: 
-          comand: test
+          command: test
       - name: build
         uses: actions-rs/cargo@v1
         with:
