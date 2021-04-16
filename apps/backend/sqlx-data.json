@@ -1,0 +1,98 @@
+{
+  "db": "PostgreSQL",
+  "0f9de94d6a21dbb3210fd18478bb955e4a5c2617929a2cc67716e4da3782af50": {
+    "query": "\n                    select * \n                    from daily_tickers \n                    where platform = $1 and day = $2;\n            ",
+    "describe": {
+      "columns": [
+        {
+          "ordinal": 0,
+          "name": "platform",
+          "type_info": "Varchar"
+        },
+        {
+          "ordinal": 1,
+          "name": "ticker",
+          "type_info": "Varchar"
+        },
+        {
+          "ordinal": 2,
+          "name": "day",
+          "type_info": "Date"
+        },
+        {
+          "ordinal": 3,
+          "name": "open",
+          "type_info": "Numeric"
+        },
+        {
+          "ordinal": 4,
+          "name": "close",
+          "type_info": "Numeric"
+        },
+        {
+          "ordinal": 5,
+          "name": "num_of_posts",
+          "type_info": "Int4"
+        },
+        {
+          "ordinal": 6,
+          "name": "bull_mention",
+          "type_info": "Int4"
+        },
+        {
+          "ordinal": 7,
+          "name": "bear_mention",
+          "type_info": "Int4"
+        },
+        {
+          "ordinal": 8,
+          "name": "neutral_mention",
+          "type_info": "Int4"
+        },
+        {
+          "ordinal": 9,
+          "name": "links",
+          "type_info": "Json"
+        }
+      ],
+      "parameters": {
+        "Left": [
+          "Text",
+          "Date"
+        ]
+      },
+      "nullable": [
+        false,
+        false,
+        false,
+        true,
+        true,
+        false,
+        false,
+        false,
+        false,
+        true
+      ]
+    }
+  },
+  "2f8d6167f27b85ed3509d597f6255f362c50d87c67298a9331f8d51fc9d8bc51": {
+    "query": "\n                select distinct day \n                from daily_tickers \n                where platform = $1;\n            ",
+    "describe": {
+      "columns": [
+        {
+          "ordinal": 0,
+          "name": "day",
+          "type_info": "Date"
+        }
+      ],
+      "parameters": {
+        "Left": [
+          "Text"
+        ]
+      },
+      "nullable": [
+        false
+      ]
+    }
+  }
+}
