@@ -11,8 +11,11 @@ jobs:
     steps:
       - name: Checkout Repo
         uses: actions/checkout@master
-        with:
-          path: ./apps/backend
+      - name: Copy backend to current directory
+        run: |
+          cd apps/backend
+          mv * ../..
+          rm -rf apps libs 
       - name: Install Rust
         uses: actions-rs/toolchain@v1
         with:
