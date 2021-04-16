@@ -8,33 +8,29 @@ jobs:
   build-and-deploy:
     name: Build and Deploy
     runs-on: ubuntu-latest
+    defaults:
+      uses:
+        working-directory: ./apps/backend
     steps:
       - name: Checkout Repo
         uses: actions/checkout@master
-      
       - name: Install Rust
-        working-directory: ./apps/backend
         uses: actions-rs/toolchain@v1
         with:
           toolchain: stable
           target: x86_64-unknown-linux-musl
           default: true
-      
       - name: Tests
-        working-directory: ./apps/backend
         uses: actions-rs/cargo@v1
         with: 
           comand: test
-      
       - name: build
         uses: actions-rs/cargo@v1
         with:
           command: build
           args: --release --target=x86_64-unknown-linux-musl
-
       - name: copy into vps
         uses: appleboy/scp-action@master
-        working-directory: ./apps/backend
         with:
           host: ${{ secrets.VPS_HOST }}
           username: ${{ secrets.VPS_USERNAME }}
@@ -44,7 +40,6 @@ jobs:
           source: "target/x86_64-unknown-linux-musl/release/stock_sentiment"
           target: "backend/stock_sentiment"
           strip_components: 3
-
       - name: executing remote ssh commands using password
         uses: appleboy/ssh-action@master
         with:
