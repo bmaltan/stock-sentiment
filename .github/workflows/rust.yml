@@ -9,8 +9,8 @@ jobs:
     name: Build and Deploy
     runs-on: ubuntu-latest
     steps:
-      - name:
-        run: cd apps/backend
+      - name: seed into backend folder
+        run: cd ./apps/backend
       - name: Checkout Repo
         uses: actions/checkout@master
       - name: Install Rust
