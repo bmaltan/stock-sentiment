@@ -51,6 +51,5 @@ jobs:
           passphrase: ${{ secrets.VPS_SSH_PASSPHRASE }}
           port: ${{ secrets.VPS_PORT }}
           script: |
-            ps aux | grep '[s]tock_sentiment' | grep . && kill -9 $(ps aux | grep '[s]tock_sentiment' | awk '{print $2}') || echo -n '' 
-            ./backend/stock_sentiment &
+            bash ./backend/restart_server.sh
 
