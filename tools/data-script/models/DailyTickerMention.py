@@ -14,7 +14,16 @@ class DailyTickerMention:
     neutral_mention: int
     links: List[RedditSubmission]
 
-    def __init__(self, platform: str, date: str, ticker: str, links, bull_mention: int, bear_mention: int, neutral_mention: int, num_of_posts: int):
+    def __init__(self,
+                 platform: str,
+                 date: str,
+                 ticker: str,
+                 links,
+                 bull_mention: int,
+                 bear_mention: int,
+                 neutral_mention: int,
+                 num_of_posts: int,
+                 ):
         self.links = links
         self.platform = platform
         self.date = date
