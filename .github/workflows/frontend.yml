@@ -26,9 +26,8 @@ jobs:
           key: ${{ secrets.VPS_SSHKEY }}
           passphrase: ${{ secrets.VPS_SSH_PASSPHRASE }}
           port: ${{ secrets.VPS_PORT }}
-          source: "dist/"
+          source: "dist/frontend/"
           target: "frontend/"
-          strip_components: 1
       - name: executing remote ssh commands using sshkey
         uses: appleboy/ssh-action@master
         with:
