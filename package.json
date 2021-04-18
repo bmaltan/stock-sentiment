@@ -1,6 +1,6 @@
 {
     "name": "invest-track",
-    "version": "0.2",
+    "version": "0.2.0",
     "license": "MIT",
     "private": true,
     "main": "dist/apps/frontend/main.js",
@@ -59,7 +59,7 @@
         "firebase": "^8.3.2",
         "firebase-admin": "^9.6.0",
         "html2canvas": "^1.0.0-rc.7",
-        "mat-table-exporter": "^9.1.0",
+        "mat-table-exporter": "^9.1.2",
         "rxjs": "^6.6.7",
         "snoowrap": "^1.22.0",
         "xhr2": "^0.2.1",
