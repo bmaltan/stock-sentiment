@@ -17,6 +17,7 @@
         "lint": "nx workspace-lint && ng lint",
         "e2e": "ng e2e",
         "dev": "ng run frontend:serve-ssr",
+        "build:prod": "ng build --prod",
         "prod": "ng build --prod && ng run frontend:server:production",
         "affected:apps": "nx affected:apps",
         "affected:libs": "nx affected:libs",
