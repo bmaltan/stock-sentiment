@@ -1,0 +1,5 @@
+datetime
+praw
+python-dotenv
+yahooquery
+psycopg2
