@@ -22,7 +22,7 @@ for logger_name in ("praw", "prawcore"):
     logger.setLevel(logging.DEBUG)
     logger.addHandler(handler)
 
-availabe_platforms = {
+available_platforms = {
     "wsb": [
         Platform("reddit", "r-wsb", "wallstreetbets", TickerType.Stock),
     ],
@@ -66,16 +66,29 @@ def find(arr: List, pred):
     return next(filter(pred, arr), None)
 
 
+def get_platform(p: str) -> Platform:
+    if (platform := find(available_platforms["stock"],
+                         lambda p: p.display == p)):
+        return platform
+    elif (platform := find(available_platforms["crypto"],
+                           lambda p: p.display == p)):
+        return platform
+    elif (platform := find(available_platforms["wsb"],
+                           lambda p: p.display == o)):
+        return platform
+    else:
+        print("what is this platform", p)
+
+
 def get_reddit_submissions(mentions: List[SingleTickerMention]) -> List[RedditSubmission]:
 
-    unique = set((x["platform"], x["post_link"])
+    unique = set((get_platform(x["platform"]), x["post_link"])
                  for x in mentions if x["platform"].startswith("r-"))
 
     result = []
     for (platform, id) in unique:
         if (subm := reddit.get_one_submission_by_id(
-            platform=find(available_platforms,
-                          lambda p: p.display == platform),
+            platform=platform,
             id=id
         )) is not None:
             result.append(subm)
@@ -190,8 +203,8 @@ commands:
         aggregate_for_yesterday()
     elif command == "sentiment":
         if len(sys.argv) > 2 and (platform := sys.argv[2]):
-            if platform in availabe_platforms:
-                run(availabe_platforms[platform])
+            if platform in available_platforms:
+                run(available_platforms[platform])
             else:
                 print(
                     'we do not support that platform. try other platforms: stock, crypto or wsb')

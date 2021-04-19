@@ -21,3 +21,6 @@ class Platform:
 
     def __eq__(self, other: str):
         return self.display == other
+
+    def __hash__(self):
+        return hash(self.display + self.platform)
