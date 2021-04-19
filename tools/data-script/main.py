@@ -148,8 +148,7 @@ def add_market_to_mentions(mentions):
     date = yesterday().strftime("%Y-%m-%d")
     market_prices = db.get_market_prices(date)
     for mention in mentions:
-        index = available_platforms.index(mention["platform"])
-        platform = available_platforms[index]
+        platform = get_platform(mention["platform"])
         is_crypto = platform.type == TickerType.Crypto
 
         market_price = find(
