@@ -34,4 +34,4 @@ jobs:
           passphrase: ${{ secrets.VPS_SSH_PASSPHRASE }}
           port: ${{ secrets.VPS_PORT }}
           script: |
-            bash ./data/restart.sh  
+            bash ./data/restart.sh &> /dev/null
