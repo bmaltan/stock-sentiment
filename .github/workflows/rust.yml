@@ -53,5 +53,5 @@ jobs:
           passphrase: ${{ secrets.VPS_SSH_PASSPHRASE }}
           port: ${{ secrets.VPS_PORT }}
           script: |
-            bash ./backend/restart_server.sh &> /dev/null
+            bash ./backend/restart_server.sh 
 
