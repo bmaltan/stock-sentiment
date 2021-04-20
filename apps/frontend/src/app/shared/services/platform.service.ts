@@ -1,6 +1,5 @@
 import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { AngularFireDatabase } from '@angular/fire/database';
-import { Platform, PlatformMetadata } from '@invest-track/models';
 import { map, take } from 'rxjs/operators';
 import type {
     DiscussionLinkShort,
@@ -9,6 +8,8 @@ import type {
     PlatformDataForDayShort,
     Stock,
     StockShort,
+    Platform,
+    PlatformMetadata,
 } from '@invest-track/models';
 import { BehaviorSubject, of } from 'rxjs';
 import { isPlatformServer } from '@angular/common';
@@ -22,7 +23,7 @@ export class PlatformService {
     constructor(
         private db: AngularFireDatabase,
         @Inject(PLATFORM_ID) private platformId: string
-    ) { }
+    ) {}
 
     getPlatforms() {
         return platforms;
@@ -33,7 +34,9 @@ export class PlatformService {
         date: string
     ): Promise<PlatformDataForDay> {
         const query = 'platforms/' + platform + '/' + date;
-        const cachedData = !isPlatformServer(this.platformId) ? window.sessionStorage.getItem(query) : null;
+        const cachedData = !isPlatformServer(this.platformId)
+            ? window.sessionStorage.getItem(query)
+            : null;
 
         if (cachedData) {
             return of(JSON.parse(cachedData)).toPromise();
@@ -102,25 +105,25 @@ export class PlatformService {
             topStocks: [
                 ...Object.entries(data.topStocks).map(
                     ([tickerName, ticker]: [string, StockShort]) =>
-                    ({
-                        ticker: tickerName,
-                        closingPrice: ticker.c,
-                        openingPrice: ticker.o,
-                        numOfMentions: ticker.nm,
-                        numOfPosts: ticker.np,
-                        links: ticker.l?.map(
-                            (link: DiscussionLinkShort) =>
-                            ({
-                                awards: link.a,
-                                score: link.s,
-                                url: this.getLinkForPlatform(
-                                    platform,
-                                    link.u
-                                ),
-                                title: link.t,
-                            } as DiscussionLink)
-                        ),
-                    } as Stock)
+                        ({
+                            ticker: tickerName,
+                            closingPrice: ticker.c,
+                            openingPrice: ticker.o,
+                            numOfMentions: ticker.nm,
+                            numOfPosts: ticker.np,
+                            links: ticker.l?.map(
+                                (link: DiscussionLinkShort) =>
+                                    ({
+                                        awards: link.a,
+                                        score: link.s,
+                                        url: this.getLinkForPlatform(
+                                            platform,
+                                            link.u
+                                        ),
+                                        title: link.t,
+                                    } as DiscussionLink)
+                            ),
+                        } as Stock)
                 ),
             ],
         } as PlatformDataForDay;
@@ -140,7 +143,7 @@ export class PlatformService {
 
 const platforms: Platform[] = [
     {
-        category: "Reddit, Stocks",
+        category: 'Reddit, Stocks',
         icon: 'logo-reddit',
         source: 'reddit',
         platforms: [
@@ -177,11 +180,11 @@ const platforms: Platform[] = [
                 name: 'r/robinhoodpennystocks',
                 displayName: 'r/RHpenny',
                 route: 'r-robinhoodpennystocks',
-            }
-        ]
+            },
+        ],
     },
     {
-        category: "Reddit, Cryptocurrencies",
+        category: 'Reddit, Cryptocurrencies',
         icon: 'logo-reddit',
         source: 'reddit',
         platforms: [
@@ -201,6 +204,6 @@ const platforms: Platform[] = [
                 name: 'r/cryptocurrencies',
                 route: 'r-cryptocurrencies',
             },
-        ]
-    }
+        ],
+    },
 ];

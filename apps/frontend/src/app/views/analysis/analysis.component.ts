@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatSort, MatSortable } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute } from '@angular/router';
@@ -16,8 +16,7 @@ import { DialogService } from '../../shared/services/dialog.service';
     templateUrl: './analysis.component.html',
     styleUrls: ['./analysis.component.scss'],
 })
-export class AnalysisComponent {
-
+export class AnalysisComponent implements OnInit {
     availableDates: string[] = [];
     selectedDate = new FormControl('');
 
@@ -33,7 +32,15 @@ export class AnalysisComponent {
 
     isFavorite = false;
 
-    displayedColumns: string[] = ['ticker', 'openingPrice', 'closingPrice', 'dailyChange', 'numOfPosts', 'numOfMentions', 'actions'];
+    displayedColumns: string[] = [
+        'ticker',
+        'openingPrice',
+        'closingPrice',
+        'dailyChange',
+        'numOfPosts',
+        'numOfMentions',
+        'actions',
+    ];
     dataSource: MatTableDataSource<Stock> = new MatTableDataSource();
 
     @ViewChild(MatSort) sort!: MatSort;
@@ -42,7 +49,9 @@ export class AnalysisComponent {
 
     dateFilter = (date: Date | null): boolean => {
         if (date) {
-            const dateString = new Intl.DateTimeFormat('sv-SE').format(date).toString();
+            const dateString = new Intl.DateTimeFormat('sv-SE')
+                .format(date)
+                .toString();
             return this.availableDates.indexOf(dateString) > -1;
         }
         return false;
@@ -53,35 +62,45 @@ export class AnalysisComponent {
 
     type = 'line';
     data = {
-        labels: ["02", "03", "04", "05", "06", "07"],
+        labels: ['02', '03', '04', '05', '06', '07'],
         datasets: [
             {
-                label: "Price",
+                label: 'Price',
                 data: [65, 59, 80, 81, 56, 55, 40],
                 yAxisID: 'price',
                 fill: false,
                 borderColor: 'black',
-                borderWidth: '2'
+                borderWidth: '2',
             },
             {
-                label: "Mentions",
+                label: 'Mentions',
                 data: [250, 29, 80, 21, 56, 55, 40],
                 yAxisID: 'mentions',
-                borderWidth: '1'
-            }
-        ]
+                borderWidth: '1',
+            },
+        ],
     };
     options = {
         responsive: true,
         scales: {
             yAxes: [
-                { type: "linear", "id": "price", display: true, position: "left" },
-                { type: "linear", "id": "mentions", display: false, position: "right" }
-            ]
+                {
+                    type: 'linear',
+                    id: 'price',
+                    display: true,
+                    position: 'left',
+                },
+                {
+                    type: 'linear',
+                    id: 'mentions',
+                    display: false,
+                    position: 'right',
+                },
+            ],
         },
         legend: {
-            display: false
-        }
+            display: false,
+        },
     };
 
     mainTabIndex = 0;
@@ -96,50 +115,63 @@ export class AnalysisComponent {
         private devicePlatformService: DevicePlatformService,
         private dialogService: DialogService
     ) {
-        this.currentPlatform = this.route.snapshot.url[this.route.snapshot.url.length - 1].path;
+        this.currentPlatform = this.route.snapshot.url[
+            this.route.snapshot.url.length - 1
+        ].path;
         this.currentPlatformTitle = this.currentPlatform.replace(/-/, '/');
         this.deviceIsMobile = devicePlatformService.checkIfMobile();
     }
 
     ngOnInit() {
-        this.selectedDate.valueChanges.subscribe(value => {
+        this.selectedDate.valueChanges.subscribe((value) => {
             this.loadingDailyData = true;
             this.dataSource.data = [];
 
             if (value.toISOString) {
-                const date = new Intl.DateTimeFormat('sv-SE').format(value).toString();
+                const date = new Intl.DateTimeFormat('sv-SE')
+                    .format(value)
+                    .toString();
                 this.selectedDate.setValue(date, { emitEvent: false });
                 this.getPlatformData(date);
             }
-        })
+        });
 
         this.getAvailableDates();
 
-        this.userService.getUserFavoritePlatforms().subscribe(favorites => {
+        this.userService.getUserFavoritePlatforms().subscribe((favorites) => {
             this.isFavorite = favorites.includes(this.currentPlatform);
         });
 
         this.filterForm = this.fb.group({
             filter: [],
             minimumMentions: [],
-            minimumChange: []
-        })
+            minimumChange: [],
+        });
     }
 
     getAvailableDates() {
         const platformMetadata = this.platformService.getAllPlatformMetadata();
 
-        platformMetadata.subscribe(data => {
+        platformMetadata.subscribe((data) => {
             if (data?.length) {
-                this.availableDates = data.find(platform => platform.name === this.currentPlatform)?.availableDates as string[];
+                this.availableDates = data.find(
+                    (platform) => platform.name === this.currentPlatform
+                )?.availableDates as string[];
                 this.selectedDate.setValue(this.availableDates[0]);
                 this.getPlatformData(this.selectedDate.value);
             }
-        })
+        });
     }
 
     async getPlatformData(date: string) {
-        this.platformData = Object.values(await (await this.platformService.getPlatformData(this.currentPlatform, date)).topStocks);
+        this.platformData = Object.values(
+            await (
+                await this.platformService.getPlatformData(
+                    this.currentPlatform,
+                    date
+                )
+            ).topStocks
+        );
         if (!this.platformData) return;
 
         this.dataSource.data = [...this.platformData];
@@ -147,29 +179,50 @@ export class AnalysisComponent {
     }
 
     initSort() {
-        this.sort.sort(({ id: 'numOfMentions', start: 'desc' }) as MatSortable);
+        this.sort.sort({ id: 'numOfMentions', start: 'desc' } as MatSortable);
         this.dataSource.sort = this.sort;
 
-        this.dataSource.sortingDataAccessor = (data: Stock, sortHeaderId: string) => {
+        this.dataSource.sortingDataAccessor = (
+            data: Stock,
+            sortHeaderId: string
+        ) => {
             switch (sortHeaderId) {
                 case 'dailyChange':
                     // mat-sort doesn't handle negative values. adding 1000 as a quick workaround
-                    return (((data.closingPrice - data.openingPrice) / (data.openingPrice) * 100) + 1000) || 0;
+                    return (
+                        ((data.closingPrice - data.openingPrice) /
+                            data.openingPrice) *
+                            100 +
+                            1000 || 0
+                    );
                 case 'openingPrice':
                 case 'closingPrice':
                     return !data.closingPrice ? -1 : data[sortHeaderId];
                 default:
-                    return data[sortHeaderId as keyof Omit<Stock, 'links'>] || 0;
+                    return (
+                        data[sortHeaderId as keyof Omit<Stock, 'links'>] || 0
+                    );
             }
         };
 
-        this.dataSource.filterPredicate =
-            (stock: Stock, filter: string) => {
-                const filterParsed = JSON.parse(filter)
-                return (!filterParsed.filter || stock.ticker.toLocaleLowerCase().indexOf(filterParsed.filter.toLocaleLowerCase()) > -1)
-                    && (!filterParsed.minimumMentions || stock.numOfMentions >= filterParsed.minimumMentions)
-                    && (!filterParsed.minimumChange || Math.abs((((stock.closingPrice - stock.openingPrice) / (stock.openingPrice) * 100)) || 0) >= filterParsed.minimumChange)
-            };
+        this.dataSource.filterPredicate = (stock: Stock, filter: string) => {
+            const filterParsed = JSON.parse(filter);
+            return (
+                (!filterParsed.filter ||
+                    stock.ticker
+                        .toLocaleLowerCase()
+                        .indexOf(filterParsed.filter.toLocaleLowerCase()) >
+                        -1) &&
+                (!filterParsed.minimumMentions ||
+                    stock.numOfMentions >= filterParsed.minimumMentions) &&
+                (!filterParsed.minimumChange ||
+                    Math.abs(
+                        ((stock.closingPrice - stock.openingPrice) /
+                            stock.openingPrice) *
+                            100 || 0
+                    ) >= filterParsed.minimumChange)
+            );
+        };
 
         this.loadingDailyData = false;
     }
@@ -177,15 +230,18 @@ export class AnalysisComponent {
     seeDiscussions(stock: Stock) {
         this.dialogService.openDialog('discussions', {
             data: {
-                stock: stock
+                stock: stock,
             },
-            width: this.deviceIsMobile ? '' : '60vw'
-        })
+            width: this.deviceIsMobile ? '' : '60vw',
+        });
     }
 
     openStockInYahoo(stock: Stock) {
         if (this.currentPlatform.indexOf('crypto') > -1) {
-            window.open(`https://finance.yahoo.com/quote/${stock.ticker}-USD`, '_');
+            window.open(
+                `https://finance.yahoo.com/quote/${stock.ticker}-USD`,
+                '_'
+            );
         } else {
             window.open(`https://finance.yahoo.com/quote/${stock.ticker}`, '_');
         }
@@ -195,11 +251,11 @@ export class AnalysisComponent {
         if (event.active === 'ticker') return;
         if (this.dataSource.sort) {
             if (this.dataSource.sort.direction === 'asc') {
-                this.dataSource.sort.direction = 'desc'
+                this.dataSource.sort.direction = 'desc';
             } else if (this.dataSource.sort.direction === 'desc') {
                 this.dataSource.sort.direction = '';
             } else if (!this.dataSource.sort.direction) {
-                this.dataSource.sort.direction = 'asc'
+                this.dataSource.sort.direction = 'asc';
             }
         }
     }
@@ -207,7 +263,10 @@ export class AnalysisComponent {
     filter() {
         this.dataSource.filter = JSON.stringify(this.filterForm.value);
 
-        if (this.filterForm.value.filter?.length || this.filterForm.value.minimumMentions?.length) {
+        if (
+            this.filterForm.value.filter?.length ||
+            this.filterForm.value.minimumMentions?.length
+        ) {
             this.filterActive = true;
         } else {
             this.filterActive = false;
@@ -243,4 +302,3 @@ export class AnalysisComponent {
         this.location.back();
     }
 }
-

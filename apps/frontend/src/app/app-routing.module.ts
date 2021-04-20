@@ -10,18 +10,23 @@ const routes: Routes = [
     { path: 'dashboard', component: DashboardComponent },
     { path: 'donation-cancel', component: DashboardComponent },
     { path: 'donation-success', component: DashboardComponent },
-    { path: 'app', children: [
-        { path: 'analysis/:id', component: AnalysisComponent },
-        { path: 'screenshot', component: ScreenshotGeneratorComponent },
-        { path: 'rejected', component: GdprRejectedComponent },
-    ]},
+    {
+        path: 'app',
+        children: [
+            { path: 'analysis/:id', component: AnalysisComponent },
+            { path: 'screenshot', component: ScreenshotGeneratorComponent },
+            { path: 'rejected', component: GdprRejectedComponent },
+        ],
+    },
     { path: '**', component: DashboardComponent },
 ];
 
 @NgModule({
-    imports: [RouterModule.forRoot(routes, {
-    initialNavigation: 'enabled'
-})],
-    exports: [RouterModule]
+    imports: [
+        RouterModule.forRoot(routes, {
+            initialNavigation: 'enabled',
+        }),
+    ],
+    exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

@@ -200,11 +200,8 @@
                 }
             }
         },
-        "azure": {
-            "root": "apps/azure",
-            "sourceRoot": "apps/azure/src",
-            "projectType": "application",
-            "prefix": "azure"
+        "backend": {
+            "root": "apps/backend"
         }
     },
     "cli": {

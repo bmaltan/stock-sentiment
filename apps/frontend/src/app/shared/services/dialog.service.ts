@@ -45,10 +45,10 @@ export class DialogService {
 
         this.dialogRef?.afterClosed().pipe(
             first()).subscribe(() => {
-                this.router.navigate([], {
-                    queryParams: { dialog: null }
-                });
-                this.dialogRef = null;
+            this.router.navigate([], {
+                queryParams: { dialog: null }
+            });
+            this.dialogRef = null;
         });
     }
 }

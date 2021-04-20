@@ -20,7 +20,7 @@ export class HeaderComponent {
         private router: Router,
         private location: Location
     ) {
-        this.router.events.subscribe(val => {
+        this.router.events.subscribe(() => {
             this.url = location.path();
         })
     }

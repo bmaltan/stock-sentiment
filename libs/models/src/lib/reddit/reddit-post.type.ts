@@ -24,7 +24,7 @@ export interface RedditPost {
     subreddit_type: string;
     ups: number;
     total_awards_received: number;
-    media_embed: MediaEmbedOrSecureMediaEmbedOrGildings;
+    media_embed: Record<string, unknown>;
     author_flair_template_id?: null;
     is_original_content: boolean;
     user_reports?: null[] | null;
@@ -32,7 +32,7 @@ export interface RedditPost {
     is_reddit_media_domain: boolean;
     is_meta: boolean;
     category?: null;
-    secure_media_embed: MediaEmbedOrSecureMediaEmbedOrGildings;
+    secure_media_embed: Record<string, unknown>;
     link_flair_text?: null;
     can_mod_post: boolean;
     score: number;
@@ -103,7 +103,6 @@ export interface RedditPost {
     is_video: boolean;
     comments?: null[] | null;
 }
-export interface MediaEmbedOrSecureMediaEmbedOrGildings {}
 export interface Gildings {
     gid_1?: number | null;
 }
