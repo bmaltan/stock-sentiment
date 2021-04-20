@@ -16,7 +16,6 @@ import { MatCheckboxModule, MAT_CHECKBOX_DEFAULT_OPTIONS } from '@angular/materi
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatBottomSheetModule } from '@angular/material/bottom-sheet';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { MatTableExporterModule } from 'mat-table-exporter';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatDividerModule } from '@angular/material/divider';
@@ -39,7 +38,6 @@ import { MatDividerModule } from '@angular/material/divider';
         MatProgressBarModule,
         MatBottomSheetModule,
         MatTooltipModule,
-        MatTableExporterModule,
         MatTabsModule,
         MatButtonToggleModule,
         MatDividerModule
@@ -59,7 +57,6 @@ import { MatDividerModule } from '@angular/material/divider';
         MatProgressBarModule,
         MatBottomSheetModule,
         MatTooltipModule,
-        MatTableExporterModule,
         MatTabsModule,
         MatButtonToggleModule,
         MatDividerModule
