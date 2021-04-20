@@ -17,7 +17,7 @@ jobs:
       - name: Install Dependencies
         run: npm install
       - name: Build SSR
-        run: npm run build:prod
+        run: npm run prod
       - name: copy into vps
         uses: appleboy/scp-action@master
         with:
