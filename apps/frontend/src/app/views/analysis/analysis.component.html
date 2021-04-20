@@ -37,7 +37,7 @@
                     </div> -->
 
                     <mat-icon class="button" style="margin-left: 8px;" svgIcon="search" [matMenuTriggerFor]="filterMenu"
-                        matTooltip="Search">
+                        tooltip="Search">
                     </mat-icon>
                     <!-- <div bsDisplayIfLoggedIn style="margin-left: 12px">
                             <mat-icon style="margin-top: 2px" *ngIf="isFavorite" class="button" svgIcon="liked"
@@ -152,10 +152,10 @@
                         </div>
                         <ng-template #desktopActions>
                             <mat-icon class="desktop-action discussion" svgIcon="chat" (click)="seeDiscussions(element)"
-                                matTooltip="Discussions">
+                                tooltip="Discussions">
                             </mat-icon>
                             <mat-icon class="desktop-action" svgIcon="logo-yahoo" (click)="openStockInYahoo(element)"
-                                matTooltip="See in Yahoo">
+                                tooltip="See in Yahoo">
                             </mat-icon>
                         </ng-template>
                     </td>

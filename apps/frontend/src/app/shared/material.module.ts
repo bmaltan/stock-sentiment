@@ -9,16 +9,11 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatInputModule } from '@angular/material/input';
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { MatSelectModule } from '@angular/material/select';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
-import { MatCheckboxModule, MAT_CHECKBOX_DEFAULT_OPTIONS } from '@angular/material/checkbox';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatBottomSheetModule } from '@angular/material/bottom-sheet';
-import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatTabsModule } from '@angular/material/tabs';
-import { MatButtonToggleModule } from '@angular/material/button-toggle';
-import { MatDividerModule } from '@angular/material/divider';
 
 @NgModule({
     declarations: [],
@@ -31,16 +26,11 @@ import { MatDividerModule } from '@angular/material/divider';
         MatDialogModule,
         MatInputModule,
         MatSnackBarModule,
-        MatSelectModule,
         MatDatepickerModule,
         MatNativeDateModule,
-        MatCheckboxModule,
         MatProgressBarModule,
         MatBottomSheetModule,
-        MatTooltipModule,
-        MatTabsModule,
-        MatButtonToggleModule,
-        MatDividerModule
+        MatTabsModule
     ],
     exports: [
         MatTableModule,
@@ -50,20 +40,14 @@ import { MatDividerModule } from '@angular/material/divider';
         MatDialogModule,
         MatInputModule,
         MatSnackBarModule,
-        MatSelectModule,
         MatDatepickerModule,
         MatNativeDateModule,
-        MatCheckboxModule,
         MatProgressBarModule,
         MatBottomSheetModule,
-        MatTooltipModule,
-        MatTabsModule,
-        MatButtonToggleModule,
-        MatDividerModule
+        MatTabsModule
     ],
     providers: [
-        { provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: { appearance: 'outline' } },
-        { provide: MAT_CHECKBOX_DEFAULT_OPTIONS, useValue: { color: 'black' } },
+        { provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: { appearance: 'outline' } }
     ]
 })
 

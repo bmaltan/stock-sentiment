@@ -10,11 +10,11 @@
         </mat-form-field>
         <mat-form-field>
             <mat-label>Subreddit to highlight</mat-label>
-            <mat-select [formControl]="platformToHighlight">
-                <mat-option *ngFor="let platform of allPlatformData" [value]="platform.platform">
+            <select [formControl]="platformToHighlight">
+                <option *ngFor="let platform of allPlatformData" [value]="platform.platform">
                     {{ platform.platform }}
-                </mat-option>
-            </mat-select>
+                </option>
+            </select>
         </mat-form-field>
         <button mat-flat-button (click)="generateScreenshot()">Generate screenshot</button>
     </div>
