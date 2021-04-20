@@ -1,11 +1,5 @@
-@use '../../../styling/colors.scss';
-@use '../../../styling/measurements.scss';
-
 .prompt-container {
     margin-bottom: 50px;
-    background: colors.$container-highlight;
-    padding: measurements.$container-padding;
-    border-radius: measurements.$container-border-radius;
     text-align: center;
 
     button {

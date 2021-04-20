@@ -1,7 +1,7 @@
 @use './styling/typography.scss';
 @use './styling/colors.scss';
-@use './styling/measurements.scss';
 @use './styling/animations.scss';
+@use './styling/measurements.scss';
 @use './styling/material.scss';
 @use "sass:map";
 
@@ -10,7 +10,7 @@
 
 * {
     font-family: 'Open Sans';
-    transition: background measurements.$anim-duration;
+    transition: background var(--anim-duration);
     -webkit-tap-highlight-color: transparent;
 
     &:focus {
@@ -19,8 +19,8 @@
 }
 
 html, body {
-    background: colors.$background;
-    color: colors.$font;
+    background: var(--color-background);
+    color: var(--color-font);
     height: 100%;
     margin: 0;
 }
@@ -49,8 +49,8 @@ html, body {
         align-self: center;
 
         &:hover {
-            transform: scale(measurements.$icon-hover-scale);
-            transition: transform measurements.$anim-duration;
+            transform: scale(var(--icon-hover-scale));
+            transition: transform var(--anim-duration);
         }
     }
 }
@@ -61,8 +61,8 @@ html, body {
 
     .platform-category {
         padding: 1.5rem;
-        box-shadow: colors.$container-shadow;
-        border-radius: measurements.$container-border-radius;
+        box-shadow: var(--color-container-shadow);
+        border-radius: var(--container-border-radius);
 
         .platform-icon {
             height: 40px;
@@ -74,23 +74,23 @@ html, body {
         }
     
         .platform-card {
-            padding: calc(#{measurements.$container-padding} / 2) measurements.$container-padding;
-            border: colors.$border;
-            border-radius: measurements.$container-border-radius / 2;
+            padding: calc(var(--container-padding) / 2) var(--container-padding);
+            border: var(--color-border);
+            border-radius: calc(var(--container-border-radius) / 2);
             cursor: pointer;
             justify-items: left;
-            transition: all measurements.$anim-duration measurements.$anim-type;
+            transition: all var(--anim-duration) var(--anim-type);
             z-index: 2;
             background: linear-gradient(60deg, #f8f8f8, #ffffff);
 
             &:hover {
-                box-shadow: colors.$container-shadow-highlight;
+                box-shadow: var(--color-container-shadow-highlight);
                 background: linear-gradient(60deg, #f1f1f1, #ffffff);
                 transform: scale(1.05);
             }
     
             &:active{
-                box-shadow: colors.$container-shadow-pressed, colors.$container-shadow-highlight;
+                box-shadow: var(--color-container-shadow-pressed), var(--color-container-shadow-highlight);
             }
         
         }
@@ -99,9 +99,9 @@ html, body {
 }
 
 .content-container {
-    border: colors.$border;
-    box-shadow: colors.$container-shadow;
-    border-radius: measurements.$container-border-radius;
+    border: var(--color-border);
+    box-shadow: var(--color-container-shadow);
+    border-radius: var(--container-border-radius);
     overflow: hidden;
 
     &.no-border-radius {
@@ -110,11 +110,11 @@ html, body {
 }
 
 button {
-    background: colors.$background;
-    height: measurements.$input-height;
-    border: colors.$border;
-    padding: measurements.$input-padding;
-    border-radius: measurements.$input-border-radius;
+    background: var(--color-background);
+    height: var(--input-height);
+    border: var(--color-border);
+    padding: var(--input-padding);
+    border-radius: var(--input-border-radius);
     cursor: pointer;
 
     &:active, &:focus {
@@ -122,7 +122,7 @@ button {
     }
 
     &:hover {
-        background: darken(colors.$background, 10%);
+        background: darken(white, 10%);
     }
 
     &.primary {
@@ -136,11 +136,11 @@ button {
     }
 
     &[disabled] {
-        background: colors.$disabled;
+        background: var(--color-disabled);
         cursor: initial;
         
         &:hover {
-            background: colors.$disabled;
+            background: var(--color-disabled);
         }
     }
 }
@@ -181,7 +181,7 @@ table {
     }
 
     .filter-menu-content {
-        padding: measurements.$container-padding;
+        padding: var(--container-padding);
         min-width: 180px;
     }
 }

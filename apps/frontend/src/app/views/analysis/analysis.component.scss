@@ -1,16 +1,14 @@
-@use '../../../styling/colors.scss';
-
 .content-container {
     margin: auto;
 }
 
 .positive-change {
     font-weight: bold;
-    color: colors.$positive;
+    color: var(--color-positive);
 }
 
 .negative-change {
-    color: colors.$negative;
+    color: var(--color-negative);
 }
 
 mat-form-field {

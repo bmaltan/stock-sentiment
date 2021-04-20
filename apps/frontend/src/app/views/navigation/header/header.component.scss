@@ -1,5 +1,3 @@
-@use '../../../../styling/measurements.scss';
-
 .header-container {
     padding: 0 100px;
     display: flex;
@@ -30,8 +28,8 @@
 .mat-menu-item {
     &:hover {
         mat-icon {
-            transform: scale(measurements.$icon-hover-scale);
-            transition: transform measurements.$anim-duration;
+            transform: scale(var(--icon-hover-scale));
+            transition: transform var(--anim-duration);
         }
     }
 }

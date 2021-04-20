@@ -1,23 +1,20 @@
-@use './colors.scss';
-@use './measurements.scss';
-
 @mixin styles {
     mat-icon {
         color: #4d4d4d;
 
         &.small {
-            height: measurements.$icon-small;
-            width: measurements.$icon-small;
+            height: var(--icon-small);
+            width: var(--icon-small);
         }
 
         &.medium {
-            height: measurements.$icon-medium;
-            width: measurements.$icon-medium;
+            height: var(--icon-medium);
+            width: var(--icon-medium);
         }
 
         &.large {
-            height: measurements.$icon-large;
-            width: measurements.$icon-large;
+            height: var(--icon-large);
+            width: var(--icon-large);
         }
     }
 
@@ -27,7 +24,7 @@
 
     .cdk-overlay-pane {
         .mat-menu-panel {
-            border-radius: measurements.$container-border-radius;
+            border-radius: var(--container-border-radius);
         
             .mat-menu-content {
                 padding: 20px;
@@ -61,14 +58,14 @@
     }
 
     .mat-form-field-outline-start { 
-        border-top-left-radius: measurements.$input-border-radius !important; 
-        border-bottom-left-radius: measurements.$input-border-radius !important;
-        width: measurements.$input-border-radius !important;
+        border-top-left-radius: var(--input-border-radius) !important; 
+        border-bottom-left-radius: var(--input-border-radius) !important;
+        width: var(--input-border-radius) !important;
     }
     
     .mat-form-field-outline-end {
-        border-top-right-radius: measurements.$input-border-radius !important; 
-        border-bottom-right-radius: measurements.$input-border-radius !important; 
+        border-top-right-radius: var(--input-border-radius) !important; 
+        border-bottom-right-radius: var(--input-border-radius) !important; 
     }
 
     .mat-form-field-wrapper {
@@ -81,7 +78,7 @@
     }
 
     .mat-dialog-container {
-        border-radius: measurements.$container-border-radius !important;
+        border-radius: var(--container-border-radius) !important;
     }
 
     @media only screen and (max-width: 700px) {
@@ -116,10 +113,10 @@
     }
 
     .mat-snack-bar-container {
-        background: colors.$background;
-        color: colors.$font;
-        border-radius: measurements.$container-border-radius !important;
-        padding: 14px measurements.$container-padding !important;
+        background: var(--color-background);
+        color: var(--color-font);
+        border-radius: var(--container-border-radius) !important;
+        padding: 14px var(--container-padding) !important;
         min-width: unset !important;
     }
 
@@ -138,7 +135,7 @@
     }
 
     .mat-datepicker-content {
-        border-radius: measurements.$container-border-radius !important;
+        border-radius: var(--container-border-radius) !important;
         padding: 0 20px 10px 20px;
     }
 
@@ -147,7 +144,7 @@
     }
 
     tr.mat-row:hover {
-        background: colors.$item-highlight;
+        background: var(--color-item-highlight);
     }
 
     @media only screen and (max-width: 600px) {
