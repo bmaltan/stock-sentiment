@@ -11,7 +11,7 @@ extern crate serde_json;
 use serde::{Deserialize, Serialize};
 use sqlx::{FromRow, PgPool};
 
-#[derive(Serialize, Deserialize, FromRow, Clone)]
+#[derive(Serialize, Deserialize, FromRow, Clone, Debug, PartialEq)]
 pub struct Link {
     id: String,
     title: String,
@@ -95,14 +95,14 @@ impl DailyTicker {
                 neutral_mention: r.neutral_mention,
                 links: r.links.map_or(vec![], |x| {
                     let links: Vec<Option<Link>> = serde_json::from_value(x).unwrap();
-                    deduplicate_links(links)
+                    deduplicate_links_and_strip_null(links)
                 }),
             })
             .collect())
     }
 }
 
-fn deduplicate_links(links: Vec<Option<Link>>) -> Vec<Link> {
+fn deduplicate_links_and_strip_null(links: Vec<Option<Link>>) -> Vec<Link> {
     let mut seen_ids: HashSet<&str> = HashSet::new();
 
     links
@@ -120,4 +120,31 @@ fn deduplicate_links(links: Vec<Option<Link>>) -> Vec<Link> {
         })
         .map(|s| s.clone().unwrap())
         .collect::<Vec<_>>()
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    #[test]
+    fn should_dedup_links() {
+        let link = Some(Link {
+            awards: 1,
+            id: String::from("1"),
+            score: 11,
+            title: String::from("lalala"),
+        });
+        let links = vec![None, link.clone(), link.clone(), link.clone()];
+        let dedup = deduplicate_links(links);
+
+        assert_eq!(dedup.len(), 1);
+        assert_eq!(
+            dedup,
+            vec![Link {
+                awards: 1,
+                id: String::from("1"),
+                score: 11,
+                title: String::from("lalala"),
+            }]
+        )
+    }
 }
