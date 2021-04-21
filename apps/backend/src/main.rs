@@ -2,6 +2,8 @@ use actix_web::{App, HttpServer};
 use dotenv::dotenv;
 use sqlx::postgres::PgPoolOptions;
 use std::env;
+#[macro_use]
+extern crate serde_derive;
 
 mod platform_data;
 
