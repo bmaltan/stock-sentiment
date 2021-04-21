@@ -114,14 +114,17 @@ def aggregate_tickers_and_reddit(mentions, submissions):
         d = find(daily_mentions, lambda x: x.ticker ==
                  mention["ticker"] and x.platform == mention["platform"])
 
+        mention_submission = find(
+            submissions, lambda x: mention["post_link"] == x.id)
+        if not mention_submission:
+            continue
+
         if d:
             d.bull_mention += mention["bull"]
             d.bear_mention += mention["bear"]
             d.neutral_mention += mention["neutral"]
             d.num_of_posts += mention["head"]
-            d.links.append(
-                find(submissions, lambda x: mention["post_link"] == x.id)
-            )
+            d.links.append(mention_submission)
         else:
             d = DailyTickerMention(
                 platform=mention["platform"],
@@ -131,9 +134,7 @@ def aggregate_tickers_and_reddit(mentions, submissions):
                 bear_mention=mention["bear"],
                 neutral_mention=mention["neutral"],
                 num_of_posts=mention["head"],
-                links=[
-                    find(submissions, lambda x: mention["post_link"] == x.id)
-                ],
+                links=[mention_submission],
             )
             if "open" in mention:
                 d.open = mention["open"]
