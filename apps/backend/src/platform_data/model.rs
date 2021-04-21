@@ -2,20 +2,15 @@ use actix_web::{Error, HttpRequest, HttpResponse, Responder};
 use anyhow::Result;
 use bigdecimal::ToPrimitive;
 use futures::future::{ready, Ready};
-use serde_json::from_value;
 use sqlx::types::chrono::NaiveDate;
 
 extern crate serde;
 extern crate serde_json;
 
-use std::fmt;
-use std::marker::PhantomData;
-
-use serde::de::{Deserialize, Deserializer, SeqAccess, Visitor};
-use serde::Serialize;
+use serde::{Deserialize, Serialize};
 use sqlx::{FromRow, PgPool};
 
-#[derive(Serialize, Deserialize, FromRow)]
+#[derive(Serialize, Deserialize, FromRow, Clone)]
 pub struct Link {
     id: String,
     title: String,
@@ -34,7 +29,6 @@ pub struct DailyTicker {
     pub bull_mention: i32,
     pub bear_mention: i32,
     pub neutral_mention: i32,
-    #[serde(deserialize_with = "skip_nulls")]
     pub links: Vec<Link>,
 }
 
@@ -99,40 +93,15 @@ impl DailyTicker {
                 bear_mention: r.bear_mention,
                 bull_mention: r.bull_mention,
                 neutral_mention: r.neutral_mention,
-                links: r.links.map_or(vec![], |x| from_value(x).unwrap()),
+                links: r.links.map_or(vec![], |x| {
+                    let links: Vec<Option<Link>> = serde_json::from_value(x).unwrap();
+                    links
+                        .iter()
+                        .filter(|x| x.is_some())
+                        .map(|s| s.clone().unwrap())
+                        .collect::<Vec<Link>>()
+                }),
             })
             .collect())
     }
-}
-
-fn skip_nulls<'de, D, T>(deserializer: D) -> Result<Vec<T>, D::Error>
-where
-    D: Deserializer<'de>,
-    T: Deserialize<'de>,
-{
-    struct SkipNulls<T>(PhantomData<T>);
-
-    impl<'de, T> Visitor<'de> for SkipNulls<T>
-    where
-        T: Deserialize<'de>,
-    {
-        type Value = Vec<T>;
-
-        fn expecting(&self, formatter: &mut fmt::Formatter) -> fmt::Result {
-            formatter.write_str("array with nulls")
-        }
-
-        fn visit_seq<A>(self, mut seq: A) -> Result<Self::Value, A::Error>
-        where
-            A: SeqAccess<'de>,
-        {
-            let mut vec = Vec::new();
-            while let Some(elem) = seq.next_element::<Option<T>>()? {
-                vec.extend(elem);
-            }
-            Ok(vec)
-        }
-    }
-
-    deserializer.deserialize_seq(SkipNulls(PhantomData))
 }
