@@ -3,6 +3,7 @@ use anyhow::Result;
 use bigdecimal::ToPrimitive;
 use futures::future::{ready, Ready};
 use sqlx::types::chrono::NaiveDate;
+use std::collections::HashSet;
 
 extern crate serde;
 extern crate serde_json;
@@ -80,7 +81,6 @@ impl DailyTicker {
         )
         .fetch_all(&*pool)
         .await?;
-
         Ok(recs
             .into_iter()
             .map(|r| DailyTicker {
@@ -95,13 +95,29 @@ impl DailyTicker {
                 neutral_mention: r.neutral_mention,
                 links: r.links.map_or(vec![], |x| {
                     let links: Vec<Option<Link>> = serde_json::from_value(x).unwrap();
-                    links
-                        .iter()
-                        .filter(|x| x.is_some())
-                        .map(|s| s.clone().unwrap())
-                        .collect::<Vec<Link>>()
+                    deduplicate_links(links)
                 }),
             })
             .collect())
     }
+}
+
+fn deduplicate_links(links: Vec<Option<Link>>) -> Vec<Link> {
+    let mut seen_ids: HashSet<&str> = HashSet::new();
+
+    links
+        .iter()
+        .filter(|x| match x {
+            None => false,
+            Some(x) => {
+                if seen_ids.contains(x.id.as_str()) {
+                    false
+                } else {
+                    seen_ids.insert(&x.id);
+                    true
+                }
+            }
+        })
+        .map(|s| s.clone().unwrap())
+        .collect::<Vec<_>>()
 }
