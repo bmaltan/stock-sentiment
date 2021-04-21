@@ -10,9 +10,10 @@ use sqlx::{FromRow, PgPool};
 
 #[derive(Serialize, Deserialize, FromRow)]
 pub struct Link {
-    url: String,
+    id: String,
     title: String,
     score: i32,
+    awards: i32,
 }
 
 #[derive(Serialize, Deserialize, FromRow)]
