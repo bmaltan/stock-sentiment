@@ -124,7 +124,8 @@ def aggregate_tickers_and_reddit(mentions, submissions):
             d.bear_mention += mention["bear"]
             d.neutral_mention += mention["neutral"]
             d.num_of_posts += mention["head"]
-            d.links.append(mention_submission)
+            if not find(d.links, lambda x: mention["post_link"] == x.id):
+                d.links.append(mention_submission)
         else:
             d = DailyTickerMention(
                 platform=mention["platform"],
