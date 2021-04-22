@@ -134,7 +134,7 @@ mod tests {
             title: String::from("lalala"),
         });
         let links = vec![None, link.clone(), link.clone(), link.clone()];
-        let dedup = deduplicate_links(links);
+        let dedup = deduplicate_links_and_strip_null(links);
 
         assert_eq!(dedup.len(), 1);
         assert_eq!(
