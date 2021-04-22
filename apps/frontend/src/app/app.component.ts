@@ -14,15 +14,10 @@ export class AppComponent implements OnInit {
     title = 'stock-sentiment';
 
     constructor(
-        private platformService: PlatformService,
-        private devicePlatformService: DevicePlatformService,
         private bottomSheet: MatBottomSheet,
         private location: Location,
         @Inject(PLATFORM_ID) private platformId: string
-    ) {
-        if (!isPlatformServer(this.platformId))
-            platformService.getPlatformMetadata();
-    }
+    ) {}
 
     ngOnInit() {
         if (!isPlatformServer(this.platformId)) {

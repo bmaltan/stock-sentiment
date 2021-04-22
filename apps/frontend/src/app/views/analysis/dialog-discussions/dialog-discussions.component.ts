@@ -2,21 +2,22 @@ import { Component, Inject, OnInit, ViewChild } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { DiscussionLink, Stock } from '@invest-track/models';
+import { DiscussionLink, PlatformData } from '@invest-track/models';
 
 @Component({
     selector: 'invest-track-dialog-discussions',
     templateUrl: './dialog-discussions.component.html',
-    styleUrls: ['./dialog-discussions.component.scss']
+    styleUrls: ['./dialog-discussions.component.scss'],
 })
 export class DialogDiscussionsComponent implements OnInit {
-
     displayedColumns: string[] = ['score', 'awards', 'title'];
     dataSource: MatTableDataSource<DiscussionLink> = new MatTableDataSource();
 
     @ViewChild(MatSort) sort!: MatSort;
 
-    constructor(@Inject(MAT_DIALOG_DATA) public data: { stock: Stock }) { }
+    constructor(
+        @Inject(MAT_DIALOG_DATA) public data: { stock: PlatformData }
+    ) {}
 
     ngOnInit(): void {
         if (this.data.stock.links?.length) {
@@ -26,7 +27,10 @@ export class DialogDiscussionsComponent implements OnInit {
 
     ngAfterViewInit() {
         this.dataSource.sort = this.sort;
-        this.dataSource.sortingDataAccessor = (data: DiscussionLink, sortHeaderId: string) => {
+        this.dataSource.sortingDataAccessor = (
+            data: DiscussionLink,
+            sortHeaderId: string
+        ) => {
             switch (sortHeaderId) {
                 case 'score':
                 case 'awards':
@@ -43,17 +47,16 @@ export class DialogDiscussionsComponent implements OnInit {
         if (event.active === 'title') return;
         if (this.dataSource.sort) {
             if (this.dataSource.sort.direction === 'asc') {
-                this.dataSource.sort.direction = 'desc'
+                this.dataSource.sort.direction = 'desc';
             } else if (this.dataSource.sort.direction === 'desc') {
                 this.dataSource.sort.direction = '';
             } else if (!this.dataSource.sort.direction) {
-                this.dataSource.sort.direction = 'asc'
+                this.dataSource.sort.direction = 'asc';
             }
         }
     }
 
     openLink(element: DiscussionLink) {
-        window.open(element.url, "_blank");
+        window.open(element.url, '_blank');
     }
-
 }

@@ -1,13 +1,13 @@
 export interface DiscussionLink {
-    awards: number;
-    score: number;
-    title: string;
     url: string;
+    title: string;
+    score: number;
+    awards: number;
 }
 
-export interface DiscussionLinkShort {
-    a: number;
-    s: number;
-    t: string;
-    u: string;
+export interface ApiDiscussionLink {
+    id: string;
+    title: string;
+    score: number;
+    awards: number;
 }

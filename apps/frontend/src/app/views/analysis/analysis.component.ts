@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatSort, MatSortable } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute } from '@angular/router';
-import { Stock } from '@invest-track/models';
+import { PlatformData } from '@invest-track/models';
 import { Location } from '@angular/common';
 import { UserService } from '../../shared/services/user.service';
 import { PlatformService } from '../../shared/services/platform.service';
@@ -10,6 +10,8 @@ import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { DevicePlatformService } from '../../shared/services/device-platform.service';
 import { MatTabChangeEvent } from '@angular/material/tabs';
 import { DialogService } from '../../shared/services/dialog.service';
+
+type PlatformDataColumns = keyof PlatformData | 'dailyChange' | 'actions';
 
 @Component({
     selector: 'app-analysis',
@@ -20,8 +22,8 @@ export class AnalysisComponent implements OnInit {
     availableDates: string[] = [];
     selectedDate = new FormControl('');
 
-    platformData?: Stock[];
-    platformDataInitial?: Stock[];
+    platformData?: PlatformData[];
+    platformDataInitial?: PlatformData[];
     currentPlatform = '';
     currentPlatformTitle = '';
 
@@ -32,16 +34,16 @@ export class AnalysisComponent implements OnInit {
 
     isFavorite = false;
 
-    displayedColumns: string[] = [
+    displayedColumns: PlatformDataColumns[] = [
         'ticker',
-        'openingPrice',
-        'closingPrice',
+        'open',
+        'close',
         'dailyChange',
         'numOfPosts',
-        'numOfMentions',
+        'neutralMention',
         'actions',
     ];
-    dataSource: MatTableDataSource<Stock> = new MatTableDataSource();
+    dataSource: MatTableDataSource<PlatformData> = new MatTableDataSource();
 
     @ViewChild(MatSort) sort!: MatSort;
 
@@ -149,28 +151,22 @@ export class AnalysisComponent implements OnInit {
         });
     }
 
-    getAvailableDates() {
-        const platformMetadata = this.platformService.getAllPlatformMetadata();
+    async getAvailableDates() {
+        const availableDates = await this.platformService.getAvailableDates(
+            this.currentPlatform
+        );
+        this.availableDates = availableDates;
+        if (availableDates.length === 0) return;
 
-        platformMetadata.subscribe((data) => {
-            if (data?.length) {
-                this.availableDates = data.find(
-                    (platform) => platform.name === this.currentPlatform
-                )?.availableDates as string[];
-                this.selectedDate.setValue(this.availableDates[0]);
-                this.getPlatformData(this.selectedDate.value);
-            }
-        });
+        this.selectedDate.setValue(availableDates[0]);
+
+        this.getPlatformData(this.selectedDate.value);
     }
 
     async getPlatformData(date: string) {
-        this.platformData = Object.values(
-            await (
-                await this.platformService.getPlatformData(
-                    this.currentPlatform,
-                    date
-                )
-            ).topStocks
+        this.platformData = await this.platformService.getPlatformData(
+            this.currentPlatform,
+            date
         );
         if (!this.platformData) return;
 
@@ -183,29 +179,31 @@ export class AnalysisComponent implements OnInit {
         this.dataSource.sort = this.sort;
 
         this.dataSource.sortingDataAccessor = (
-            data: Stock,
+            data: PlatformData,
             sortHeaderId: string
         ) => {
             switch (sortHeaderId) {
                 case 'dailyChange':
                     // mat-sort doesn't handle negative values. adding 1000 as a quick workaround
                     return (
-                        ((data.closingPrice - data.openingPrice) /
-                            data.openingPrice) *
-                            100 +
-                            1000 || 0
+                        ((data.close - data.open) / data.open) * 100 + 1000 || 0
                     );
-                case 'openingPrice':
-                case 'closingPrice':
-                    return !data.closingPrice ? -1 : data[sortHeaderId];
+                case 'open':
+                case 'close':
+                    return !data.close ? -1 : data[sortHeaderId];
                 default:
                     return (
-                        data[sortHeaderId as keyof Omit<Stock, 'links'>] || 0
+                        data[
+                            sortHeaderId as keyof Omit<PlatformData, 'links'>
+                        ] || 0
                     );
             }
         };
 
-        this.dataSource.filterPredicate = (stock: Stock, filter: string) => {
+        this.dataSource.filterPredicate = (
+            stock: PlatformData,
+            filter: string
+        ) => {
             const filterParsed = JSON.parse(filter);
             return (
                 (!filterParsed.filter ||
@@ -213,13 +211,12 @@ export class AnalysisComponent implements OnInit {
                         .toLocaleLowerCase()
                         .indexOf(filterParsed.filter.toLocaleLowerCase()) >
                         -1) &&
+                // TODO: currently there is only neutral mention
                 (!filterParsed.minimumMentions ||
-                    stock.numOfMentions >= filterParsed.minimumMentions) &&
+                    stock.neutralMention >= filterParsed.minimumMentions) &&
                 (!filterParsed.minimumChange ||
                     Math.abs(
-                        ((stock.closingPrice - stock.openingPrice) /
-                            stock.openingPrice) *
-                            100 || 0
+                        ((stock.close - stock.open) / stock.open) * 100 || 0
                     ) >= filterParsed.minimumChange)
             );
         };
@@ -227,7 +224,7 @@ export class AnalysisComponent implements OnInit {
         this.loadingDailyData = false;
     }
 
-    seeDiscussions(stock: Stock) {
+    seeDiscussions(stock: PlatformData) {
         this.dialogService.openDialog('discussions', {
             data: {
                 stock: stock,
@@ -236,7 +233,7 @@ export class AnalysisComponent implements OnInit {
         });
     }
 
-    openStockInYahoo(stock: Stock) {
+    openStockInYahoo(stock: PlatformData) {
         if (this.currentPlatform.indexOf('crypto') > -1) {
             window.open(
                 `https://finance.yahoo.com/quote/${stock.ticker}-USD`,

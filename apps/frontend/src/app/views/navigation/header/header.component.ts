@@ -9,20 +9,18 @@ import { UserService } from '../../../shared/services/user.service';
     templateUrl: './header.component.html',
     styleUrls: ['./header.component.scss'],
 })
-
 export class HeaderComponent {
-
     url = '';
 
     constructor(
         private dialogService: DialogService,
         private userService: UserService,
         private router: Router,
-        private location: Location
+        location: Location
     ) {
         this.router.events.subscribe(() => {
             this.url = location.path();
-        })
+        });
     }
 
     openLogin() {
@@ -39,6 +37,5 @@ export class HeaderComponent {
 
     logout() {
         this.userService.logout();
-
     }
 }

@@ -3,9 +3,8 @@ export interface Platform {
     icon: string;
     source: string;
 
-    platforms: {
-        name: string;
-        displayName?: string;
+    platforms: Array<{
+        displayName: string;
         route: string;
-    }[];
+    }>;
 }

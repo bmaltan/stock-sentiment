@@ -16,7 +16,7 @@
         <div gdColumns.gt-xs="repeat(2, auto)" gdColumns.lt-sm="repeat(1, auto)" gdGap="1rem">
             <div *ngFor="let platform of platformCategory.platforms" class="platform-card"
                 [routerLink]="['app/analysis', platform.route]">
-                <div class="platform-title"> {{ platform.displayName || platform.name }} </div>
+                <div class="platform-title"> {{ platform.displayName }} </div>
             </div>
         </div>
     </div>

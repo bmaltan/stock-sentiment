@@ -21,7 +21,7 @@ import { GdprRejectedComponent } from './gdpr-rejected/gdpr-rejected.component';
         FlexLayoutModule,
         SharedModule,
         RouterModule,
-        ReactiveFormsModule
-    ]
+        ReactiveFormsModule,
+    ],
 })
-export class ViewsModule { }
+export class ViewsModule {}

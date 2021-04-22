@@ -36,42 +36,44 @@ export class UserService {
         return this.user;
     }
 
-    signup(
+    async signup(
         email: string,
         password: string
     ): Promise<firebase.auth.UserCredential | undefined> {
-        return this.firebaseAuth
-            .createUserWithEmailAndPassword(email, password)
-            .then((value) => {
-                this.user.next(value.user as firebase.User);
-                this.snackbar.open('Welcome to Stock Sentiment!', undefined, {
-                    duration: 4000,
-                });
-                return value;
-            })
-            .catch((err) => {
-                this.snackbar.open(err.message, undefined, { duration: 4000 });
-                return err.message;
+        try {
+            const value = await this.firebaseAuth.createUserWithEmailAndPassword(
+                email,
+                password
+            );
+            this.user.next(value.user as firebase.User);
+            this.snackbar.open('Welcome to Stock Sentiment!', undefined, {
+                duration: 4000,
             });
+            return value;
+        } catch (err) {
+            this.snackbar.open(err.message, undefined, { duration: 4000 });
+            return err.message;
+        }
     }
 
-    login(
+    async login(
         email: string,
         password: string
     ): Promise<firebase.auth.UserCredential | undefined> {
-        return this.firebaseAuth
-            .signInWithEmailAndPassword(email, password)
-            .then((value) => {
-                this.user.next(value.user as firebase.User);
-                this.snackbar.open('Welcome back!', undefined, {
-                    duration: 400000,
-                });
-                return value;
-            })
-            .catch((err) => {
-                this.snackbar.open(err.message, undefined, { duration: 4000 });
-                return err.message;
+        try {
+            const value = await this.firebaseAuth.signInWithEmailAndPassword(
+                email,
+                password
+            );
+            this.user.next(value.user as firebase.User);
+            this.snackbar.open('Welcome back!', undefined, {
+                duration: 400000,
             });
+            return value;
+        } catch (err) {
+            this.snackbar.open(err.message, undefined, { duration: 4000 });
+            return err.message;
+        }
     }
 
     logout() {
@@ -89,7 +91,7 @@ export class UserService {
                 take(1),
                 map((data) => {
                     if (data?.payload?.val()) {
-                        this.favorites.next(data.payload.val() as any);
+                        this.favorites.next(data.payload.val() as string[]);
                     } else {
                         this.favorites.next([]);
                     }

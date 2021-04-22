@@ -25,7 +25,7 @@
             <div *ngFor="let platform of allPlatformData, let i = index" class="content-container"
                 [ngClass]="{'highlighted': selectedIndex > -1 && i === 0}">
                 <div class="platform-title">{{ platform.platform }}</div>
-                <table mat-table [dataSource]="platform.stocks">
+                <table mat-table [dataSource]="platform.data">
                     <ng-container matColumnDef="ticker">
                         <th mat-header-cell *matHeaderCellDef> Ticker </th>
                         <td mat-cell *matCellDef="let element"> {{ element.ticker }} </td>
@@ -39,12 +39,12 @@
                         <td mat-cell *matCellDef="let element"> {{ element.numOfPosts }} </td>
                     </ng-container>
 
-                    <ng-container matColumnDef="numOfMentions">
+                    <ng-container matColumnDef="neutralMentions">
                         <th mat-header-cell *matHeaderCellDef style="width: 50px;">
                             <img src="data:image/png;base64,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"
                                 class="icon" alt="" srcset="">
                         </th>
-                        <td mat-cell *matCellDef="let element"> {{ element.numOfMentions }} </td>
+                        <td mat-cell *matCellDef="let element"> {{ element.neutralMentions }} </td>
                     </ng-container>
 
                     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
