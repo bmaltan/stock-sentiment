@@ -74,7 +74,7 @@ def get_platform(p: str) -> Platform:
                            lambda p: p.display == p)):
         return platform
     elif (platform := find(available_platforms["wsb"],
-                           lambda p: p.display == o)):
+                           lambda p: p.display == p)):
         return platform
     else:
         print("what is this platform", p)
