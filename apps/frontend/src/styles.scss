@@ -9,7 +9,7 @@
 @include material.styles;
 
 * {
-    font-family: 'Open Sans';
+    font-family: 'Open Sans', sans-serif;
     transition: background var(--anim-duration);
     -webkit-tap-highlight-color: transparent;
 
