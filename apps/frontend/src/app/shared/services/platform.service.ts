@@ -76,11 +76,10 @@ export class PlatformService {
     }
 
     getPlatforms(): Platform[] {
-        return platformCategories.reduce((acc, current) => {
-            const result: Platform[] = [];
-            result.push(...current.platforms);
-            return result;
-        }, [] as Platform[]);
+        return platformCategories.reduce(
+            (acc, current) => [...acc, ...current.platforms],
+            [] as Platform[]
+        );
     }
 
     private getLinkForPlatform(platform: string, link: string): string {
