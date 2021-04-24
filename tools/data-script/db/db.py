@@ -66,11 +66,13 @@ def get_market_prices(date):
             } for record in curs]
 
 
-def get_all_temp_mentions() -> List[SingleTickerMention]:
+def get_all_temp_mentions(day: str) -> List[SingleTickerMention]:
     with psycopg2.connect(getenv("DATABASE_URL")) as conn:
         with conn.cursor() as curs:
             curs.execute(
-                "SELECT platform, day, ticker, post_link, head, bear, neutral, bull from temp_mentions")
+                "SELECT platform, day, ticker, post_link, head, bear, neutral, bull from temp_mentions where day = %s;",
+                (day,),
+            )
             return [{
                 "platform": record[0],
                 "day": record[1],
@@ -83,10 +85,10 @@ def get_all_temp_mentions() -> List[SingleTickerMention]:
             } for record in curs]
 
 
-def delete_temp_mentions():
+def delete_temp_mentions(day: str):
     with psycopg2.connect(getenv("DATABASE_URL")) as conn:
         with conn.cursor() as curs:
-            curs.execute("DELETE from temp_mentions;")
+            curs.execute("DELETE from temp_mentions where day = %s;", (day,))
 
 
 def save_single_mention(mention: SingleTickerMention):

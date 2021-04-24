@@ -148,8 +148,7 @@ def aggregate_tickers_and_reddit(mentions, submissions):
     return daily_mentions
 
 
-def add_market_to_mentions(mentions):
-    date = yesterday().strftime("%Y-%m-%d")
+def add_market_to_mentions(mentions, date):
     market_prices = db.get_market_prices(date)
     for mention in mentions:
         platform = get_platform(mention["platform"])
@@ -168,16 +167,17 @@ def add_market_to_mentions(mentions):
 
 
 def aggregate_for_yesterday():
-    temp_mentions = db.get_all_temp_mentions()
+    day = yesterday().strftime("%Y-%m-%d")
+    temp_mentions = db.get_all_temp_mentions(day)
     reddit_submissions = get_reddit_submissions(temp_mentions)
 
-    temp_mentions = add_market_to_mentions(temp_mentions)
+    temp_mentions = add_market_to_mentions(temp_mentions, day)
     daily = aggregate_tickers_and_reddit(
         temp_mentions, reddit_submissions)
 
     db.save_daily_tickers(daily)
 
-    db.delete_temp_mentions()
+    db.delete_temp_mentions(day)
 
 
 if __name__ == '__main__':
