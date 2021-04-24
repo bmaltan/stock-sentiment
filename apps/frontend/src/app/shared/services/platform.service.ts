@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import { map } from 'rxjs/operators';
 import type {
+    ApiDiscussionLink,
     DiscussionLink,
     PlatformData,
     ApiPlatformData,
     Platform,
 } from '@invest-track/models';
-import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 
 @Injectable({
@@ -25,10 +25,10 @@ export class PlatformService {
                 `api/platforms/${platform}/${date}`
             )
             .pipe(
-                map((result) => result.data),
-                map((data) =>
+                map((result: { data: ApiPlatformData[] }) => result.data),
+                map((data: ApiPlatformData[]) =>
                     data.map(
-                        (tickerData) =>
+                        (tickerData: ApiPlatformData) =>
                             ({
                                 platform: tickerData.platform,
                                 ticker: tickerData.ticker,
@@ -40,7 +40,7 @@ export class PlatformService {
                                 neutralMention: tickerData.neutral_mention,
                                 bearMention: tickerData.bear_mention,
                                 links: tickerData.links.map(
-                                    (link) =>
+                                    (link: ApiDiscussionLink) =>
                                         ({
                                             score: link.score,
                                             awards: link.awards,
@@ -58,11 +58,12 @@ export class PlatformService {
             .toPromise();
     }
 
-    getAvailableDates(platform: string): Promise<string[]> {
+    getAvailableDates(platformRoute: string): Promise<string[]> {
+        const platform = platforms.flatMap(p => p.platforms).find(p => p.route === platformRoute)?.name;
         return this.httpClient
             .get<{ data: string[] }>(`api/platforms/${platform}/availableDates`)
             .pipe(
-                map((result) => {
+                map((result: { data: string[] }) => {
                     const data = result.data;
                     return data.sort((a: string, b: string): number =>
                         a > b ? -1 : a < b ? 1 : 0
@@ -91,34 +92,42 @@ const platforms: Platform[] = [
         source: 'reddit',
         platforms: [
             {
+                name: 'r/investing',
                 displayName: 'r/investing',
                 route: 'r-investing',
             },
             {
-                displayName: 'r/wsb',
+                name: 'r/wallstreetbets',
+                displayName: 'r/wallstreetbets',
                 route: 'r-wsb',
             },
             {
+                name: 'r/stocks',
                 displayName: 'r/stocks',
                 route: 'r-stocks',
             },
             {
+                name: 'r/pennystocks',
                 displayName: 'r/pennystocks',
                 route: 'r-pennystocks',
             },
             {
+                name: 'r/stockmarket',
                 displayName: 'r/stockmarket',
                 route: 'r-stockmarket',
             },
             {
+                name: 'r/stock_picks',
                 displayName: 'r/stock_picks',
                 route: 'r-stock_picks',
             },
             {
+                name: 'r/daytrading',
                 displayName: 'r/daytrading',
                 route: 'r-daytrading',
             },
             {
+                name: 'r/RobinHoodpennystocks',
                 displayName: 'r/RHpenny',
                 route: 'r-RHpennystocks',
             },
@@ -130,18 +139,22 @@ const platforms: Platform[] = [
         source: 'reddit',
         platforms: [
             {
+                name: 'r/cryptocurrency',
                 displayName: 'r/cryptocurrency',
                 route: 'r-cryptocurrency',
             },
             {
+                name: 'r/cryptomarkets',
                 displayName: 'r/cryptomarkets',
                 route: 'r-cryptomarkets',
             },
             {
+                name: 'r/crypto_currency_news',
                 displayName: 'r/crypto_currency_news',
                 route: 'r-crypto_currency_news',
             },
             {
+                name: 'r/cryptocurrencies',
                 displayName: 'r/cryptocurrencies',
                 route: 'r-cryptocurrencies',
             },

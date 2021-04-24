@@ -14,6 +14,9 @@ from tickers.tickers import get_tickers
 from historical_market_price import market
 from models.Sentiment import Sentiment
 from db import db
+from dotenv import load_dotenv
+
+load_dotenv()
 
 handler = logging.StreamHandler()
 handler.setLevel(logging.DEBUG)

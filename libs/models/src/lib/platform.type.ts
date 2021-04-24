@@ -4,6 +4,7 @@ export interface Platform {
     source: string;
 
     platforms: Array<{
+        name: string;
         displayName: string;
         route: string;
     }>;
