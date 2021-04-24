@@ -87,7 +87,10 @@ export class PlatformService {
         if (link.startsWith('http')) return link;
 
         if (platform.startsWith('r-')) {
-            const sub = platform.replace('r-', '');
+            const sub = this.getPlatforms()
+                .find((p) => p.route === platform)
+                ?.name.replace('r/', '');
+
             return `https://www.reddit.com/r/${sub}/comments/${link}/`;
         }
 
