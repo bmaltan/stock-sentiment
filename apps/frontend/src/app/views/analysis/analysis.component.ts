@@ -113,14 +113,14 @@ export class AnalysisComponent implements OnInit {
         private route: ActivatedRoute,
         private userService: UserService,
         private location: Location,
-        private fb: FormBuilder,
-        private devicePlatformService: DevicePlatformService,
-        private dialogService: DialogService
+        private formBuilder: FormBuilder,
+        private dialogService: DialogService,
+        devicePlatformService: DevicePlatformService
     ) {
         this.currentPlatform = this.route.snapshot.url[
             this.route.snapshot.url.length - 1
         ].path;
-        this.currentPlatformTitle =  this.currentPlatform.replace(/-/, '/');
+        this.currentPlatformTitle = this.currentPlatform.replace(/-/, '/');
         this.deviceIsMobile = devicePlatformService.checkIfMobile();
     }
 
@@ -144,7 +144,7 @@ export class AnalysisComponent implements OnInit {
             this.isFavorite = favorites.includes(this.currentPlatform);
         });
 
-        this.filterForm = this.fb.group({
+        this.filterForm = this.formBuilder.group({
             filter: [],
             minimumMentions: [],
             minimumChange: [],
@@ -175,8 +175,9 @@ export class AnalysisComponent implements OnInit {
     }
 
     initSort() {
-        this.sort.sort({ id: 'numOfMentions', start: 'desc' } as MatSortable);
+        this.sort.sort({ id: 'neutralMention', start: 'desc' } as MatSortable);
         this.dataSource.sort = this.sort;
+        this.onSortChange({});
 
         this.dataSource.sortingDataAccessor = (
             data: PlatformData,
