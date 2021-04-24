@@ -6,6 +6,7 @@ import type {
     PlatformData,
     ApiPlatformData,
     Platform,
+    PlatformCategory,
 } from '@invest-track/models';
 import { HttpClient } from '@angular/common/http';
 
@@ -15,8 +16,8 @@ import { HttpClient } from '@angular/common/http';
 export class PlatformService {
     constructor(private httpClient: HttpClient) {}
 
-    getPlatforms() {
-        return platforms;
+    getPlatformCategories() {
+        return platformCategories;
     }
 
     getPlatformData(platform: string, date: string): Promise<PlatformData[]> {
@@ -59,9 +60,10 @@ export class PlatformService {
     }
 
     getAvailableDates(platformRoute: string): Promise<string[]> {
-        const platform = platforms.flatMap(p => p.platforms).find(p => p.route === platformRoute)?.name;
         return this.httpClient
-            .get<{ data: string[] }>(`api/platforms/${platform}/availableDates`)
+            .get<{ data: string[] }>(
+                `api/platforms/${platformRoute}/availableDates`
+            )
             .pipe(
                 map((result: { data: string[] }) => {
                     const data = result.data;
@@ -71,6 +73,14 @@ export class PlatformService {
                 })
             )
             .toPromise();
+    }
+
+    getPlatforms(): Platform[] {
+        return platformCategories.reduce((acc, current) => {
+            const result: Platform[] = [];
+            result.push(...current.platforms);
+            return result;
+        }, [] as Platform[]);
     }
 
     private getLinkForPlatform(platform: string, link: string): string {
@@ -85,7 +95,7 @@ export class PlatformService {
     }
 }
 
-const platforms: Platform[] = [
+const platformCategories: PlatformCategory[] = [
     {
         category: 'Reddit, Stocks',
         icon: 'logo-reddit',

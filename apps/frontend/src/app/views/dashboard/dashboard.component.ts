@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Platform } from '@invest-track/models';
+import { PlatformCategory } from '@invest-track/models';
 import { PlatformService } from '../../shared/services/platform.service';
 
 
@@ -12,7 +12,7 @@ import { PlatformService } from '../../shared/services/platform.service';
 })
 export class DashboardComponent {
 
-    allPlatforms: Platform[] = [];
+    allPlatforms: PlatformCategory[] = [];
 
     constructor(
         private platformService: PlatformService,
@@ -20,7 +20,7 @@ export class DashboardComponent {
         private router: Router,
         private snackbar: MatSnackBar,
     ) {
-        this.allPlatforms = this.platformService.getPlatforms();
+        this.allPlatforms = this.platformService.getPlatformCategories();
         const url = route.snapshot.url[0]?.path;
         if (url === 'donation-cancel') {
             router.navigate(['']);

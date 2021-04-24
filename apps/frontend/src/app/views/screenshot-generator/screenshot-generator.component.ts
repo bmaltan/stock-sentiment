@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { Platform, PlatformData } from '@invest-track/models';
+import { PlatformCategory, PlatformData } from '@invest-track/models';
 import { PlatformService } from '../../shared/services/platform.service';
 // import html2canvas from 'html2canvas';
 
@@ -14,7 +14,7 @@ export class ScreenshotGeneratorComponent implements OnInit {
     selectedDate = new FormControl('');
     selectedPlatform = new FormControl('r-investing');
 
-    availablePlatformCategories: Platform[] = [];
+    availablePlatformCategories: PlatformCategory[] = [];
     allPlatformData: { platform: string; data: PlatformData[] }[] = [];
     platformToHighlight = new FormControl('');
     selectedIndex = -1;
@@ -103,7 +103,7 @@ export class ScreenshotGeneratorComponent implements OnInit {
         });
 
         this.getAvailableDates();
-        this.availablePlatformCategories = this.platformService.getPlatforms();
+        this.availablePlatformCategories = this.platformService.getPlatformCategories();
     }
 
     async getAvailableDates() {

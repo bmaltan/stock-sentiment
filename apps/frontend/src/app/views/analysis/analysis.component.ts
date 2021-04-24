@@ -120,7 +120,7 @@ export class AnalysisComponent implements OnInit {
         this.currentPlatform = this.route.snapshot.url[
             this.route.snapshot.url.length - 1
         ].path;
-        this.currentPlatformTitle = this.currentPlatform.replace(/-/, '/');
+        this.currentPlatformTitle =  this.currentPlatform.replace(/-/, '/');
         this.deviceIsMobile = devicePlatformService.checkIfMobile();
     }
 

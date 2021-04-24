@@ -1,11 +1,13 @@
-export interface Platform {
+export interface PlatformCategory {
     category: string;
     icon: string;
     source: string;
 
-    platforms: Array<{
-        name: string;
-        displayName: string;
-        route: string;
-    }>;
+    platforms: Platform[];
+}
+
+export interface Platform {
+    name: string;
+    displayName: string;
+    route: string;
 }
