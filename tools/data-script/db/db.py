@@ -60,9 +60,9 @@ def get_market_prices(date):
             )
             return [{
                 "ticker": record[0],
-                "open": record[2],
-                "close": record[3],
-                "is_crypto": record[4],
+                "open": record[1],
+                "close": record[2],
+                "is_crypto": record[3],
             } for record in curs]
 
 

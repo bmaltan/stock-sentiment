@@ -32,3 +32,6 @@ class DailyTickerMention:
         self.bear_mention = bear_mention
         self.neutral_mention = neutral_mention
         self.num_of_posts = num_of_posts
+
+    def __repr__(self):
+        return str(self.__dict__)

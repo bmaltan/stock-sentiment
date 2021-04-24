@@ -62,7 +62,6 @@ def stream(platforms: List[Platform]) -> List:
 
 
 def get_reddit_connection(platform):
-    print(platform.name)
     return praw.Reddit(
         client_id=os.getenv(f'REDDIT_CLIENT_ID_{platform.name}'),
         client_secret=os.getenv(f'REDDIT_CLIENT_SECRET_{platform.name}'),

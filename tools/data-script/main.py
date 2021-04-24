@@ -18,12 +18,12 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-handler = logging.StreamHandler()
-handler.setLevel(logging.DEBUG)
-for logger_name in ("praw", "prawcore"):
-    logger = logging.getLogger(logger_name)
-    logger.setLevel(logging.DEBUG)
-    logger.addHandler(handler)
+# handler = logging.StreamHandler()
+# handler.setLevel(logging.DEBUG)
+# for logger_name in ("praw", "prawcore"):
+#     logger = logging.getLogger(logger_name)
+#     logger.setLevel(logging.DEBUG)
+#     logger.addHandler(handler)
 
 available_platforms = {
     "wsb": [
@@ -69,22 +69,21 @@ def find(arr: List, pred):
     return next(filter(pred, arr), None)
 
 
-def get_platform(p: str) -> Platform:
+def get_platform(platform_wanted: str) -> Platform:
     if (platform := find(available_platforms["stock"],
-                         lambda p: p.display == p)):
+                         lambda p: p.display == platform_wanted)) is not None:
         return platform
     elif (platform := find(available_platforms["crypto"],
-                           lambda p: p.display == p)):
+                           lambda p: p.display == platform_wanted)) is not None:
         return platform
     elif (platform := find(available_platforms["wsb"],
-                           lambda p: p.display == p)):
+                           lambda p: p.display == platform_wanted)) is not None:
         return platform
     else:
-        print("what is this platform", p)
+        print("what is this platform", platform_wanted)
 
 
 def get_reddit_submissions(mentions: List[SingleTickerMention]) -> List[RedditSubmission]:
-
     unique = set((get_platform(x["platform"]), x["post_link"])
                  for x in mentions if x["platform"].startswith("r-"))
 
