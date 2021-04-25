@@ -106,7 +106,6 @@ impl CorrelationData {
                         SELECT 
                             max(day) as upper
                         FROM daily_tickers 
-                        WHERE platform = $1
                     ),
                     tickers AS (
                         select 
@@ -137,7 +136,6 @@ impl CorrelationData {
                     WHERE ticker in (SELECT ticker from most_mentioned);
             "#,
             platform,
-            //NaiveDate::parse_from_str(date, "%Y-%m-%d")?,
         )
         .fetch_all(&*pool)
         .await?;
