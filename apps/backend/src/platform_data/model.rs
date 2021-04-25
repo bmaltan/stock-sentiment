@@ -1,7 +1,5 @@
-use actix_web::{Error, HttpRequest, HttpResponse, Responder};
 use anyhow::Result;
 use bigdecimal::ToPrimitive;
-use futures::future::{ready, Ready};
 use sqlx::types::chrono::NaiveDate;
 use std::collections::HashSet;
 
@@ -33,17 +31,12 @@ pub struct DailyTicker {
     pub links: Vec<Link>,
 }
 
-impl Responder for DailyTicker {
-    type Error = Error;
-    type Future = Ready<Result<HttpResponse, Error>>;
-
-    fn respond_to(self, _req: &HttpRequest) -> Self::Future {
-        let body = serde_json::to_string(&self).unwrap();
-        // create response and set content type
-        ready(Ok(HttpResponse::Ok()
-            .content_type("application/json")
-            .body(body)))
-    }
+#[derive(Deserialize, Serialize, FromRow)]
+pub struct CorrelationData {
+    pub ticker: String,
+    pub day: String,
+    pub close: Option<f32>,
+    pub total_mention: i32,
 }
 
 impl DailyTicker {
@@ -97,6 +90,64 @@ impl DailyTicker {
                     let links: Vec<Option<Link>> = serde_json::from_value(x).unwrap();
                     deduplicate_links_and_strip_null(links)
                 }),
+            })
+            .collect())
+    }
+}
+
+impl CorrelationData {
+    pub async fn get_correlation_for_top_mentions_last_week(
+        platform: &str,
+        pool: &PgPool,
+    ) -> Result<Vec<CorrelationData>> {
+        let recs = sqlx::query!(
+            r#"
+                    WITH latest_day AS (
+                        SELECT 
+                            max(day) as upper
+                        FROM daily_tickers 
+                        WHERE platform = $1
+                    ),
+                    tickers AS (
+                        select 
+                            ticker, 
+                            day, 
+                            close, 
+                            (
+                                coalesce(neutral_mention, 0) 
+                                + coalesce(bull_mention, 0) 
+                                + coalesce(bear_mention, 0)
+                            ) AS total_mention
+                        from 
+                            daily_tickers, latest_day 
+                        where 
+                            platform = $1 
+                            AND 
+                            day BETWEEN latest_day.upper - INTERVAL '1 DAY' AND latest_day.upper
+                    ),
+                    most_mentioned AS (
+                        select ticker, sum(total_mention) as total
+                        from tickers
+                        group by ticker
+                        order by total desc
+                        limit 5
+                    )
+                    SELECT ticker, day, close, total_mention
+                    FROM tickers
+                    WHERE ticker in (SELECT ticker from most_mentioned);
+            "#,
+            platform,
+            //NaiveDate::parse_from_str(date, "%Y-%m-%d")?,
+        )
+        .fetch_all(&*pool)
+        .await?;
+        Ok(recs
+            .into_iter()
+            .map(|r| CorrelationData {
+                day: r.day.to_string(),
+                ticker: r.ticker,
+                total_mention: r.total_mention.unwrap(),
+                close: r.close.map_or(None, |x| x.to_f32()),
             })
             .collect())
     }
