@@ -38,10 +38,7 @@ async fn find_available_dates(
     let result = DailyTicker::find_available_dates(&platform, db_pool.get_ref()).await;
     match result {
         Ok(available_dates) => HttpResponse::Ok().json(json!({ "data": available_dates })),
-        _ => HttpResponse::BadRequest().body(format!(
-            "Error trying to get available dates for {}",
-            platform,
-        )),
+        _ => HttpResponse::BadRequest().body("bad request"),
     }
 }
 
@@ -74,6 +71,6 @@ async fn get_correlation_last_week(
 // function that will be called on new Application to configure routes for this module
 pub fn init(cfg: &mut web::ServiceConfig) {
     cfg.service(find_available_dates);
-    cfg.service(get_platform_data);
     cfg.service(get_correlation_last_week);
+    cfg.service(get_platform_data);
 }

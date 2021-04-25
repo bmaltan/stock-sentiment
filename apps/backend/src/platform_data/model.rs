@@ -102,38 +102,15 @@ impl CorrelationData {
     ) -> Result<Vec<CorrelationData>> {
         let recs = sqlx::query!(
             r#"
-                    WITH latest_day AS (
-                        SELECT 
-                            max(day) as upper
-                        FROM daily_tickers 
-                    ),
-                    tickers AS (
-                        select 
-                            ticker, 
-                            day, 
-                            close, 
-                            (
-                                coalesce(neutral_mention, 0) 
-                                + coalesce(bull_mention, 0) 
-                                + coalesce(bear_mention, 0)
-                            ) AS total_mention
-                        from 
-                            daily_tickers, latest_day 
-                        where 
-                            platform = $1 
-                            AND 
-                            day BETWEEN latest_day.upper - INTERVAL '1 DAY' AND latest_day.upper
-                    ),
-                    most_mentioned AS (
-                        select ticker, sum(total_mention) as total
-                        from tickers
-                        group by ticker
-                        order by total desc
-                        limit 5
-                    )
-                    SELECT ticker, day, close, total_mention
-                    FROM tickers
-                    WHERE ticker in (SELECT ticker from most_mentioned);
+                select 
+                    ticker, 
+                    day, 
+                    close, 
+                    total_mention 
+                from 
+                    correlation_data_last_7_days
+                where 
+                    platform = $1;
             "#,
             platform,
         )
@@ -142,8 +119,8 @@ impl CorrelationData {
         Ok(recs
             .into_iter()
             .map(|r| CorrelationData {
-                day: r.day.to_string(),
-                ticker: r.ticker,
+                day: r.day.unwrap().to_string(),
+                ticker: r.ticker.unwrap(),
                 total_mention: r.total_mention.unwrap(),
                 close: r.close.map_or(None, |x| x.to_f32()),
             })

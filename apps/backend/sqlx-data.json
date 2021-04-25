@@ -95,8 +95,8 @@
       ]
     }
   },
-  "7ae83b35671c191f23f83344e6dde4feb47386da2c6d13efb8d156b098c5eb46": {
-    "query": "\n                    WITH latest_day AS (\n                        SELECT \n                            max(day) as upper\n                        FROM daily_tickers \n                    ),\n                    tickers AS (\n                        select \n                            ticker, \n                            day, \n                            close, \n                            (\n                                coalesce(neutral_mention, 0) \n                                + coalesce(bull_mention, 0) \n                                + coalesce(bear_mention, 0)\n                            ) AS total_mention\n                        from \n                            daily_tickers, latest_day \n                        where \n                            platform = $1 \n                            AND \n                            day BETWEEN latest_day.upper - INTERVAL '1 DAY' AND latest_day.upper\n                    ),\n                    most_mentioned AS (\n                        select ticker, sum(total_mention) as total\n                        from tickers\n                        group by ticker\n                        order by total desc\n                        limit 5\n                    )\n                    SELECT ticker, day, close, total_mention\n                    FROM tickers\n                    WHERE ticker in (SELECT ticker from most_mentioned);\n            ",
+  "8d3dc3a6dfd24e11dd88d2e364cca4dd07dff42c2f2725e412529fb67b52404c": {
+    "query": "\n                select \n                    ticker, \n                    day, \n                    close, \n                    total_mention \n                from \n                    correlation_data_last_7_days\n                where \n                    platform = $1;\n            ",
     "describe": {
       "columns": [
         {
@@ -126,10 +126,10 @@
         ]
       },
       "nullable": [
-        false,
-        false,
         true,
-        null
+        true,
+        true,
+        true
       ]
     }
   }
