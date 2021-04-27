@@ -1,4 +1,4 @@
-use actix_web::{App, HttpServer};
+use actix_web::{middleware, App, HttpServer};
 use dotenv::dotenv;
 use sqlx::postgres::PgPoolOptions;
 use std::env;
@@ -19,6 +19,7 @@ async fn main() -> std::result::Result<(), anyhow::Error> {
     let port = env::var("PORT").expect("PORT is not set in .env file");
     HttpServer::new(move || {
         App::new()
+            .wrap(middleware::Compress::default())
             .data(db_pool.clone()) // pass database pool to application so we can access it inside handlers
             .configure(platform_data::init) // init platform_data routes
     })
