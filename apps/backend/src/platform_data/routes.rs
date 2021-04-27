@@ -1,8 +1,10 @@
 use crate::platform_data::{CorrelationData, DailyTicker};
 use actix_web::{get, web, Error, HttpRequest, HttpResponse, Responder};
 use futures::future::{ready, Ready};
+use serde::{Deserialize, Serialize};
 use serde_json::json;
 use sqlx::PgPool;
+use std::collections::HashMap;
 
 impl Responder for DailyTicker {
     type Error = Error;
@@ -17,7 +19,14 @@ impl Responder for DailyTicker {
     }
 }
 
-impl Responder for CorrelationData {
+#[derive(Deserialize, Serialize)]
+pub struct TickerCorrelationData {
+    pub day: String,
+    pub close: Option<f32>,
+    pub total_mention: i32,
+}
+
+impl Responder for TickerCorrelationData {
     type Error = Error;
     type Future = Ready<Result<HttpResponse, Error>>;
 
@@ -63,7 +72,18 @@ async fn get_correlation_last_week(
         CorrelationData::get_correlation_for_top_mentions_last_week(&platform, db_pool.get_ref())
             .await;
     match result {
-        Ok(result) => HttpResponse::Ok().json(json!({ "data": result })),
+        Ok(result) => {
+            let mut ticker_data: HashMap<String, Vec<TickerCorrelationData>> = HashMap::new();
+            result.into_iter().for_each(|data| {
+                let ticker = ticker_data.entry(data.ticker).or_insert(vec![]);
+                ticker.push(TickerCorrelationData {
+                    day: data.day,
+                    close: data.close,
+                    total_mention: data.total_mention,
+                });
+            });
+            HttpResponse::Ok().json(json!({ "data": ticker_data }))
+        }
         _ => HttpResponse::BadRequest().body("bad request"),
     }
 }
