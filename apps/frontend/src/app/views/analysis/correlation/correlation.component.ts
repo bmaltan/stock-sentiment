@@ -55,6 +55,8 @@ export class CorrelationComponent implements OnInit {
     }
 
     async getCorrelationData() {
+        if (this.correlationData.length) return;
+        
         const correlationData = await this.platformService.getCorrelationData(this.currentPlatform);
 
         for (const key in correlationData) {
