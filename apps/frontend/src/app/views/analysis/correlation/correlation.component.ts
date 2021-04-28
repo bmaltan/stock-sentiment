@@ -56,7 +56,7 @@ export class CorrelationComponent implements OnInit {
 
     async getCorrelationData() {
         if (this.correlationData.length) return;
-        
+
         const correlationData = await this.platformService.getCorrelationData(this.currentPlatform);
 
         for (const key in correlationData) {
@@ -66,6 +66,15 @@ export class CorrelationComponent implements OnInit {
 
             this.correlationData.push(new CorrelationChartData(key, labels, prices, mentions));
         }
+
+        this.correlationData.sort((a,b) => {
+            if (a.ticker.toLowerCase() < b.ticker.toLowerCase()) {
+                return -1;
+            } else if (a.ticker.toLowerCase() > b.ticker.toLowerCase()) {
+                return 1;
+            }
+            return 0;
+        });
         
         this.loading = false;
     }
