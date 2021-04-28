@@ -55,7 +55,7 @@ WITH latest_day AS (
                         from 
                             daily_tickers, latest_day 
                         where 
-                            day BETWEEN latest_day.upper - INTERVAL '1 DAY' AND latest_day.upper
+                            day BETWEEN latest_day.upper - INTERVAL '7 DAY' AND latest_day.upper
                     ),
                     most_mentioned AS (
                         select platform, ticker, sum(total_mention) as total
@@ -75,4 +75,4 @@ WITH latest_day AS (
                         ON t.platform = l.platform 
                         AND t.ticker = l.ticker
                     WHERE 
-                        l.r <= 5;
+                        l.r <= 20;
