@@ -7,6 +7,7 @@ import { SharedModule } from '../../shared/shared.module';
 import { ReactiveFormsModule } from '@angular/forms';
 import { DialogDiscussionsComponent } from './dialog-discussions/dialog-discussions.component';
 import { ChartModule } from 'angular2-chartjs';
+import { CorrelationComponent } from './correlation/correlation.component';
 
 const routes: Routes = [
     { path: '', component: AnalysisComponent },
@@ -16,7 +17,8 @@ const routes: Routes = [
 @NgModule({
     declarations: [
         AnalysisComponent,
-        DialogDiscussionsComponent
+        DialogDiscussionsComponent,
+        CorrelationComponent
     ],
     imports: [
         CommonModule,

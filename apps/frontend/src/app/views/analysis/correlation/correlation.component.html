@@ -1,0 +1,9 @@
+<mat-progress-bar style="margin: 20px 0" mode="buffer" *ngIf="loading">
+</mat-progress-bar>
+
+<div gdColumns.gt-sm="repeat(2, 1fr)" gdColumns.lt-md="repeat(1, 1fr)" gdGap="2rem" style="padding: 1rem;">
+    <div *ngFor="let data of correlationData">
+        <h4 class="subtitle">{{ data.ticker }}</h4>
+        <chart [type]="type" [data]="data" [options]="options"></chart>
+    </div>
+</div>

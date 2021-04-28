@@ -174,35 +174,14 @@
                         <mat-icon svgIcon="correlation"></mat-icon>
                         Correlation
                     </ng-template>
-                    <mat-progress-bar style="margin: 20px 0" mode="buffer" *ngIf="loadingCorrelation">
-                    </mat-progress-bar>
-
-                    <div gdColumns.gt-sm="repeat(2, 1fr)" gdColumns.lt-md="repeat(1, 1fr)" gdGap="2rem"
-                        style="padding: 1rem;">
-                        <div>
-                            <h4 class="subtitle">AMD</h4>
-                            <chart [type]="type" [data]="data" [options]="options"></chart>
-                        </div>
-                        <div>
-                            <h4 class="subtitle">AMD</h4>
-                            <chart [type]="type" [data]="data" [options]="options"></chart>
-                        </div>
-                        <div>
-                            <h4 class="subtitle">AMD</h4>
-                            <chart [type]="type" [data]="data" [options]="options"></chart>
-                        </div>
-                        <div>
-                            <h4 class="subtitle">AMD</h4>
-                            <chart [type]="type" [data]="data" [options]="options"></chart>
-                        </div>
-                    </div>
+                    <invest-track-correlation [currentPlatform]="currentPlatform" [tabActivated]="correlationTabActivated"></invest-track-correlation>
                 </mat-tab>
                 <mat-tab>
                     <ng-template mat-tab-label>
                         <mat-icon svgIcon="breakouts"></mat-icon>
                         Breakouts
                     </ng-template>
-                    <mat-progress-bar style="margin: 20px 0" mode="buffer" *ngIf="loadingCorrelation">
+                    <mat-progress-bar style="margin: 20px 0" mode="buffer" *ngIf="loadingBreakouts">
                     </mat-progress-bar>
                 </mat-tab>
                 <mat-tab>
@@ -210,7 +189,7 @@
                         <mat-icon svgIcon="like"></mat-icon>
                         Deep Dive
                     </ng-template>
-                    <mat-progress-bar style="margin: 20px 0" mode="buffer" *ngIf="loadingCorrelation">
+                    <mat-progress-bar style="margin: 20px 0" mode="buffer" *ngIf="loadingDeepDive">
                     </mat-progress-bar>
                 </mat-tab>
             </mat-tab-group>

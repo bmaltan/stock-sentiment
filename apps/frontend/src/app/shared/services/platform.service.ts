@@ -7,6 +7,7 @@ import type {
     ApiPlatformData,
     Platform,
     PlatformCategory,
+    CorrelationData,
 } from '@invest-track/models';
 import { HttpClient } from '@angular/common/http';
 
@@ -94,6 +95,19 @@ export class PlatformService {
         }
 
         return link;
+    }
+
+    getCorrelationData(platform: string): Promise<CorrelationData> {
+        return this.httpClient
+            .get<{ data: CorrelationData }>(
+                `api/platforms/${platform}/correlation`
+            )
+            .pipe(
+                map((result: { data: CorrelationData }) => {
+                    return result.data;
+                })
+            )
+            .toPromise();
     }
 }
 

@@ -10,6 +10,7 @@ import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { DevicePlatformService } from '../../shared/services/device-platform.service';
 import { MatTabChangeEvent } from '@angular/material/tabs';
 import { DialogService } from '../../shared/services/dialog.service';
+import { Subject } from 'rxjs';
 
 type PlatformDataColumns = keyof PlatformData | 'dailyChange' | 'actions';
 
@@ -27,8 +28,9 @@ export class AnalysisComponent implements OnInit {
     currentPlatform = '';
     currentPlatformTitle = '';
 
+    correlationTabActivated = new Subject<boolean>();
+
     loadingDailyData = true;
-    loadingCorrelation = false;
     loadingBreakouts = false;
     loadingDeepDive = false;
 
@@ -61,49 +63,6 @@ export class AnalysisComponent implements OnInit {
 
     filterForm!: FormGroup;
     filterActive = false;
-
-    type = 'line';
-    data = {
-        labels: ['02', '03', '04', '05', '06', '07'],
-        datasets: [
-            {
-                label: 'Price',
-                data: [65, 59, 80, 81, 56, 55, 40],
-                yAxisID: 'price',
-                fill: false,
-                borderColor: 'black',
-                borderWidth: '2',
-            },
-            {
-                label: 'Mentions',
-                data: [250, 29, 80, 21, 56, 55, 40],
-                yAxisID: 'mentions',
-                borderWidth: '1',
-            },
-        ],
-    };
-    options = {
-        responsive: true,
-        scales: {
-            yAxes: [
-                {
-                    type: 'linear',
-                    id: 'price',
-                    display: true,
-                    position: 'left',
-                },
-                {
-                    type: 'linear',
-                    id: 'mentions',
-                    display: false,
-                    position: 'right',
-                },
-            ],
-        },
-        legend: {
-            display: false,
-        },
-    };
 
     mainTabIndex = 0;
     analysisTabIndex = 0;
@@ -282,7 +241,9 @@ export class AnalysisComponent implements OnInit {
     }
 
     onMainTabChange(event: MatTabChangeEvent) {
+        this.mainTabIndex = event.index;
         if (event.index === 1 && this.analysisTabIndex === 0) {
+            this.correlationTabActivated.next(true);
             setTimeout(() => {
                 this.analysisTabIndex = 1;
             }, 1);
