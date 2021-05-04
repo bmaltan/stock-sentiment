@@ -57,7 +57,8 @@ mat-form-field {
 
 .daily-data-toolbar {
     padding: 6px 16px 2px 22px;
-            background: #f5f5f5;
+    background: var(--color-toolbar);
+    border-bottom: 1px solid var(--color-row-border);
 
     .date {
         font-size: 16px;

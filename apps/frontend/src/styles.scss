@@ -25,6 +25,28 @@ html, body {
     margin: 0;
 }
 
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    border-radius: 4px;
+    background: var(--color-scrollbar-thumb);
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+
+
 .route-header {
     margin-bottom: 16px;
 
@@ -75,17 +97,17 @@ html, body {
     
         .platform-card {
             padding: calc(var(--container-padding) / 2) var(--container-padding);
-            border: var(--color-border);
+            border: 1px solid var(--color-border);
             border-radius: calc(var(--container-border-radius) / 2);
             cursor: pointer;
             justify-items: left;
             transition: all var(--anim-duration) var(--anim-type);
             z-index: 2;
-            background: linear-gradient(60deg, #f8f8f8, #ffffff);
+            background: var(--color-main-item-gradient);
 
             &:hover {
                 box-shadow: var(--color-container-shadow-highlight);
-                background: linear-gradient(60deg, #f1f1f1, #ffffff);
+                background: var(--color-main-item-gradient-highlighted);
                 transform: scale(1.05);
             }
     
@@ -99,7 +121,7 @@ html, body {
 }
 
 .content-container {
-    border: var(--color-border);
+    border: 1px solid var(--color-border);
     box-shadow: var(--color-container-shadow);
     border-radius: var(--container-border-radius);
     overflow: hidden;
@@ -110,9 +132,10 @@ html, body {
 }
 
 button {
-    background: var(--color-background);
+    color: var(--color-button-font);
+    background: var(--color-button-background);
     height: var(--input-height);
-    border: var(--color-border);
+    border: 1px solid var(--color-border);
     padding: var(--input-padding);
     border-radius: var(--input-border-radius);
     cursor: pointer;
@@ -122,25 +145,25 @@ button {
     }
 
     &:hover {
-        background: darken(white, 10%);
+        background: var(--color-button-highlight-background);
     }
 
     &.primary {
-        color: white;
-        background: black;
+        color: var(--color-button-primary-font);
+        background: var(--color-button-primary-background);
         font-weight: bold;
         
         &:hover {
-            background: lighten(black, 30%);
+            background: var(--color-button-primary-highlight-background);
         }
     }
 
     &[disabled] {
-        background: var(--color-disabled);
+        background: var(--color-button-disabled);
         cursor: initial;
         
         &:hover {
-            background: var(--color-disabled);
+            background: var(--color-button-disabled);
         }
     }
 }

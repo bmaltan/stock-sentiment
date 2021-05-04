@@ -79,6 +79,7 @@ export class MaterialModule {
         'post',
         'search',
         'settings',
+        'theme',
         'up'
     ]
 

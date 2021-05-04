@@ -8,7 +8,7 @@
 <div class="content-container">
     <mat-tab-group mat-stretch-tabs [selectedIndex]="mainTabIndex" (selectedTabChange)="onMainTabChange($event)">
         <mat-tab label="Daily Data">
-            <div class="daily-data-toolbar" gdColumns="1fr auto" style="border-bottom: 1px solid rgba(0, 0, 0, 0.12)">
+            <div class="daily-data-toolbar" gdColumns="1fr auto">
                 <div gdColumns="auto 1fr">
                     <div>
                         <mat-icon class="button" svgIcon="date-clear" (click)="picker.open()" matTooltip="Change Date">

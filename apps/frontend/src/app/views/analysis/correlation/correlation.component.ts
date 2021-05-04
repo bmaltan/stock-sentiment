@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Subject } from 'rxjs';
 import { PlatformService } from '../../../shared/services/platform.service';
+import { ThemeService } from '../../../shared/services/theme.service';
 
 @Component({
     selector: 'invest-track-correlation',
@@ -27,23 +28,61 @@ export class CorrelationComponent implements OnInit {
                     id: 'price',
                     display: true,
                     position: 'left',
+                    ticks: {
+                        fontColor: '',
+                    },
+                    gridLines: {
+                        color: '',
+                    },
                 },
                 {
                     type: 'linear',
                     id: 'mentions',
                     display: false,
                     position: 'right',
+                    ticks: {
+                        fontColor: '',
+                    },
+                    gridLines: {
+                        color: '',
+                    },
                 },
             ],
+            xAxes: [
+                {
+                    ticks: {
+                        fontColor: ''
+                    },
+                    gridLines: {
+                        color: '',
+                    },
+                }
+            ]
         },
         legend: {
             display: false,
         },
+
+
     };
 
+    isDark!: boolean;
+
     constructor(
-        private platformService: PlatformService
+        private platformService: PlatformService,
+        private themeService: ThemeService
     ) {
+        this.isDark = themeService.isThemeDark();
+
+        this.options.scales.yAxes.forEach(axis => {
+            axis.ticks.fontColor = this.isDark ? 'white' : 'black';
+            axis.gridLines.color = this.isDark ? '#ebebeb25' : '#0000001f';
+        })
+        this.options.scales.xAxes.forEach(axis => {
+            axis.ticks.fontColor = this.isDark ? 'white' : 'black';
+            axis.gridLines.color = this.isDark ? '#ebebeb25' : '#0000001f';
+        })
+        console.log(this.isDark)
     }
 
     ngOnInit(): void {
@@ -64,7 +103,7 @@ export class CorrelationComponent implements OnInit {
             const prices = correlationData[key].map(data => data.close);
             const mentions = correlationData[key].map(data => data.total_mention);
 
-            this.correlationData.push(new CorrelationChartData(key, labels, prices, mentions));
+            this.correlationData.push(new CorrelationChartData(key, labels, prices, mentions, this.isDark));
         }
 
         this.correlationData.sort((a,b) => {
@@ -89,14 +128,17 @@ class CorrelationChartData {
             data: [] as number[],
             yAxisID: 'price',
             fill: false,
-            borderColor: 'black',
+            borderColor: '',
             borderWidth: '2',
         },
         {
             label: 'Mentions',
             data: [],
             yAxisID: 'mentions',
+            fill: true,
+            borderColor: '',
             borderWidth: '1',
+            backgroundColor: ''
         },
     ];
 
@@ -105,10 +147,13 @@ class CorrelationChartData {
         labels: string[],
         prices: number[],
         mentions: number[],
+        isDark: boolean
     ) {
         this.ticker = ticker;
         this.labels = labels;
         this.datasets[0].data = prices;
+        this.datasets[0].borderColor = isDark ? 'white' : 'black';
         this.datasets[1].data = mentions;
+        this.datasets[1].backgroundColor = isDark ? '#ffffff35' : '#00000015';
     }
 }

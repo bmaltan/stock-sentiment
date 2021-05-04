@@ -2,6 +2,7 @@ import { Location } from '@angular/common';
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { DialogService } from '../../../shared/services/dialog.service';
+import { ThemeService } from '../../../shared/services/theme.service';
 import { UserService } from '../../../shared/services/user.service';
 
 @Component({
@@ -16,6 +17,7 @@ export class HeaderComponent {
         private dialogService: DialogService,
         private userService: UserService,
         private router: Router,
+        private themeService: ThemeService,
         location: Location
     ) {
         this.router.events.subscribe(() => {
@@ -25,6 +27,10 @@ export class HeaderComponent {
 
     openLogin() {
         this.dialogService.openDialog('login');
+    }
+
+    toggleTheme() {
+        this.themeService.toggleTheme();
     }
 
     // openFavorites() {

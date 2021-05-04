@@ -21,6 +21,10 @@
         <mat-icon svgIcon="enter" style="transform: rotate(180deg);"></mat-icon>
         <span>Log in</span>
     </button>
+    <button mat-menu-item bsDisplayIfNotLoggedIn (click)="toggleTheme()">
+        <mat-icon svgIcon="theme" style="transform: rotate(180deg);"></mat-icon>
+        <span>Light/Dark</span>
+    </button>
     <button mat-menu-item bsDisplayIfLoggedIn (click)="logout()">
         <mat-icon svgIcon="exit"></mat-icon>
         <span>Log out</span>

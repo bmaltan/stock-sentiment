@@ -1,0 +1,9 @@
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M256 464C370.875 464 464 370.875 464 256C464 141.125 370.875 48 256 48C141.125 48 48 141.125 48 256C48 370.875 141.125 464 256 464Z" stroke="currentColor" stroke-width="32" stroke-linejoin="round"/>
+<line x1="260" y1="48" x2="260" y2="456" stroke="currentColor" stroke-width="32"/>
+<line x1="265.064" y1="66.4388" x2="53.6035" y2="237.52" stroke="currentColor" stroke-width="32"/>
+<line x1="262.749" y1="141.439" x2="59.0636" y2="306.23" stroke="currentColor" stroke-width="32"/>
+<line x1="263.239" y1="356.439" x2="159.064" y2="440.721" stroke="currentColor" stroke-width="32"/>
+<line x1="265.064" y1="210.439" x2="66.0636" y2="371.439" stroke="currentColor" stroke-width="32"/>
+<line x1="265.064" y1="282.439" x2="101.027" y2="415.152" stroke="currentColor" stroke-width="32"/>
+</svg>

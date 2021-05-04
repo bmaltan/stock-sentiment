@@ -1,6 +1,6 @@
 @mixin styles {
     mat-icon {
-        color: #4d4d4d;
+        color: var(--color-icon) !important;
 
         &.small {
             height: var(--icon-small);
@@ -61,11 +61,22 @@
         border-top-left-radius: var(--input-border-radius) !important; 
         border-bottom-left-radius: var(--input-border-radius) !important;
         width: var(--input-border-radius) !important;
+        border-color: var(--color-border-input) !important;
     }
     
     .mat-form-field-outline-end {
         border-top-right-radius: var(--input-border-radius) !important; 
-        border-bottom-right-radius: var(--input-border-radius) !important; 
+        border-bottom-right-radius: var(--input-border-radius) !important;
+        border-color: var(--color-border-input) !important;
+    }
+
+    .mat-form-field-outline-gap {
+        border-top-color: var(--color-border-input) !important;
+        border-bottom-color: var(--color-border-input) !important;
+    }
+
+    .mat-form-field-appearance-outline.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-outline-gap {
+        border-top-color: transparent !important;
     }
 
     .mat-form-field-wrapper {
@@ -79,6 +90,8 @@
 
     .mat-dialog-container {
         border-radius: var(--container-border-radius) !important;
+        color: var(--color-font);
+        background: var(--color-background);
     }
 
     @media only screen and (max-width: 700px) {
@@ -127,7 +140,7 @@
     }
 
     .mat-calendar-body-disabled > .mat-calendar-body-cell-content:not(.mat-calendar-body-selected):not(.mat-calendar-body-comparison-identical) {
-        color: rgb(0 0 0 / 15%) !important;
+        color: var(--color-font-disabled) !important;
     }
 
     .mat-calendar-body-cell-content.mat-focus-indicator {
@@ -147,6 +160,10 @@
         background: var(--color-item-highlight);
     }
 
+    mat-row, mat-header-row, mat-footer-row, th.mat-header-cell, td.mat-cell, td.mat-footer-cell {
+        border-bottom-color: var(--color-row-border);
+    }
+
     @media only screen and (max-width: 600px) {
         th.mat-header-cell:first-of-type, td.mat-cell:first-of-type, td.mat-footer-cell:first-of-type {
             padding-left: 16px !important;
@@ -154,14 +171,40 @@
     }
 
     table.mat-table {
+        background: transparent;
+
+        th.mat-header-cell {
+            border-bottom: 1px solid var(--color-row-border)
+        }
+
         td.mat-cell {
             font-size: 12px;
             font-weight: 500;
+
+            transition: all 0s;
+        }
+
+        tr {
+            &.mat-row {
+                height: 36px;
+                transition: all 0s;
+
+                :hover {
+                    background: var(--color-item-highlight);
+                }
+
+                &:last-child {
+                    td {
+                        border-bottom: none;
+                    }
+                }
+            }
+
+            &.mat-cell, .mat-row, .mat-header-row, .mat-footer-row, .mat-header-cell, .mat-cell, .mat-footer-cell {
+                color: var(--color-font) !important;
+            }
         }
         
-        tr.mat-row {
-            height: 36px;
-        }
 
         .mat-sort-header-content {
             font-weight: 700 !important;
@@ -169,24 +212,14 @@
     }
 
     .mat-progress-bar .mat-progress-bar-background {
-        fill: #00000075 !important;
-    }
-
-    .mat-table {
-        tr.mat-row:last-child {
-            td {
-                border-bottom: none;
-            }
-        }
-        
-        // th.mat-header-cell:first-of-type, td.mat-cell:first-of-type {
-        //     padding-left: 16px !important;
-        // }
+        fill: var(--color-progress-indicator) !important;
     }
 
     .mat-tab-label-container {
-
+        color: var(--color-font);
+        
         .mat-tab-label {
+            color: var(--color-font);
             opacity: 1;
         }
         
@@ -199,13 +232,69 @@
         }
     }
 
+    .mat-tab-body-content {
+        overflow: hidden !important;
+    }
+
     .thin-tabs {
         .mat-tab-label-container, .mat-tab-label {
             height: 36px !important;
         }
     }
-}
 
-.mat-tab-body-content {
-    overflow: hidden !important;
+    .mat-ink-bar {
+        background-color: var(--color-font) !important;
+    }
+
+    .mat-menu-panel, .mat-datepicker-content {
+        color: var(--color-font);
+        background: var(--color-background);
+        background-color: var(--color-background-elevated);
+    }
+
+    .mat-calendar-table-header, .mat-datepicker-toggle, .mat-datepicker-content 
+    .mat-calendar-next-button, .mat-datepicker-content .mat-calendar-previous-button, 
+    .mat-calendar-body-label {
+        color: var(--color-font);
+    }
+
+    .mat-calendar-body-cell-content, .mat-date-range-input-separator {
+        color: var(--color-font);
+    }
+
+    .mat-calendar-body-selected {
+        color: var(--color-background) !important;
+        background-color: var(--color-font) !important;
+    }
+
+    .mat-calendar-body-disabled > .mat-calendar-body-today:not(.mat-calendar-body-selected):not(.mat-calendar-body-comparison-identical) {
+        border-color: var(--color-border);
+    }
+
+    .mat-calendar-arrow {
+        border-top-color: var(--color-font)
+    }
+
+    .mat-tab-nav-bar, .mat-tab-header {
+        border-bottom: 1px solid var(--color-border);
+    }
+
+    .mat-menu-item {
+        color: var(--color-font);
+    }
+
+    .dark-theme {
+        .mat-menu-panel {
+            border: 1px solid var(--color-border);
+            box-shadow: none;
+        }
+
+        .mat-form-field-label, .mat-form-field-label.mat-focused {
+            color: var(--color-font) i !important;
+        }
+        
+        .mat-tab-list {
+            border-bottom: 1px solid var(--color-row-border);
+        }
+    }
 }
