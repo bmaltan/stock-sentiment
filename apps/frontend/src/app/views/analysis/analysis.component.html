@@ -47,7 +47,7 @@
                         </div> -->
                     <mat-menu #filterMenu="matMenu" class="filter-menu">
                         <div gdRows="1fr auto" class="filter-menu-content" (click)="$event.stopPropagation()">
-                            <div [formGroup]="filterForm">
+                            <form [formGroup]="filterForm" (keyup.enter)="filter()">
                                 <mat-form-field style="width: 100%;">
                                     <mat-label>Search</mat-label>
                                     <input matInput formControlName="filter">
@@ -60,7 +60,7 @@
                                     <mat-label>Minimum change</mat-label>
                                     <input matInput type="number" formControlName="minimumChange">
                                 </mat-form-field>
-                            </div>
+                            </form>
                             <div gdColumns="auto 1fr auto" style="margin-top: 12px;">
                                 <button (click)="resetFilter()">Reset</button>
                                 <div></div>
