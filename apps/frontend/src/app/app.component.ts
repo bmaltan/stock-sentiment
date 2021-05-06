@@ -11,9 +11,6 @@ import { GdprPromptComponent } from './shared/gdpr-prompt/gdpr-prompt.component'
 export class AppComponent implements OnInit {
     title = 'stock-sentiment';
 
-    splashClasses = 'splashscreen';
-    splashTitleClasses = 'splash-title'
-
     constructor(
         private bottomSheet: MatBottomSheet,
         private location: Location,
@@ -21,14 +18,6 @@ export class AppComponent implements OnInit {
     ) {}
 
     ngOnInit() {
-        setTimeout(() => {
-            this.splashTitleClasses += ' fade-in';
-        }, 100);
-        setTimeout(() => {
-            this.splashClasses += ' fading faded';
-        }, 1000);
-
-
         if (!isPlatformServer(this.platformId)) {
             const cachedGdprResponse = window.localStorage.getItem(
                 'gdprResponse'
