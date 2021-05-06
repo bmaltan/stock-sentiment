@@ -82,7 +82,6 @@ export class CorrelationComponent implements OnInit {
             axis.ticks.fontColor = this.isDark ? 'white' : 'black';
             axis.gridLines.color = this.isDark ? '#ebebeb25' : '#0000001f';
         })
-        console.log(this.isDark)
     }
 
     ngOnInit(): void {
