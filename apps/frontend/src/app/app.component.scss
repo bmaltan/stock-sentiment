@@ -33,11 +33,12 @@
     
     @media only screen and (max-width: 700px) {
         .router-container {
-            padding: 0 20px !important;
+            padding: 0 20px 20px 20px !important;
         }
 
         .main-container {
             padding-top: 60px;
+            overflow: initial;
         }
     }
     
