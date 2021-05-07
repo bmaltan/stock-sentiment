@@ -27,10 +27,11 @@ export class ThemeService {
     }
 
     setTheme() {
+        const html = document.getElementsByTagName('html')[0];
         if (this.isDark) {
-            this.renderer.addClass(document.body, 'dark-theme');
+            this.renderer.addClass(html, 'dark-theme');
         } else {
-            this.renderer.removeClass(document.body, 'dark-theme');
+            this.renderer.removeClass(html, 'dark-theme');
         }
     }
 
