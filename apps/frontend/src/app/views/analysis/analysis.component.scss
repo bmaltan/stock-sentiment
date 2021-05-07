@@ -43,6 +43,43 @@ mat-form-field {
     }
 }
 
+.actions-cell {
+    text-align: right;
+
+    .desktop-action:last-of-type {
+        margin-right: 20px;
+    }
+}
+
+@media only screen and (max-width: 600px) {
+    .actions-cell {
+        width: 30px;
+    }
+}
+
+.posts-header {
+    width: 90px;
+    max-width: 90px;
+}
+
+.mentions-header {
+    width: 70px;
+    max-width: 70px;
+}
+
+@media only screen and (max-width: 600px) {
+    .posts-header {
+        width: 30px;
+        max-width: 30px;
+    }
+
+    .mentions-header {
+        width: 40px;
+        max-width: 40px;
+    }
+}
+
+
 .header-icon {
     width: 20px;
     height: 20px;
