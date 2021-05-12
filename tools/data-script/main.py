@@ -15,6 +15,7 @@ from historical_market_price import market
 from models.Sentiment import Sentiment
 from db import db
 from dotenv import load_dotenv
+import traceback
 
 load_dotenv()
 
@@ -181,39 +182,45 @@ def aggregate_for_yesterday():
 
 
 if __name__ == '__main__':
-    if len(sys.argv) > 1:
-        command = sys.argv[1]
-    else:
-        command = 'help'
+    try:
+        if len(sys.argv) > 1:
+            command = sys.argv[1]
+        else:
+            command = 'help'
 
-    if command == "help":
-        print("""
-commands:
+        if command == "help":
+            print("""
+    commands:
 
-    market:
-        fetches yesterday's market prices for all tickers (stocks and cryptos)
-    aggregate:
-        aggregates yesterday's mentions with market prices and reddit post scores
-    sentiment <platform>:
-        starts fetchign real-time data from given platform.
-        platform: 
-            can be either wsb, crypto or stock
-    help:
-        prints this text""")
-    elif command == "market":
-        fetch_market_prices()
-    elif command == "aggregate":
-        aggregate_for_yesterday()
-    elif command == "sentiment":
-        if len(sys.argv) > 2 and (platform := sys.argv[2]):
-            if platform in available_platforms:
-                run(available_platforms[platform])
+        market:
+            fetches yesterday's market prices for all tickers (stocks and cryptos)
+        aggregate:
+            aggregates yesterday's mentions with market prices and reddit post scores
+        sentiment <platform>:
+            starts fetchign real-time data from given platform.
+            platform: 
+                can be either wsb, crypto or stock
+        help:
+            prints this text""")
+        elif command == "market":
+            fetch_market_prices()
+        elif command == "aggregate":
+            aggregate_for_yesterday()
+        elif command == "sentiment":
+            if len(sys.argv) > 2 and (platform := sys.argv[2]):
+                if platform in available_platforms:
+                    run(available_platforms[platform])
+                else:
+                    print(
+                        'we do not support that platform. try other platforms: stock, crypto or wsb')
+
             else:
                 print(
                     'we do not support that platform. try other platforms: stock, crypto or wsb')
-
         else:
-            print(
-                'we do not support that platform. try other platforms: stock, crypto or wsb')
-    else:
-        print("cannot understand what you want. try running help?")
+            print("cannot understand what you want. try running help?")
+    except Exception:
+        with open("error-log.txt", "a") as f:
+            traceback.print_exc(file=f)
+
+
