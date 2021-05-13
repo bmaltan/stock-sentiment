@@ -16,6 +16,7 @@ from models.Sentiment import Sentiment
 from db import db
 from dotenv import load_dotenv
 import traceback
+import time
 
 load_dotenv()
 
@@ -181,7 +182,7 @@ def aggregate_for_yesterday():
     db.delete_temp_mentions(day)
 
 
-if __name__ == '__main__':
+def main():
     try:
         if len(sys.argv) > 1:
             command = sys.argv[1]
@@ -221,6 +222,11 @@ if __name__ == '__main__':
             print("cannot understand what you want. try running help?")
     except Exception:
         with open("error-log.txt", "a") as f:
+            f.write(str(dt.datetime.now()) + "\n")
             traceback.print_exc(file=f)
+        time.sleep(30)
+        main()
 
+if __name__ == '__main__':
+    main()
 
